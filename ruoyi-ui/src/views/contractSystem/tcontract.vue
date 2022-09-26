@@ -225,7 +225,15 @@
           <el-input v-model="form.empId" placeholder="请输入员工的Id" />
         </el-form-item>
         <el-form-item label="客户的Id" prop="customerId">
-          <el-input v-model="form.customerId" placeholder="请输入客户的Id" />
+<!--          <el-input v-model="form.customerId" placeholder="请输入客户的Id" />-->
+          <el-select v-model="form.customerId" placeholder="请选择客户">
+            <el-option v-for="item in customerOptions"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
+
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="合同名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入合同名称" />
@@ -280,6 +288,9 @@
 <script>
 import { listContract, getContract, delContract, addContract, updateContract,changeContractStatus } from "@/api/contractSystem/tcontract";
 import FileUpload from "@/components/FileUpload/index";
+import { listCustomer } from "@/api/contractSystem/customer";
+import customer from "./customer";
+
 export default {
   name: "Contract",
   data() {
@@ -287,6 +298,13 @@ export default {
       components:{
              FileUpload
            },
+
+      //客户下拉框选项卡
+      customerOptions:[],
+
+      //客户信息
+      customer:[],
+
       fileType:["doc", "xls", "ppt", "txt", "pdf","png", "jpg", "jpeg"],
       nowTime: this.getNowTime(),
       // 遮罩层
@@ -347,6 +365,11 @@ export default {
   },
   created() {
     this.getList();
+    this.getCustomer();
+    alert("3232")
+
+
+
   },
   methods: {
 
@@ -377,6 +400,7 @@ export default {
     	    },
 
 
+
     /** 查询合同列表 */
     getList() {
       this.loading = true;
@@ -386,6 +410,31 @@ export default {
         this.loading = false;
       });
     },
+
+    getCustomer() {
+      this.loading = true;
+      listCustomer(this.queryParams).then(response => {
+        this.customer = response.rows;
+        for (const customerElem of this.customer) {
+          console.log(customerElem.cId);
+          this.customerOptions.push({
+            value: customerElem.cId,
+            label: customerElem.cname,
+          })
+        }})
+
+      // for (const argumentsKey in customElements) {
+      //   console.log("argumentskey:"+argumentsKey);
+      //   console.log("argumentskey:"+argumentsKey["0"].label)
+      //   for (const argumentsKeyKey in argumentsKey) {
+      //     console.log("argumentskeykey:"+argumentsKeyKey);
+      //     console.log("argumentskeykey:"+argumentsKeyKey["0"])
+      //   }
+      // }
+      // console.log(this.customerOptions["0"].label);
+    },
+
+
     // 取消按钮
     cancel() {
       this.open = false;
@@ -432,12 +481,14 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
+      this.getCustomer();
       this.open = true;
       this.title = "添加合同";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
+      this.getCustomer();
       const id = row.id || this.ids
       getContract(id).then(response => {
         this.form = response.data;
