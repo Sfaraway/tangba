@@ -1,6 +1,8 @@
 package com.ruoyi.contract.service.impl;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.contract.domain.TLogistics;
 import com.ruoyi.contract.mapper.TLogisticsMapper;
@@ -65,7 +67,7 @@ public class TLogisticsServiceImpl implements ITLogisticsService
     @Override
     public int updateTLogistics(TLogistics tLogistics)
     {
-        tLogistics.setUpdateTime(DateUtils.getNowDate());
+//        tLogistics.setUpdateTime(DateUtils.getNowDate());
         return tLogisticsMapper.updateTLogistics(tLogistics);
     }
 
@@ -92,4 +94,23 @@ public class TLogisticsServiceImpl implements ITLogisticsService
     {
         return tLogisticsMapper.deleteTLogisticsById(id);
     }
+
+    @Override
+    public Map<String, Object> insert2(TLogistics logistics) {
+        return tLogisticsMapper.insert2(logistics);
+    }
+
+    //impl
+    /**
+     * 修改配送状态
+     *
+     * @param logistic
+     * @return 结果
+     */
+    @Override
+    public int updateStatus(TLogistics logistic)
+    {
+        return tLogisticsMapper.updateTLogistics(logistic);
+    }
+
 }

@@ -1,8 +1,10 @@
 package com.ruoyi.contract.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ruoyi.contract.domain.TLogistics;
+import org.springframework.stereotype.Repository;
 
 /**
  * 物流Mapper接口
@@ -10,6 +12,7 @@ import com.ruoyi.contract.domain.TLogistics;
  * @author Mr.Zeng
  * @date 2022-09-24
  */
+@Repository
 public interface TLogisticsMapper 
 {
     /**
@@ -59,4 +62,6 @@ public interface TLogisticsMapper
      * @return 结果
      */
     public int deleteTLogisticsByIds(Long[] ids);
+
+    Map<String, Object> insert2(TLogistics logistics);
 }

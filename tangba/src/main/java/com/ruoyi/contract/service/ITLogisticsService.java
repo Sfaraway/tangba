@@ -1,6 +1,7 @@
 package com.ruoyi.contract.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ruoyi.contract.domain.TLogistics;
 
@@ -27,6 +28,15 @@ public interface ITLogisticsService
      * @return 物流集合
      */
     public List<TLogistics> selectTLogisticsList(TLogistics tLogistics);
+
+    //ITService
+    /**
+     * 修改配送状态
+     *
+     * @param logistic 物流主键
+     * @return 结果
+     */
+    public int updateStatus(TLogistics logistic);
 
     /**
      * 新增物流
@@ -59,4 +69,7 @@ public interface ITLogisticsService
      * @return 结果
      */
     public int deleteTLogisticsById(Long id);
+
+    public Map<String,Object> insert2(TLogistics logistics);
+
 }

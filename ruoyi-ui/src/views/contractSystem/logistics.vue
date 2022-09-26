@@ -73,8 +73,8 @@
       <el-table-column label="物流公司" align="center" prop="company" />
       <el-table-column label="配送状态" align="center" prop="status">
         <template slot-scope="scope">
-           <el-switch v-model="scope.row.status" active-value="1" inactive-value="0"
-           @change="handleStatusChange(scope.row)">
+           <el-switch v-model="scope.row.status" active-value="0" inactive-value="1"
+           @change="changeStatus(scope.row)">
            </el-switch>
         </template>
       </el-table-column>
@@ -109,21 +109,25 @@
         <el-form-item label="快递单号" prop="orderNumber">
           <el-input v-model="form.orderNumber" placeholder="请输入快递单号" />
         </el-form-item>
-        <el-form-item label="员工Id" prop="empId">
-          <el-input v-model="form.empId" placeholder="请输入员工Id" />
-        </el-form-item>
-        <el-form-item label="客户Id" prop="customerId">
-          <el-input v-model="form.customerId" placeholder="请输入客户Id" />
-        </el-form-item>
-        <el-form-item label="合同名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入合同名称" />
+<!--        <el-form-item label="员工Id" prop="empId">-->
+<!--          <el-input v-model="form.empId" placeholder="请输入员工Id" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="客户Id" prop="customerId">-->
+<!--          <el-input v-model="form.customerId" placeholder="请输入客户Id" />-->
+<!--        </el-form-item>-->
+        <el-form-item label="合同名称" prop="name" :data="contractsList" v-if="contractStatus(contractsList)">
+<!--          <el-input v-model="form.name" placeholder="请输入合同名称" />-->
+
         </el-form-item>
         <el-form-item label="物流公司" prop="company">
           <!-- <el-input v-model="form.company" placeholder="请输入物流公司" /> -->
           <el-select v-model="form.company" placeholder="请选择物流公司">
-              <el-option label="顺丰" value="顺丰"></el-option>
-              <el-option label="中通" value="中通"></el-option>
-              <el-option label="京东" value="京东"></el-option>
+              <el-option
+                v-for="item in LogisticOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+                ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="配送状态">
@@ -164,14 +168,32 @@
     delLogistics,
     addLogistics,
     updateLogistics,
-    changeStatus
+    changeStatus,
+    insertEmpCusId,
   } from "@/api/contractSystem/logistics";
+
+  import {listContract} from "@/api/contractSystem/tcontract";
 
   export default {
     name: "Logistics",
     dicts: ['sys_job_status'],
     data() {
       return {
+
+        LogisticOptions: [{
+          value: '顺丰',
+          label: '顺丰'
+        }, {
+          value: '中通',
+          label: '中通'
+        }, {
+          value: '京东',
+          label: '京东'
+        }],
+
+
+
+
         // 遮罩层
         loading: true,
         // 选中数组
@@ -186,16 +208,14 @@
         total: 0,
         // 物流表格数据
         logisticsList: [],
+
+        //通过的纸质合同数据
+        contractsList:[],
+
         // 弹出层标题
         title: "",
         // 是否显示弹出层
         open: false,
-
-        expressCompany:[
-          {message:'顺丰'},
-          {message:'中通'},
-          {message:'京东'}
-        ],
 
         // 查询参数
         queryParams: {
@@ -222,16 +242,16 @@
             message: "快递单号不能为空",
             trigger: "blur"
           }],
-          empId: [{
-            required: true,
-            message: "员工Id不能为空",
-            trigger: "blur"
-          }],
-          customerId: [{
-            required: true,
-            message: "客户Id不能为空",
-            trigger: "blur"
-          }],
+          // empId: [{
+          //   required: true,
+          //   message: "员工Id不能为空",
+          //   trigger: "blur"
+          // }],
+          // customerId: [{
+          //   required: true,
+          //   message: "客户Id不能为空",
+          //   trigger: "blur"
+          // }],
           name: [{
             required: true,
             message: "合同名称不能为空",
@@ -283,6 +303,24 @@
           this.loading = false;
         });
       },
+
+      //通过的合同
+      contractStatus(e){
+        if (e[5]==1&&e[6]==1&&e[11]==2){
+          return true;
+        }
+      },
+
+      /** 查询物流列表 */
+      getContractList() {
+        this.loading = true;
+        listContract(this.queryParams).then(response => {
+          this.contractsList = response.rows;
+          this.total = response.total;
+          this.loading = false;
+        });
+      },
+
       // 取消按钮
       cancel() {
         this.open = false;
@@ -324,13 +362,13 @@
       /** 新增按钮操作 */
       handleAdd() {
         this.reset();
+        this.getContractList();
         this.open = true;
         this.title = "添加物流";
       },
       // 配送状态修改
-       handleStatusChange(row) {
-
-         let text = row.status === "1" ? "启用" : "停用";
+      changeStatus(row) {
+         let text = row.status === "0" ? "启用" : "停用";
          let now = row.status;
          this.$modal.confirm('确认要"' + text + '""' + row.name + '"状态吗？').then(function() {
            return changeStatus(row.id, now);
@@ -342,6 +380,7 @@
     /** 修改按钮操作 */
       handleUpdate(row) {
         this.reset();
+        this.getContractList();
         const id = row.id || this.ids
         getLogistics(id).then(response => {
           this.form = response.data;
@@ -359,9 +398,10 @@
                 this.$modal.msgSuccess("修改成功");
                 this.open = false;
                 this.getList();
+
               });
             } else {
-              addLogistics(this.form).then(response => {
+              insertEmpCusId(this.form).then(response => {
                 this.$modal.msgSuccess("新增成功");
                 this.open = false;
                 this.getList();

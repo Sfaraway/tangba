@@ -1,6 +1,8 @@
 package com.ruoyi.contract.controller;
 
+import java.net.Inet4Address;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.contract.domain.TLogistics;
@@ -82,6 +84,20 @@ public class TLogisticsController extends BaseController
     }
 
     /**
+     * 状态修改
+     */
+    @PreAuthorize("@ss.hasPermi('logistic:logistics:edit')")
+    @Log(title = "物流", businessType = BusinessType.UPDATE)
+    @PutMapping("/changeStatus")
+    public AjaxResult changeStatus(@RequestBody TLogistics logistic)
+    {
+//    	tLogisticsService.checkRoleAllowed(logistic);
+//    	tLogisticsService.checkRoleDataScope(logistic.getId());
+        logistic.setUpdateBy(getUsername());
+        return toAjax(tLogisticsService.updateStatus(logistic));
+    }
+
+    /**
      * 修改物流
      */
     @PreAuthorize("@ss.hasPermi('logistic:logistics:edit')")
@@ -101,5 +117,26 @@ public class TLogisticsController extends BaseController
     public AjaxResult remove(@PathVariable Long[] ids)
     {
         return toAjax(tLogisticsService.deleteTLogisticsByIds(ids));
+    }
+
+    @PreAuthorize("@ss.hasPermi('logistic:logistics:add')")
+    @Log(title = "物流", businessType = BusinessType.INSERT)
+    @PostMapping("/addId")
+    public AjaxResult addId(@RequestBody TLogistics tLogistics)
+    {
+        Map<String, Object> stringObjectMap = tLogisticsService.insert2(tLogistics);
+        String emp_id =  stringObjectMap.get("emp_id").toString();
+        String customer_id =  stringObjectMap.get("customer_id").toString();
+
+        Long emp_id1 = Long.valueOf(emp_id);
+        Long customer_id1 = Long.valueOf(customer_id);
+        if (emp_id1 == null || customer_id1 == null){
+            return AjaxResult.error();
+        }
+
+        tLogistics.setEmpId(emp_id1);
+        tLogistics.setCustomerId(customer_id1);
+        System.out.println("###############"+stringObjectMap);
+        return toAjax(tLogisticsService.insertTLogistics(tLogistics));
     }
 }

@@ -26,6 +26,14 @@ export function addLogistics(data) {
   })
 }
 
+export function insertEmpCusId(data){
+  return request({
+    url: '/logistic/logistics/addId',
+    method: 'post',
+    data: data
+  })
+}
+
 // 修改物流
 export function updateLogistics(data) {
   return request({

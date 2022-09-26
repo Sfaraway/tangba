@@ -37,17 +37,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateUserId != null "> and update_user_id = #{updateUserId}</if>
         </where>
     </select>
-    
+
+
+
+
     <select id="selectTLogisticsById" parameterType="Long" resultMap="TLogisticsResult">
-        <include refid="selectTLogisticsVo"/>
-        where id = #{id}
+<include refid="selectTLogisticsVo"/>
     </select>
-        
-    
-    
+<!--    <sql id="selectLogisticEmp">-->
+<!--        select  t_contract.emp_id, t_contract.customer_id from t_contract,t_logistics where contract_status=2 and type=1 and t_logistics.name = t_contract.name-->
+<!--        </sql>-->
+
+
+    <select id="insert2" resultType="map" parameterType="TLogistics">
+        select emp_id, customer_id from t_contract where t_contract.name = #{name} and contract_status=2 and type=1 and t_contract.status=1
+    </select>
+
+<!--    <select id="selectContract" resultType="map" parameterType="TLogistics">-->
+<!--        select name from t_contract where contract_status=2 and type=1 and t_contract.status=1-->
+<!--    </select>-->
+
     <insert id="insertTLogistics" parameterType="TLogistics" useGeneratedKeys="true" keyProperty="id">
  		insert into t_logistics(
- 			
  			<if test="orderNumber != null and orderNumber != ''">order_number,</if>
  			<if test="empId != null">emp_id,</if>
  			<if test="customerId != null">customer_id,</if>
@@ -60,10 +71,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			add_time,
  			update_time
  		)values(
- 			
  			<if test="orderNumber != null and orderNumber != ''">#{orderNumber},</if>
- 			<if test="empId != null">#{empId},</if>
- 			<if test="customerId != null">#{customerId},</if>
+            <if test="empId != null"> #{empId},</if>
+            <if test="customerId != null">#{customerId},</if>
  			<if test="name != null and name != ''">#{name},</if>
  			<if test="company != null and company != ''">#{company},</if>
  			<if test="status != null and status != ''">#{status},</if>
@@ -74,8 +84,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			sysdate()
  		)
 	</insert>
-    
-    
+
+<!--    <insert id="insertTLogistics" parameterType="TLogistics" useGeneratedKeys="true" keyProperty="id">-->
+<!--        insert into t_logistics(-->
+<!--        <if test="orderNumber != null and orderNumber != ''">order_number,</if>-->
+<!--        <if test="empId != null">emp_id,</if>-->
+<!--        <if test="customerId != null">customer_id,</if>-->
+<!--        <if test="name != null and name != ''">name,</if>-->
+<!--        <if test="company != null and company != ''">company,</if>-->
+<!--        <if test="status != null and status != ''">status,</if>-->
+<!--        <if test="updateTime != null">update_time,</if>-->
+<!--        <if test="addUserId != null">add_user_id,</if>-->
+<!--        <if test="updateUserId != null">update_user_id,</if>-->
+<!--        add_time,-->
+<!--        update_time-->
+<!--        )values(-->
+<!--        <if test="orderNumber != null and orderNumber != ''">#{orderNumber},</if>-->
+<!--        <if test="empId != null"> #{empId}=(select emp_id from t_contract where t_contract.name = #{name} and contract_status=2 and type=1 and t_contract.status=1),</if>-->
+<!--        <if test="customerId != null">#{customerId}=(select customer_id from t_contract where t_contract.name = #{name} and contract_status=2 and type=1 and t_contract.status=1),</if>-->
+<!--        <if test="name != null and name != ''">#{name},</if>-->
+<!--        <if test="company != null and company != ''">#{company},</if>-->
+<!--        <if test="status != null and status != ''">#{status},</if>-->
+<!--        <if test="updateTime != null">#{updateTime},</if>-->
+<!--        <if test="addUserId != null">#{addUserId},</if>-->
+<!--        <if test="updateUserId != null">#{updateUserId},</if>-->
+<!--        sysdate(),-->
+<!--        sysdate()-->
+<!--        )-->
+<!--    </insert>-->
+
 
     <update id="updateTLogistics" parameterType="TLogistics">
         update t_logistics
