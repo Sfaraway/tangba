@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.contract.mapper.TJobMapper">
+    
+    <resultMap type="TJob" id="TJobResult">
+        <result property="jobId"    column="job_id"    />
+        <result property="job"    column="job"    />
+        <result property="addTime"    column="add_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="eId"    column="e_id"    />
+    </resultMap>
+
+    <resultMap id="TJobTEmpResult" type="TJob" extends="TJobResult">
+        <collection property="tEmpList" notNullColumn="sub_e_id" javaType="java.util.List" resultMap="TEmpResult" />
+    </resultMap>
+
+    <resultMap type="TEmp" id="TEmpResult">
+        <result property="eId"    column="sub_e_id"    />
+        <result property="eAcount"    column="sub_e_acount"    />
+        <result property="ename"    column="sub_ename"    />
+        <result property="tel"    column="sub_tel"    />
+        <result property="jobId"    column="sub_job_id"    />
+        <result property="deptId"    column="sub_dept_id"    />
+        <result property="status"    column="sub_status"    />
+        <result property="addTime"    column="sub_add_time"    />
+        <result property="updateTime"    column="sub_update_time"    />
+        <result property="addUserId"    column="sub_add_user_id"    />
+        <result property="updateUserId"    column="sub_update_user_id"    />
+        <result property="dname"    column="sub_dname"    />
+        <result property="job"    column="sub_job"    />
+    </resultMap>
+
+    <sql id="selectTJobVo">
+        select job_id, job, add_time, update_time, add_user_id, update_user_id, dept_id, e_id from t_job
+    </sql>
+
+    <select id="selectTJobList" parameterType="TJob" resultMap="TJobResult">
+        <include refid="selectTJobVo"/>
+        <where>  
+            <if test="job != null  and job != ''"> and job = #{job}</if>
+            <if test="addTime != null "> and add_time = #{addTime}</if>
+            <if test="addUserId != null "> and add_user_id = #{addUserId}</if>
+            <if test="updateUserId != null "> and update_user_id = #{updateUserId}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="eId != null "> and e_id = #{eId}</if>
+        </where>
+    </select>
+    
+    <select id="selectTJobByJobId" parameterType="Long" resultMap="TJobTEmpResult">
+        select a.job_id, a.job, a.add_time, a.update_time, a.add_user_id, a.update_user_id, a.dept_id, a.e_id,
+ b.e_id as sub_e_id, b.e_acount as sub_e_acount, b.ename as sub_ename, b.tel as sub_tel, b.job_id as sub_job_id, b.dept_id as sub_dept_id, b.status as sub_status, b.add_time as sub_add_time, b.update_time as sub_update_time, b.add_user_id as sub_add_user_id, b.update_user_id as sub_update_user_id, b.dname as sub_dname, b.job as sub_job
+        from t_job a
+        left join t_emp b on b.e_id = a.job_id
+        where a.job_id = #{jobId}
+    </select>
+        
+    <insert id="insertTJob" parameterType="TJob" useGeneratedKeys="true" keyProperty="jobId">
+        insert into t_job
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="job != null and job != ''">job,</if>
+            <if test="addTime != null">add_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="addUserId != null">add_user_id,</if>
+            <if test="updateUserId != null">update_user_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="eId != null">e_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="job != null and job != ''">#{job},</if>
+            <if test="addTime != null">#{addTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="addUserId != null">#{addUserId},</if>
+            <if test="updateUserId != null">#{updateUserId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="eId != null">#{eId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTJob" parameterType="TJob">
+        update t_job
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="job != null and job != ''">job = #{job},</if>
+            <if test="addTime != null">add_time = #{addTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="addUserId != null">add_user_id = #{addUserId},</if>
+            <if test="updateUserId != null">update_user_id = #{updateUserId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="eId != null">e_id = #{eId},</if>
+        </trim>
+        where job_id = #{jobId}
+    </update>
+
+    <delete id="deleteTJobByJobId" parameterType="Long">
+        delete from t_job where job_id = #{jobId}
+    </delete>
+
+    <delete id="deleteTJobByJobIds" parameterType="String">
+        delete from t_job where job_id in 
+        <foreach item="jobId" collection="array" open="(" separator="," close=")">
+            #{jobId}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteTEmpByEIds" parameterType="String">
+        delete from t_emp where e_id in 
+        <foreach item="eId" collection="array" open="(" separator="," close=")">
+            #{eId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteTEmpByEId" parameterType="Long">
+        delete from t_emp where e_id = #{eId}
+    </delete>
+
+    <insert id="batchTEmp">
+        insert into t_emp( e_id, e_acount, ename, tel, job_id, dept_id, status, add_time, update_time, add_user_id, update_user_id, dname, job) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.eId}, #{item.eAcount}, #{item.ename}, #{item.tel}, #{item.jobId}, #{item.deptId}, #{item.status}, #{item.addTime}, #{item.updateTime}, #{item.addUserId}, #{item.updateUserId}, #{item.dname}, #{item.job})
+        </foreach>
+    </insert>
+</mapper>

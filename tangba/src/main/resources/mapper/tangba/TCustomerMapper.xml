@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.contract.mapper.TCustomerMapper">
+    
+    <resultMap type="TCustomer" id="TCustomerResult">
+        <result property="cId"    column="c_id"    />
+        <result property="cname"    column="cname"    />
+        <result property="cAccount"    column="c_account"    />
+        <result property="phone"    column="phone"    />
+        <result property="status"    column="status"    />
+        <result property="addTime"    column="add_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+    </resultMap>
+
+    <sql id="selectTCustomerVo">
+        select c_id, cname, c_account, phone, status, add_time, update_time, add_user_id, update_user_id from t_customer
+    </sql>
+
+    <select id="selectTCustomerList" parameterType="TCustomer" resultMap="TCustomerResult">
+        <include refid="selectTCustomerVo"/>
+        <where>  
+            <if test="cname != null  and cname != ''"> and cname like concat('%', #{cname}, '%')</if>
+            <if test="cAccount != null  and cAccount != ''"> and c_account = #{cAccount}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="addTime != null "> and add_time = #{addTime}</if>
+            <if test="addUserId != null "> and add_user_id = #{addUserId}</if>
+            <if test="updateUserId != null "> and update_user_id = #{updateUserId}</if>
+        </where>
+    </select>
+    
+    <select id="selectTCustomerByCId" parameterType="Long" resultMap="TCustomerResult">
+        <include refid="selectTCustomerVo"/>
+        where c_id = #{cId}
+    </select>
+        
+    <insert id="insertTCustomer" parameterType="TCustomer">
+        insert into t_customer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cId != null">c_id,</if>
+            <if test="cname != null and cname != ''">cname,</if>
+            <if test="cAccount != null and cAccount != ''">c_account,</if>
+            <if test="phone != null and phone != ''">phone,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="addTime != null">add_time,</if>
+            add_time,
+            <if test="updateTime != null">update_time,</if>
+            <if test="addUserId != null">add_user_id,</if>
+            <if test="updateUserId != null">update_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cId != null">#{cId},</if>
+            <if test="cname != null and cname != ''">#{cname},</if>
+            <if test="cAccount != null and cAccount != ''">#{cAccount},</if>
+            <if test="phone != null and phone != ''">#{phone},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="addTime != null">sysdate(),</if>
+            sysdate(),
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="addUserId != null">#{addUserId},</if>
+            <if test="updateUserId != null">#{updateUserId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTCustomer" parameterType="TCustomer">
+        update t_customer
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cname != null and cname != ''">cname = #{cname},</if>
+            <if test="cAccount != null and cAccount != ''">c_account = #{cAccount},</if>
+            <if test="phone != null and phone != ''">phone = #{phone},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="addTime != null">add_time = #{addTime},</if>
+            <if test="updateTime != null">update_time = sysdate(),</if>
+            <if test="addUserId != null">add_user_id = #{addUserId},</if>
+            <if test="updateUserId != null">update_user_id = #{updateUserId},</if>
+        </trim>
+        where c_id = #{cId}
+    </update>
+
+    <delete id="deleteTCustomerByCId" parameterType="Long">
+        delete from t_customer where c_id = #{cId}
+    </delete>
+
+    <delete id="deleteTCustomerByCIds" parameterType="String">
+        delete from t_customer where c_id in 
+        <foreach item="cId" collection="array" open="(" separator="," close=")">
+            #{cId}
+        </foreach>
+    </delete>
+    
+    <update id="updateTCustomerStatus" parameterType="TCustomer">
+ 		update t_customer set status = #{status} where c_id = #{cId}
+	</update>
+</mapper>
