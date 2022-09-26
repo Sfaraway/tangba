@@ -12,6 +12,7 @@ import com.ruoyi.contract.domain.TContract;
  */
 public interface ITContractService 
 {
+
     /**
      * 查询合同
      * 

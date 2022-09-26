@@ -2,6 +2,7 @@ package com.ruoyi.contract.mapper;
 
 import java.util.List;
 import com.ruoyi.contract.domain.TContract;
+import org.springframework.stereotype.Repository;
 
 /**
  * 合同Mapper接口
@@ -9,8 +10,10 @@ import com.ruoyi.contract.domain.TContract;
  * @author ruoyi
  * @date 2022-09-23
  */
-public interface TContractMapper 
+@Repository
+public interface TContractMapper
 {
+
     /**
      * 查询合同
      * 

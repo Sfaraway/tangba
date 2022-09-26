@@ -117,3 +117,4 @@ public class TContractController extends BaseController
         return toAjax(tContractService.deleteTContractByIds(ids));
     }
 }
+

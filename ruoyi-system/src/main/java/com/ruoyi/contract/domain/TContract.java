@@ -129,6 +129,7 @@ public class TContract extends BaseEntity
         this.addTime = addTime;
     }
 
+
     public Date getAddTime() 
     {
         return addTime;
