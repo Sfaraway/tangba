@@ -21,7 +21,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectTEmpVo">
-        select e_id, e_acount, ename, tel, job_id, dept_id, status, add_time, update_time, add_user_id, update_user_id, dname, job from t_emp
+--         select e_id, e_acount, ename, tel, job_id, dept_id, status, add_time, update_time, add_user_id, update_user_id, dname, job from t_emp
+        select e_id, a.job_id, a.dept_id, e_acount, ename, tel, b.job, c.dname, status, a.add_time, a.update_time, a.add_user_id, a.update_user_id
+        from t_emp a join t_job b on a.job_id = b.job_id left join t_dept c on a.dept_id = c.dept_id
     </sql>
 
     <select id="selectTEmpList" parameterType="TEmp" resultMap="TEmpResult">
@@ -36,8 +38,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="addTime != null "> and add_time = #{addTime}</if>
             <if test="addUserId != null "> and add_user_id = #{addUserId}</if>
             <if test="updateUserId != null "> and update_user_id = #{updateUserId}</if>
-            <if test="dname != null  and dname != ''"> and dname like concat('%', #{dname}, '%')</if>
-            <if test="job != null  and job != ''"> and job = #{job}</if>
+            <if test="dname != null  and dname != ''"> and c.dname like concat('%', #{dname}, '%')</if>
+            <if test="job != null  and job != ''"> and b.job = #{job}</if>
         </where>
     </select>
     
@@ -76,8 +78,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">#{updateTime},</if>
             <if test="addUserId != null">#{addUserId},</if>
             <if test="updateUserId != null">#{updateUserId},</if>
-            <if test="dname != null and dname != ''">#{dname},</if>
-            <if test="job != null and job != ''">#{job},</if>
+<!--            <if test="dname != null and dname != ''">#{dname},</if>-->
+<!--            <if test="job != null and job != ''">#{job},</if>-->
          </trim>
     </insert>
 

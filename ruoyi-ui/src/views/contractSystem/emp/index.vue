@@ -163,11 +163,31 @@
         <el-form-item label="电话" prop="tel">
           <el-input v-model="form.tel" placeholder="请输入电话" />
         </el-form-item>
-        <el-form-item v-if="form.a == 1" label="职务ID" prop="jobId">
-          <el-input v-model="form.jobId" placeholder="请输入职务ID" />
+        <el-form-item label="职务" prop="jobId">
+          <el-select v-model="form.jobId" multiple placeholder="请选择">
+<!--            <el-option label="总监" value= 1> </el-option>-->
+<!--            <el-option label="经理" value= 2></el-option>-->
+<!--            <el-option label="员工" value= 3></el-option>-->
+            <el-option
+              v-for="item in jobOptions"
+              :key="item.jobId"
+              :label="item.job"
+              :value="item.jobId"></el-option>
+
+          </el-select>
         </el-form-item>
-        <el-form-item v-if="form.a == 1" label="部门ID" prop="deptId">
-          <el-input v-model="form.deptId" placeholder="请输入部门ID" />
+        <el-form-item label="部门" prop="deptId">
+          <el-select v-model="form.deptId" multiple placeholder="请选择">
+<!--            <el-option label="技术部" value= 3> </el-option>-->
+<!--            <el-option label="销售部" value= 2></el-option>-->
+<!--            <el-option label="财务部" value= 1></el-option>-->
+
+            <el-option
+              v-for="item in deptOptions"
+              :key="item.deptId"
+              :label="item.dname"
+              :value="item.deptId"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="状态">
           <el-radio-group v-model="form.status">
@@ -192,20 +212,20 @@
         <el-form-item v-if="form.a == 1" label="修改人" prop="updateUserId">
           <el-input v-model="form.updateUserId" placeholder="请输入修改人" />
         </el-form-item>
-        <el-form-item label="部门" prop="dname">
-          <el-select v-model="form.dname" placeholder="请选择">
-                           <el-option label="技术部" value="技术部"> </el-option>
-                           <el-option label="销售部" value="销售部"></el-option>
-                           <el-option label="财务部" value="财务部"></el-option>
-                           </el-select>
-        </el-form-item>
-        <el-form-item label="职位" prop="job">
-          <el-select v-model="form.job" placeholder="请选择">
-                           <el-option label="总监" value="总监"> </el-option>
-                           <el-option label="经理" value="经理"></el-option>
-                           <el-option label="员工" value="员工"></el-option>
-                           </el-select>
-        </el-form-item>
+<!--        <el-form-item label="部门" prop="dname">-->
+<!--          <el-select v-model="form.dname" placeholder="请选择">-->
+<!--                           <el-option label="技术部" value="技术部"> </el-option>-->
+<!--                           <el-option label="销售部" value="销售部"></el-option>-->
+<!--                           <el-option label="财务部" value="财务部"></el-option>-->
+<!--                           </el-select>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="职位" prop="job">-->
+<!--          <el-select v-model="form.job" placeholder="请选择">-->
+<!--                           <el-option label="总监" value="总监"> </el-option>-->
+<!--                           <el-option label="经理" value="经理"></el-option>-->
+<!--                           <el-option label="员工" value="员工"></el-option>-->
+<!--                           </el-select>-->
+<!--        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -216,8 +236,9 @@
 </template>
 
 <script>
-import { listEmp, getEmp, delEmp, addEmp, updateEmp,changeTEmpStatus } from "@/api/contractSystem/emp";
-
+import {listEmp, getEmp, delEmp, addEmp, updateEmp,changeTEmpStatus } from "@/api/contractSystem/emp";
+import {listDept} from "@/api/contractSystem/dept";
+import {listJob} from "@/api/contractSystem/job";
 export default {
   name: "Emp",
   dicts: ['sys_normal_disable'],
@@ -237,6 +258,9 @@ export default {
       total: 0,
       // 员工表格数据
       empList: [],
+
+      deptOptions: [],
+      jobOptions: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -273,10 +297,10 @@ export default {
         status: [
           { required: true, message: "状态不能为空", trigger: "blur" }
         ],
-        dname: [
+        deptId: [
           { required: true, message: "部门不能为空", trigger: "change" }
         ],
-        job: [
+        jobId: [
           { required: true, message: "职位不能为空", trigger: "change" }
         ]
       }
@@ -284,6 +308,8 @@ export default {
   },
   created() {
     this.getList();
+    this.getDept();
+    this.getJob();
   },
   methods: {
     /** 查询员工列表 */
@@ -293,6 +319,19 @@ export default {
         this.empList = response.rows;
         this.total = response.total;
         this.loading = false;
+      });
+    },
+    // 获取部门列表
+    getDept() {
+       listDept().then(response => {
+         console.log("------>"+response.data)
+        this.deptOptions = response.data;
+      });
+    },
+    // 获取职位列表
+    getJob() {
+      listJob().then(response => {
+        this.jobOptions = response.data;
       });
     },
     // 用户状态修改

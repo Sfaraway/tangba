@@ -36,12 +36,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectTJobVo">
-        select job_id, job, add_time, update_time, add_user_id, update_user_id, dept_id, e_id from t_job
+        select job_id, job, add_time, update_time, add_user_id, update_user_id from t_job
     </sql>
 
     <select id="selectTJobList" parameterType="TJob" resultMap="TJobResult">
         <include refid="selectTJobVo"/>
-        <where>  
+        <where>
+            <if test="jobId != null "> and job_id = #{jobId}</if>
             <if test="job != null  and job != ''"> and job = #{job}</if>
             <if test="addTime != null "> and add_time = #{addTime}</if>
             <if test="addUserId != null "> and add_user_id = #{addUserId}</if>

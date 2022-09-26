@@ -36,12 +36,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectTDeptVo">
-        select dept_id, dname, add_time, update_time, add_user_id, update_user_id, e_id, job_id from t_dept
+        select dept_id, dname, add_time, update_time, add_user_id, update_user_id from t_dept
     </sql>
 
     <select id="selectTDeptList" parameterType="TDept" resultMap="TDeptResult">
         <include refid="selectTDeptVo"/>
-        <where>  
+        <where>
+            <if test="deptId != null "> and dept_id = #{dept_id}</if>
             <if test="dname != null  and dname != ''"> and dname like concat('%', #{dname}, '%')</if>
             <if test="addTime != null "> and add_time = #{addTime}</if>
             <if test="addUserId != null "> and add_user_id = #{addUserId}</if>
