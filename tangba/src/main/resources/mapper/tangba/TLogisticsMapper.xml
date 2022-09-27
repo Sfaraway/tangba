@@ -51,7 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
     <select id="insert2" resultType="map" parameterType="TLogistics">
-        select emp_id, customer_id from t_contract where t_contract.name = #{name} and contract_status=2 and type=1 and t_contract.status=1
+        select emp_id, customer_id from t_contract where t_contract.name = #{name} and contract_status=2 and type=1 and t_contract.status='0'
     </select>
 
 <!--    <select id="selectContract" resultType="map" parameterType="TLogistics">-->
@@ -66,9 +66,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="name != null and name != ''">name,</if>
  			<if test="company != null and company != ''">company,</if>
  			<if test="status != null and status != ''">status,</if>
- 			<if test="updateTime != null">update_time,</if>
  			<if test="addUserId != null">add_user_id,</if>
- 			<if test="updateUserId != null">update_user_id,</if>
  			add_time,
  			update_time
  		)values(
@@ -78,9 +76,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="name != null and name != ''">#{name},</if>
  			<if test="company != null and company != ''">#{company},</if>
  			<if test="status != null and status != ''">#{status},</if>
- 			<if test="updateTime != null">#{updateTime},</if>
  			<if test="addUserId != null">#{addUserId},</if>
- 			<if test="updateUserId != null">#{updateUserId},</if>
  			sysdate(),
  			sysdate()
  		)

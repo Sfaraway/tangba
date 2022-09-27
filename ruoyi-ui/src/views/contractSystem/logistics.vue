@@ -88,8 +88,8 @@
           <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="添加人" align="center" prop="addUserId" />
-      <el-table-column label="修改人" align="center" prop="updateUserId" />
+      <el-table-column label="添加人id" align="center" prop="addUserId" />
+      <el-table-column label="修改人id" align="center" prop="updateUserId" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
@@ -152,12 +152,12 @@
             placeholder="请选择添加时间">
           </el-date-picker>
         </el-form-item> -->
-        <el-form-item label="添加人" prop="addUserId" >
-          <el-input v-model="form.addUserId" placeholder="请输入添加人id" />
-        </el-form-item>
-        <el-form-item label="修改人" prop="updateUserId" v-if="title!='修改物流'">
-          <el-input v-model="form.updateUserId" placeholder="请输入修改人id" />
-        </el-form-item>
+<!--        <el-form-item label="添加人" prop="addUserId" >-->
+<!--          <el-input v-model="form.addUserId" placeholder="请输入添加人id" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="修改人" prop="updateUserId" v-if="title!='修改物流'">-->
+<!--          <el-input v-model="form.updateUserId" placeholder="请输入修改人id" />-->
+<!--        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -199,8 +199,6 @@
           value: '京东',
           label: '京东'
         }],
-
-
 
 
         // 遮罩层
@@ -328,13 +326,12 @@
         this.loading = true;
         getUserId().then(response =>{
           this.userId = response;
-          console.log(typeof this.userId);
-          alert(this.userId);
+
         })
         listUser(this.queryParams).then(response => {
           this.userInfo = response.rows;
           for (const userInfoKey in this.userInfo) {
-              if (userInfoKey.c_id==this.userId){
+              if (userInfoKey.user_id==this.userId){
                 this.userInfo.push(userInfoKey);
               }
           }
@@ -349,7 +346,7 @@
         listContract(this.queryParams).then(response => {
           this.contractsList = response.rows;
           for (const customerElem of this.contractsList) {
-            if (customerElem.type==1&&customerElem.status==="1"&&customerElem.contractStatus==2){
+            if (customerElem.type==1&&customerElem.status==="0"&&customerElem.contractStatus==2){
               this.contractOption.push(customerElem);
             }
           }
@@ -407,10 +404,10 @@
       },
       // 配送状态修改
       changeStatus(row) {
-        alert(row.status);
          let text = row.status === "0" ? "启用" : "停用";
          let now = row.status;
-         this.$modal.confirm('确认要"' + text + '""' + row.name + '"状态吗？').then(function() {
+        this.$modal.confirm('确认要"' + text + '""' + row.name + '"状态吗？').then(function() {
+
            return changeStatus(row.id, now);
          }).then(() => {
            this.$modal.msgSuccess(text + "成功");          }).catch(function() {
@@ -434,6 +431,7 @@
         this.$refs["form"].validate(valid => {
           if (valid) {
             if (this.form.id != null) {
+              this.form.updateUserId = this.userId;
               updateLogistics(this.form).then(response => {
                 this.$modal.msgSuccess("修改成功");
                 this.open = false;
@@ -441,6 +439,7 @@
 
               });
             } else {
+              this.form.addUserId = this.userId;
               insertEmpCusId(this.form).then(response => {
                 this.$modal.msgSuccess("新增成功");
                 this.open = false;

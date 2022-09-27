@@ -52,7 +52,7 @@ public class TLogisticsController extends BaseController
 
     @GetMapping("/userId")
     public Long getUserId(){
-        System.out.println("################"+SecurityUtils.getUserId());
+//        System.out.println("################"+SecurityUtils.getUserId());
         return SecurityUtils.getUserId();
     }
 
@@ -145,7 +145,7 @@ public class TLogisticsController extends BaseController
 
         tLogistics.setEmpId(emp_id1);
         tLogistics.setCustomerId(customer_id1);
-        System.out.println("###############"+stringObjectMap);
+//        System.out.println("###############"+stringObjectMap);
         return toAjax(tLogisticsService.insertTLogistics(tLogistics));
     }
 }
