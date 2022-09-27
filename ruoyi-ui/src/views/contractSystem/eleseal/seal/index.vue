@@ -130,8 +130,8 @@
           <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="添加人" align="center" prop="addUserId" />
-      <el-table-column label="修改人" align="center" prop="updateUserId" />
+      <el-table-column label="添加人" align="center" prop="addUserName" />
+      <el-table-column label="修改人" align="center" prop="updateUserName" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -194,7 +194,8 @@
 
 <script>
 import {listSeal, getSeal, delSeal, addSeal, updateSeal, changeSealStatus} from "@/api/contractSystem/eleseal/seal";
-
+import { getEmp } from "@/api/contractSystem/emp"
+import { getEmpById } from "@/api/contractSystem/common";
 export default {
   name: "Seal",
   data() {
@@ -259,18 +260,49 @@ export default {
     };
   },
   created() {
+  /*  this.getFirst();*/
     this.getList();
+
   },
   methods: {
-    /** 查询印章列表 */
+    //   addUserId
+    //   updateUserId
     getList() {
       this.loading = true;
       listSeal(this.queryParams).then(response => {
         this.sealList = response.rows;
         this.total = response.total;
         this.loading = false;
-      });
+      })
     },
+    /** 查询印章列表 */
+    /*getList() {
+      this.loading = true;
+      listSeal(this.queryParams).then(response => {
+        this.sealList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+      })
+    },*/
+  /*  getList() {
+      this.loading = true;
+      let temp = [];
+      listSeal(this.queryParams).then(response => {
+        temp = response.rows;
+        this.total = response.total;
+        this.loading = false;
+      }).then(()=>{
+        for (let i = 0; i < temp.length;  i++) {
+          getEmp(temp[i].addUserId).then(res=> {
+            temp[i].addUserName = res.data.ename;
+          });
+        }
+      }).then(()=>{
+        this.sealList = temp;
+        console.log( this.sealList)
+      });
+
+    },*/
     // 取消按钮
     cancel() {
       this.open = false;
