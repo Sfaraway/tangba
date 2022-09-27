@@ -66,7 +66,8 @@ export function changeStatus(id, status) {
 export function getUserId() {
   return request({
     url: '/logistic/logistics/userId' ,
-    method: 'get'
+    method: 'get',
+
   })
 }
 

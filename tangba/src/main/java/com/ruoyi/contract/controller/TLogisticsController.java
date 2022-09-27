@@ -52,7 +52,7 @@ public class TLogisticsController extends BaseController
 
     @GetMapping("/userId")
     public Long getUserId(){
-
+        System.out.println("################"+SecurityUtils.getUserId());
         return SecurityUtils.getUserId();
     }
 

@@ -181,7 +181,7 @@
     insertEmpCusId,
   } from "@/api/contractSystem/logistics";
   import {listContract} from "@/api/contractSystem/tcontract";
-  // import {listUser} from "@api/system/user"
+  import { listUser } from "@/api/system/user";
 
   export default {
     name: "Logistics",
@@ -227,7 +227,7 @@
         //登录用户信息
         userInfo:[],
 
-
+        userId:null,
 
         // 弹出层标题
         title: "",
@@ -327,13 +327,15 @@
       getUserInfo(){
         this.loading = true;
         getUserId().then(response =>{
-          this.userInfo = response.data;
+          this.userId = response;
+          console.log(typeof this.userId);
+          alert(this.userId);
         })
         listUser(this.queryParams).then(response => {
           this.userInfo = response.rows;
           for (const userInfoKey in this.userInfo) {
-              if (userInfoKey.c_id==this.userInfo){
-
+              if (userInfoKey.c_id==this.userId){
+                this.userInfo.push(userInfoKey);
               }
           }
           this.total = response.total;
