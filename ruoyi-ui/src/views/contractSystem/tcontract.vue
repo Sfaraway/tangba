@@ -115,16 +115,13 @@
                   <el-tag effect='plain' v-if="scope.row.empId==4">陈冠希</el-tag>
          </template>
       </el-table-column>
-      <el-table-column label="客户名" align="center" prop="customerId" >
-                 <template slot-scope="scope">
-                  <el-tag effect='plain' v-if="scope.row.customerId==1">杜卡迪里奥</el-tag>
-                  <el-tag effect='plain' v-if="scope.row.customerId==2">大卫贝克汉姆</el-tag>
-                  <el-tag effect='plain' v-if="scope.row.customerId==3">绯村拔刀斋</el-tag>
-                  <el-tag effect='plain' v-if="scope.row.customerId==4">炼狱杏寿郎</el-tag>
-                  </template>
-        </el-table-column>
-
-
+<!--      v-bind="customerOptions"-->
+<!--      prop="label"-->
+      <el-table-column label="客户名" align="center" prop="label"  >
+<!--        <template  v-for="item_ in customerOptions">
+          {{item_}}
+        </template>-->
+      </el-table-column>
       <el-table-column label="合同名称" align="center" prop="name" />
       <el-table-column label="合同类型" align="center" prop="type" >
         <template slot-scope="scope">
@@ -285,6 +282,8 @@ export default {
       //客户信息
       customer:[],
 
+      cname:[],
+
       fileType:["doc", "xls", "ppt", "txt", "pdf","png", "jpg", "jpeg"],
       // nowTime: this.getNowTime(),
       // 遮罩层
@@ -306,6 +305,9 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+
+
+
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -346,8 +348,9 @@ export default {
     };
   },
   created() {
-    this.getList();
     this.getCustomer();
+    this.getList();
+
 
 
 
@@ -355,6 +358,12 @@ export default {
 
   },
   methods: {
+
+    getCname(){
+      for (const customerOptionsKey in this.customerOptions) {
+        this.cname.push(customerOptionsKey.label);
+      }
+    },
 
 
 
@@ -383,6 +392,11 @@ export default {
         this.contractList = response.rows;
         this.total = response.total;
         this.loading = false;
+      }).then(()=>{
+        for (let i = 0; i < this.customerOptions.length; i++) {
+          this.contractList[i].label = this.customerOptions[i].label;
+        }
+
       });
     },
 
@@ -395,7 +409,11 @@ export default {
             value: customerElem.cId,
             label: customerElem.cname,
           })
-        }})
+        }}).then(()=>{
+        console.log(this.customerOptions[0].label)
+      })
+
+
 
 
       // console.log(this.customerOptions["0"].label);
