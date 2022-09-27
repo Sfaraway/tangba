@@ -30,20 +30,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectTContractList" parameterType="TContract" resultMap="TContractResult">
         <include refid="selectTContractVo"/>
-        <where>  
+        <where>
             <if test="empId != null "> and emp_id = #{empId}</if>
             <if test="customerId != null "> and customer_id = #{customerId}</if>
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
             <if test="enclosure != null  and enclosure != ''"> and enclosure = #{enclosure}</if>
             <if test="type != null "> and type = #{type}</if>
-            <if test="status != null "> and status = #{status}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
             <if test="addTime != null "> and add_time = #{addTime}</if>
             <if test="addUserId != null "> and add_user_id = #{addUserId}</if>
             <if test="updateUserId != null "> and update_user_id = #{updateUserId}</if>
             <if test="contractStatus != null "> and contract_status = #{contractStatus}</if>
-            <if test="sealStatus != null  and sealStatus != ''"> and seal_status = #{sealStatus}</if>
-            <if test="sealId != null "> and seal_id = #{sealId}</if>
             <if test="accessStu != null  and accessStu != ''"> and access_stu = #{accessStu}</if>
+            <if test="sealId != null "> and seal_id = #{sealId}</if>
+            <if test="sealStatus != null  and sealStatus != ''"> and seal_status = #{sealStatus}</if>
             <if test="cphone != null "> and cphone = #{cphone}</if>
         </where>
     </select>
