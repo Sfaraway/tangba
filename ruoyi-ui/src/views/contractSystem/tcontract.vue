@@ -142,7 +142,7 @@
                <el-tag type="danger"  effect="dark"  v-if="scope.row.contractStatus==2">盖章中</el-tag>
                </template>
       </el-table-column>
-   
+
       <el-table-column label="0成功，bu1成功" align="center" prop="sealId" />
 
 
@@ -404,6 +404,7 @@ export default {
       }).then(()=>{
         for (let i = 0; i < this.customerOptions.length; i++) {
           this.contractList[i].label = this.customerOptions[i].label;
+          console.log(this.contractList[0].label)
         }
 
       });
