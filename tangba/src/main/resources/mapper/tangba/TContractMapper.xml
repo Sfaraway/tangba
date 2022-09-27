@@ -25,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectTContractVo">
-        select id, emp_id, customer_id, name, enclosure, type, status, add_time, update_time, add_user_id, update_user_id, contract_status from t_contract
+        select id, emp_id, customer_id, name, enclosure, type, status, add_time, update_time, add_user_id, update_user_id, contract_status, seal_id, seal_status, access_stu, cphone from t_contract
     </sql>
 
     <select id="selectTContractList" parameterType="TContract" resultMap="TContractResult">

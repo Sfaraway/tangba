@@ -142,9 +142,9 @@
                <el-tag type="danger"  effect="dark"  v-if="scope.row.contractStatus==2">盖章中</el-tag>
                </template>
       </el-table-column>
-      <el-table-column label="${comment}" align="center" prop="sealStatus" />
+   
       <el-table-column label="0成功，bu1成功" align="center" prop="sealId" />
-      <el-table-column label="${comment}" align="center" prop="accessStu" />
+
 
       <!-- <el-table-column label="附件" prop="enclosure" width="100" align="center">
         <FileUpload :limit="1" :fileSize="1" @input="imageUploadChange" :fileType="fileType" :value="form.enclosure" ></FileUpload>
@@ -236,9 +236,7 @@
                         <el-option label="电子合同" value=2></el-option>
                 </el-select>
         </el-form-item>
-        <el-form-item label="0不成功，1成功" prop="seal">
-          <el-input v-model="form.seal" placeholder="请输入0不成功，1成功" />
-        </el-form-item>
+
 
         <el-form-item label="添加人" prop="addUserId">
           <el-input v-model="form.addUserId" placeholder="请输入添加人" />
@@ -246,7 +244,7 @@
         <el-form-item label="修改人" prop="updateUserId">
           <el-input v-model="form.updateUserId" placeholder="请输入修改人" />
         </el-form-item>
-         <el-form-item label="附件上传" prop="cover">
+         <el-form-item label="附件上传" prop="encourse">
                    <FileUpload :limit="1" :fileSize="1" @input="imageUploadChange" :fileType="fileType" :value="form.encourse" ></FileUpload>
                 </el-form-item>
         <el-form-item label="合同状态 " prop="contractStatus">
@@ -256,7 +254,7 @@
                  <el-option label="盖章中" value=2></el-option>
                  </el-select>
         </el-form-item>
-        <el-form-item label="${comment}" prop="cphone">
+        <el-form-item label="电话号码" prop="cphone">
           <el-input v-model="form.cphone" placeholder="请输入${comment}" />
         </el-form-item>
       </el-form>
