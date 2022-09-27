@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.contract.domain.TLogistics;
 import com.ruoyi.contract.service.ITLogisticsService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -49,6 +50,12 @@ public class TLogisticsController extends BaseController
         return getDataTable(list);
     }
 
+    @GetMapping("/userId")
+    public Long getUserId(){
+
+        return SecurityUtils.getUserId();
+    }
+
     /**
      * 导出物流列表
      */
@@ -82,6 +89,8 @@ public class TLogisticsController extends BaseController
     {
         return toAjax(tLogisticsService.insertTLogistics(tLogistics));
     }
+
+
 
     /**
      * 状态修改

@@ -175,6 +175,7 @@
     getLogistics,
     delLogistics,
     addLogistics,
+    getUserId,
     updateLogistics,
     changeStatus,
     insertEmpCusId,
@@ -225,6 +226,8 @@
 
         //登录用户信息
         userInfo:[],
+
+
 
         // 弹出层标题
         title: "",
@@ -307,7 +310,7 @@
     created() {
       this.getList();
       this.getContractList();
-      // this.getUserInfo();
+      this.getUserInfo();
     },
     methods: {
       /** 查询物流列表 */
@@ -320,18 +323,23 @@
         });
       },
 
-      // //查询登录用户信息
-      // getUserInfo(){
-      //   this.loading = true;
-      //   listUser(this.queryParams).then(response => {
-      //     this.userInfo = response.rows;
-      //     for (const userInfoKey in this.userInfo) {
-      //
-      //     }
-      //     this.total = response.total;
-      //     this.loading = false;
-      //   });
-      // },
+      //查询登录用户信息
+      getUserInfo(){
+        this.loading = true;
+        getUserId().then(response =>{
+          this.userInfo = response.data;
+        })
+        listUser(this.queryParams).then(response => {
+          this.userInfo = response.rows;
+          for (const userInfoKey in this.userInfo) {
+              if (userInfoKey.c_id==this.userInfo){
+
+              }
+          }
+          this.total = response.total;
+          this.loading = false;
+        });
+      },
 
       /** 查询合同列表 */
       getContractList() {

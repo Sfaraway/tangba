@@ -17,7 +17,7 @@ public class SecurityUtils
     /**
      * 用户ID
      **/
-    public static Long getUserId()
+        public static Long getUserId()
     {
         try
         {
