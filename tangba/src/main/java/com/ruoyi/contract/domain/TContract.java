@@ -72,6 +72,54 @@ public class TContract extends BaseEntity
     @Excel(name = "合同状态 1：未审核 2：审核中 3：该掌中 4：配送中 5已完成")
     private Long contractStatus;
 
+    /** $column.columnComment */
+    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    private String sealStatus;
+
+    public String getSealStatus() {
+        return sealStatus;
+    }
+
+    public void setSealStatus(String sealStatus) {
+        this.sealStatus = sealStatus;
+    }
+
+    public Long getSealId() {
+        return sealId;
+    }
+
+    public void setSealId(Long sealId) {
+        this.sealId = sealId;
+    }
+
+    public String getAccessStu() {
+        return accessStu;
+    }
+
+    public void setAccessStu(String accessStu) {
+        this.accessStu = accessStu;
+    }
+
+    public Long getCphone() {
+        return cphone;
+    }
+
+    public void setCphone(Long cphone) {
+        this.cphone = cphone;
+    }
+
+    /** 0成功，bu1成功 */
+    @Excel(name = "0成功，bu1成功")
+    private Long sealId;
+
+    /** $column.columnComment */
+    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    private String accessStu;
+
+    /** $column.columnComment */
+    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    private Long cphone;
+
     public void setId(Long id) 
     {
         this.id = id;
@@ -188,7 +236,10 @@ public class TContract extends BaseEntity
             .append("addUserId", getAddUserId())
             .append("updateUserId", getUpdateUserId())
             .append("contractStatus", getContractStatus())
-                .append("seal", getSeal())
+                .append("sealStatus", getSealStatus())
+                .append("sealId", getSealId())
+                .append("accessStu", getAccessStu())
+                .append("cphone", getCphone())
             .toString();
     }
 }

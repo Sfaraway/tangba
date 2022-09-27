@@ -122,6 +122,7 @@
           {{item_}}
         </template>-->
       </el-table-column>
+      <el-table-column label="联系方式" align="center" prop="cphone" />
       <el-table-column label="合同名称" align="center" prop="name" />
       <el-table-column label="合同类型" align="center" prop="type" >
         <template slot-scope="scope">
@@ -141,6 +142,10 @@
                <el-tag type="danger"  effect="dark"  v-if="scope.row.contractStatus==2">盖章中</el-tag>
                </template>
       </el-table-column>
+      <el-table-column label="${comment}" align="center" prop="sealStatus" />
+      <el-table-column label="0成功，bu1成功" align="center" prop="sealId" />
+      <el-table-column label="${comment}" align="center" prop="accessStu" />
+
       <!-- <el-table-column label="附件" prop="enclosure" width="100" align="center">
         <FileUpload :limit="1" :fileSize="1" @input="imageUploadChange" :fileType="fileType" :value="form.enclosure" ></FileUpload>
       </el-table-column> -->
@@ -251,6 +256,9 @@
                  <el-option label="盖章中" value=2></el-option>
                  </el-select>
         </el-form-item>
+        <el-form-item label="${comment}" prop="cphone">
+          <el-input v-model="form.cphone" placeholder="请输入${comment}" />
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -322,7 +330,10 @@ export default {
         addUserId: null,
         updateUserId: null,
         contractStatus: null,
-        seal: null,
+        sealStatus: null,
+        sealId: null,
+        accessStu: null,
+        cphone: null
 
       },
       // 表单参数
