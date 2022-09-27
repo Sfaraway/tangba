@@ -33,7 +33,7 @@
           placeholder="请选择修改时间">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="添加人" prop="addUserId">
+<!--      <el-form-item label="添加人" prop="addUserId">
         <el-input
           v-model="queryParams.addUserId"
           placeholder="请输入添加人"
@@ -48,7 +48,7 @@
           clearable
           @keyup.enter.native="handleQuery"
         />
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -130,8 +130,8 @@
           <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="添加人" align="center" prop="addUserName" />
-      <el-table-column label="修改人" align="center" prop="updateUserName" />
+<!--      <el-table-column label="添加人" align="center" prop="addUserName" />
+      <el-table-column label="修改人" align="center" prop="updateUserName" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -195,7 +195,7 @@
 <script>
 import {listSeal, getSeal, delSeal, addSeal, updateSeal, changeSealStatus} from "@/api/contractSystem/eleseal/seal";
 import { getEmp } from "@/api/contractSystem/emp"
-import { getEmpById } from "@/api/contractSystem/common";
+import { getUserId } from "@/api/contractSystem/common";
 export default {
   name: "Seal",
   data() {
@@ -273,6 +273,9 @@ export default {
         this.sealList = response.rows;
         this.total = response.total;
         this.loading = false;
+      })
+      getUserId().then(response=> {
+        console.log(typeof response)
       })
     },
     /** 查询印章列表 */
