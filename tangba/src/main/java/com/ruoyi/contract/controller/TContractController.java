@@ -85,7 +85,17 @@ public class TContractController extends BaseController
         return toAjax(tContractService.updateStatus(tContract));
     }
 
-
+    /**
+     * 审批状态修改
+     */
+    @PreAuthorize("@ss.hasPermi('tcon:contract:edit')")
+    @Log(title = "合同", businessType = BusinessType.UPDATE)
+    @PutMapping("/changeStatusTwo")
+    public AjaxResult changeStatusTwo(@RequestBody TContract tContract)
+    {
+        tContract.setUpdateBy(getUsername());
+        return toAjax(tContractService.updateStatusTwo(tContract));
+    }
     /**
      * 新增合同
      */

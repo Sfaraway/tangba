@@ -78,7 +78,7 @@ public class TContractServiceImpl implements ITContractService
     /**
      * 修改合同状态
      * 
-     * @param id 合同主键
+     * @param tContract 合同主键
      * @return 结果
      */
     @Override
@@ -111,6 +111,10 @@ public class TContractServiceImpl implements ITContractService
         return tContractMapper.deleteTContractById(id);
     }
 
-    
+    @Override
+    public int updateStatusTwo(TContract tContract)
+    {
+        return tContractMapper.updateTContract(tContract);
+    }
 	
 }

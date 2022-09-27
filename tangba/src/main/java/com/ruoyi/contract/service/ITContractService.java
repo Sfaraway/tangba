@@ -48,7 +48,7 @@ public interface ITContractService
     /**
      * 修改合同状态
      * 
-     * @param id 合同信息
+     * @param tContract 合同信息
      * @return 结果
      */
     public int updateStatus(TContract tContract);
@@ -70,8 +70,6 @@ public interface ITContractService
      */
     public int deleteTContractById(Long id);
 
-	
 
-
-	
+    int updateStatusTwo(TContract tContract);
 }

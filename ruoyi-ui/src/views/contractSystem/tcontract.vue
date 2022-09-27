@@ -143,7 +143,6 @@
                </template>
       </el-table-column>
 
-      <el-table-column label="0成功，bu1成功" align="center" prop="sealId" />
 
 
       <!-- <el-table-column label="附件" prop="enclosure" width="100" align="center">
@@ -404,7 +403,7 @@ export default {
       }).then(()=>{
         for (let i = 0; i < this.customerOptions.length; i++) {
           this.contractList[i].label = this.customerOptions[i].label;
-          console.log(this.contractList[0].label)
+
         }
 
       });
