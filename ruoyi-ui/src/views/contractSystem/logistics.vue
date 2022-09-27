@@ -88,8 +88,8 @@
           <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="添加人id" align="center" prop="addUserId" />
-      <el-table-column label="修改人id" align="center" prop="updateUserId" />
+      <el-table-column label="添加人" align="center" prop="addUserId" />
+      <el-table-column label="修改人" align="center" prop="updateUserId" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
@@ -152,10 +152,10 @@
             placeholder="请选择添加时间">
           </el-date-picker>
         </el-form-item> -->
-        <el-form-item label="添加人id" prop="addUserId" >
+        <el-form-item label="添加人" prop="addUserId" >
           <el-input v-model="form.addUserId" placeholder="请输入添加人id" />
         </el-form-item>
-        <el-form-item label="修改人id" prop="updateUserId" v-if="title!='修改物流'">
+        <el-form-item label="修改人" prop="updateUserId" v-if="title!='修改物流'">
           <el-input v-model="form.updateUserId" placeholder="请输入修改人id" />
         </el-form-item>
       </el-form>
@@ -179,8 +179,8 @@
     changeStatus,
     insertEmpCusId,
   } from "@/api/contractSystem/logistics";
-
   import {listContract} from "@/api/contractSystem/tcontract";
+  // import {listUser} from "@api/system/user"
 
   export default {
     name: "Logistics",
@@ -222,6 +222,9 @@
 
         //合同名称选项
         contractOption:[],
+
+        //登录用户信息
+        userInfo:[],
 
         // 弹出层标题
         title: "",
@@ -304,6 +307,7 @@
     created() {
       this.getList();
       this.getContractList();
+      // this.getUserInfo();
     },
     methods: {
       /** 查询物流列表 */
@@ -316,18 +320,26 @@
         });
       },
 
-      // //通过的合同
-      // contractStatus(e){
+      // //查询登录用户信息
+      // getUserInfo(){
+      //   this.loading = true;
+      //   listUser(this.queryParams).then(response => {
+      //     this.userInfo = response.rows;
+      //     for (const userInfoKey in this.userInfo) {
       //
+      //     }
+      //     this.total = response.total;
+      //     this.loading = false;
+      //   });
       // },
 
-      /** 查询物流列表 */
+      /** 查询合同列表 */
       getContractList() {
         this.loading = true;
         listContract(this.queryParams).then(response => {
           this.contractsList = response.rows;
           for (const customerElem of this.contractsList) {
-            if (customerElem.type==1&&customerElem.status==1&&customerElem.contractStatus==2){
+            if (customerElem.type==1&&customerElem.status==="1"&&customerElem.contractStatus==2){
               this.contractOption.push(customerElem);
             }
           }
@@ -385,6 +397,7 @@
       },
       // 配送状态修改
       changeStatus(row) {
+        alert(row.status);
          let text = row.status === "0" ? "启用" : "停用";
          let now = row.status;
          this.$modal.confirm('确认要"' + text + '""' + row.name + '"状态吗？').then(function() {

@@ -21,13 +21,13 @@ public class TContract extends BaseEntity
     private Long id;
     /** 0不成功，1成功 */
     @Excel(name = "0不成功，1成功")
-    private Long seal;
+    private String seal;
 
-    public Long getSeal() {
+    public String getSeal() {
         return seal;
     }
 
-    public void setSeal(Long seal) {
+    public void setSeal(String seal) {
         this.seal = seal;
     }
 
@@ -52,8 +52,8 @@ public class TContract extends BaseEntity
     private Long type;
 
     /** 状态 1：启动 0关闭 */
-    @Excel(name = "状态 1：启动 0关闭")
-    private Long status;
+    @Excel(name = "状态 0：启动 1关闭")
+    private String status;
 
     /** 添加时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -126,12 +126,12 @@ public class TContract extends BaseEntity
     {
         return type;
     }
-    public void setStatus(Long status) 
+    public void setStatus(String status)
     {
         this.status = status;
     }
 
-    public Long getStatus() 
+    public String getStatus()
     {
         return status;
     }

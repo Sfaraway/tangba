@@ -159,9 +159,8 @@
       <el-table-column label="状态" align="center" prop="status" width="100">
             <template slot-scope="scope">
               <el-switch
-                v-model="scope.row.status.toString()"
-                active-value="1"
-                inactive-value="0"
+                v-model="scope.row.status"
+                active-value="0" inactive-value="1"
                 @change="handleStatusChange(scope.row)"
               ></el-switch>
 
@@ -269,6 +268,7 @@
 import { listContract, getContract, delContract, addContract, updateContract,changeContractStatus } from "@/api/contractSystem/tcontract";
 import FileUpload from "@/components/FileUpload/index";
 import { listCustomer } from "@/api/contractSystem/customer";
+import {changeStatus} from "@/api/contractSystem/logistics";
 
 
 export default {
@@ -416,7 +416,7 @@ export default {
         name: null,
         enclosure: null,
         type: null,
-        status: "0",
+        status: "1",
         addTime: null,
         updateTime: null,
         addUserId: null,
@@ -464,17 +464,14 @@ export default {
     },
     // 合同状态修改
     handleStatusChange(row) {
-      row.status =row.status.toString();
-      let text = row.status === '0' ? "启用" : "停用";
-      let now = row.status ==='0'?'1':'0';
-      this.$modal.confirm('确认要"' + text + '""' + row.name + '"合同吗？').then(function() {
+      console.log(row.status);
+      let text = row.status === "0" ? "启用" : "停用";
+      let now = row.status;
+      this.$modal.confirm('确认要"' + text + '""' + row.name + '"状态吗？').then(function() {
         return changeContractStatus(row.id, now);
       }).then(() => {
-         row.status=now;
-        this.$modal.msgSuccess(text + "成功");
-
-      }).catch(function() {
-        row.status = row.status === '1' ? '1' : '0';
+        this.$modal.msgSuccess(text + "成功");          }).catch(function() {
+          row.status = row.status === "0" ? "1" : "0";
       });
     },
     /** 提交按钮 */
