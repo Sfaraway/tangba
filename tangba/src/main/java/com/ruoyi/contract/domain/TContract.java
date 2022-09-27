@@ -19,6 +19,17 @@ public class TContract extends BaseEntity
 
     /**  */
     private Long id;
+    /** 0不成功，1成功 */
+    @Excel(name = "0不成功，1成功")
+    private Long seal;
+
+    public Long getSeal() {
+        return seal;
+    }
+
+    public void setSeal(Long seal) {
+        this.seal = seal;
+    }
 
     /** 员工的Id */
     @Excel(name = "员工的Id")
@@ -177,6 +188,7 @@ public class TContract extends BaseEntity
             .append("addUserId", getAddUserId())
             .append("updateUserId", getUpdateUserId())
             .append("contractStatus", getContractStatus())
+                .append("seal", getSeal())
             .toString();
     }
 }

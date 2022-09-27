@@ -196,21 +196,7 @@
     />
 
 
-    <!-- 添加或修改合同对话框 -->
-    <el-dialog :title="文件上传" :visible.sync="dialogVisible" width="500px" :before-close="handleClose" >
-      <el-form ref="form" :model="form"  label-width="80px">
 
-
-         <el-form-item label="附件上传" prop="encourse">
-                   <FileUpload :limit="1" :fileSize="1" @input="imageUploadChange" :fileType="fileType" :value="form.encourse" ></FileUpload>
-                </el-form-item>
-
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
-      </div>
-    </el-dialog>
 
 
 
@@ -228,7 +214,7 @@
 <!--          <el-input v-model="form.customerId" placeholder="请输入客户的Id" />-->
           <el-select v-model="form.customerId" placeholder="请选择客户">
             <el-option v-for="item in customerOptions"
-                       :key="item.value"
+                       :key="item.value "
                        :label="item.label"
                        :value="item.value">
 
@@ -242,21 +228,15 @@
         <el-form-item label="状态 1：启动 0关闭" prop="status">
           <el-input v-model="form.status" placeholder="请输入状态 1：启动 0关闭" ></el-input>
         </el-form-item>
-        <!-- <el-form-item label="添加时间" prop="addTime">
-          <el-date-picker clearable
-            v-model="form.addTime=nowTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            disabled
 
-            placeholder="form.addTime">
-          </el-date-picker>
-        </el-form-item> -->
         <el-form-item label="1:纸质合同 2：电子合同" prop="type">
                  <el-select v-model="form.type" placeholder="请选择">
                         <el-option label="纸质合同" value=1> </el-option>
                         <el-option label="电子合同" value=2></el-option>
                 </el-select>
+        </el-form-item>
+        <el-form-item label="0不成功，1成功" prop="seal">
+          <el-input v-model="form.seal" placeholder="请输入0不成功，1成功" />
         </el-form-item>
 
         <el-form-item label="添加人" prop="addUserId">
@@ -289,7 +269,7 @@
 import { listContract, getContract, delContract, addContract, updateContract,changeContractStatus } from "@/api/contractSystem/tcontract";
 import FileUpload from "@/components/FileUpload/index";
 import { listCustomer } from "@/api/contractSystem/customer";
-import customer from "./customer";
+
 
 export default {
   name: "Contract",
@@ -306,7 +286,7 @@ export default {
       customer:[],
 
       fileType:["doc", "xls", "ppt", "txt", "pdf","png", "jpg", "jpeg"],
-      nowTime: this.getNowTime(),
+      // nowTime: this.getNowTime(),
       // 遮罩层
       loading: true,
       dialogVisible :false,
@@ -339,7 +319,9 @@ export default {
         addTime: null,
         addUserId: null,
         updateUserId: null,
-        contractStatus: null
+        contractStatus: null,
+        seal: null,
+
       },
       // 表单参数
       form: {},
@@ -366,38 +348,31 @@ export default {
   created() {
     this.getList();
     this.getCustomer();
-    alert("3232")
+
+
 
 
 
   },
   methods: {
 
-          // handleUpdate1(row) {
-          //   this.reset();
-          //   const id = row.id || this.ids
-          //   getContract(id).then(response => {
-          //     this.form = response.data;
-          //     this.open = false;
-          //     this.title = "修改合同";
-          //   });
-          // },
 
-     //处理默认选中当前日期
-    	    getNowTime() {
-    	       var now = new Date();
-    	       var year = now.getFullYear(); //得到年份
-    	       var month = now.getMonth(); //得到月份
-    	       var date = now.getDate(); //得到日期
-    	       var hour =" 00:00:00"; //默认时分秒 如果传给后台的格式为年月日时分秒，就需要加这个，如若不需要，此行可忽略
-    	       month = month + 1;
-    	       month = month.toString().padStart(2, "0");
-    	       date = date.toString().padStart(2, "0");
-    	       var defaultDate = `${year}-${month}-${date}`;
-    	       console.log(defaultDate)
-    	       return defaultDate;
-    	       this.$set(this.info, "addTime", defaultDate);
-    	    },
+
+     // //处理默认选中当前日期
+    	//     getNowTime() {
+    	//        var now = new Date();
+    	//        var year = now.getFullYear(); //得到年份
+    	//        var month = now.getMonth(); //得到月份
+    	//        var date = now.getDate(); //得到日期
+    	//        var hour =" 00:00:00"; //默认时分秒 如果传给后台的格式为年月日时分秒，就需要加这个，如若不需要，此行可忽略
+    	//        month = month + 1;
+    	//        month = month.toString().padStart(2, "0");
+    	//        date = date.toString().padStart(2, "0");
+    	//        var defaultDate = `${year}-${month}-${date}`;
+    	//        console.log(defaultDate)
+    	//        return defaultDate;
+    	//        this.$set(this.info, "addTime", defaultDate);
+    	//     },
 
 
 
@@ -416,21 +391,13 @@ export default {
       listCustomer(this.queryParams).then(response => {
         this.customer = response.rows;
         for (const customerElem of this.customer) {
-          console.log(customerElem.cId);
           this.customerOptions.push({
             value: customerElem.cId,
             label: customerElem.cname,
           })
         }})
 
-      // for (const argumentsKey in customElements) {
-      //   console.log("argumentskey:"+argumentsKey);
-      //   console.log("argumentskey:"+argumentsKey["0"].label)
-      //   for (const argumentsKeyKey in argumentsKey) {
-      //     console.log("argumentskeykey:"+argumentsKeyKey);
-      //     console.log("argumentskeykey:"+argumentsKeyKey["0"])
-      //   }
-      // }
+
       // console.log(this.customerOptions["0"].label);
     },
 
@@ -481,14 +448,13 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
-      this.getCustomer();
       this.open = true;
       this.title = "添加合同";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      this.getCustomer();
+
       const id = row.id || this.ids
       getContract(id).then(response => {
         this.form = response.data;
