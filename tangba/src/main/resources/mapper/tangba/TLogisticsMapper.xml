@@ -42,7 +42,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
     <select id="selectTLogisticsById" parameterType="Long" resultMap="TLogisticsResult">
-<include refid="selectTLogisticsVo"/>
+        <include refid="selectTLogisticsVo"/>
+        where id = #{id}
     </select>
 <!--    <sql id="selectLogisticEmp">-->
 <!--        select  t_contract.emp_id, t_contract.customer_id from t_contract,t_logistics where contract_status=2 and type=1 and t_logistics.name = t_contract.name-->

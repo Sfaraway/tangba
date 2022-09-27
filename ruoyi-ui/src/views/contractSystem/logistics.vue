@@ -115,9 +115,17 @@
 <!--        <el-form-item label="客户Id" prop="customerId">-->
 <!--          <el-input v-model="form.customerId" placeholder="请输入客户Id" />-->
 <!--        </el-form-item>-->
-        <el-form-item label="合同名称" prop="name" :data="contractsList" v-if="contractStatus(contractsList)">
+        <el-form-item label="合同名称" prop="name">
 <!--          <el-input v-model="form.name" placeholder="请输入合同名称" />-->
 
+          <el-select v-model="form.name" placeholder="请选择合同名称">
+            <el-option
+              v-for="item in contractOption"
+              :key="item.id"
+              :label="item.name"
+              :value="item.name"
+              ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="物流公司" prop="company">
           <!-- <el-input v-model="form.company" placeholder="请输入物流公司" /> -->
@@ -212,6 +220,9 @@
         //通过的纸质合同数据
         contractsList:[],
 
+        //合同名称选项
+        contractOption:[],
+
         // 弹出层标题
         title: "",
         // 是否显示弹出层
@@ -292,6 +303,7 @@
     },
     created() {
       this.getList();
+      this.getContractList();
     },
     methods: {
       /** 查询物流列表 */
@@ -304,21 +316,26 @@
         });
       },
 
-      //通过的合同
-      contractStatus(e){
-        if (e[5]==1&&e[6]==1&&e[11]==2){
-          return true;
-        }
-      },
+      // //通过的合同
+      // contractStatus(e){
+      //
+      // },
 
       /** 查询物流列表 */
       getContractList() {
         this.loading = true;
         listContract(this.queryParams).then(response => {
           this.contractsList = response.rows;
+          for (const customerElem of this.contractsList) {
+            if (customerElem.type==1&&customerElem.status==1&&customerElem.contractStatus==2){
+              this.contractOption.push(customerElem);
+            }
+          }
           this.total = response.total;
           this.loading = false;
-        });
+        })
+
+
       },
 
       // 取消按钮
@@ -362,7 +379,7 @@
       /** 新增按钮操作 */
       handleAdd() {
         this.reset();
-        this.getContractList();
+        // this.getContractList();
         this.open = true;
         this.title = "添加物流";
       },
@@ -380,7 +397,7 @@
     /** 修改按钮操作 */
       handleUpdate(row) {
         this.reset();
-        this.getContractList();
+        // this.getContractList();
         const id = row.id || this.ids
         getLogistics(id).then(response => {
           this.form = response.data;
