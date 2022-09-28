@@ -21,7 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="sealStatus"    column="seal_status"    />
         <result property="sealId"    column="seal_id"    />
         <result property="accessStu"    column="access_stu"    />
-        <result property="cphone"    column="cphone"    />
+        <result property="phone"    column="phone"    />
         <result property="cname"    column="cname"    />
     </resultMap>
 
@@ -47,7 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="accessStu != null  and accessStu != ''"> and access_stu = #{accessStu}</if>
             <if test="sealId != null "> and seal_id = #{sealId}</if>
             <if test="sealStatus != null  and sealStatus != ''"> and seal_status = #{sealStatus}</if>
-            <if test="cphone != null "> and b.phone = #{phone}</if>
+            <if test="phone != null "> and b.phone = #{phone}</if>
             <if test="cname != null "> and b.cname =  #{cname}, </if>
         </where>
 

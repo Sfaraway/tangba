@@ -47,15 +47,16 @@ public class TContract extends BaseEntity
 
     private String cname;
 
-    public String getCphone() {
-        return cphone;
+
+    private String phone;
+
+    public String getPhone() {
+        return phone;
     }
 
-    public void setCphone(String cphone) {
-        this.cphone = cphone;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
-
-    private String cphone;
 
     /** 客户的Id */
     @Excel(name = "客户的Id")

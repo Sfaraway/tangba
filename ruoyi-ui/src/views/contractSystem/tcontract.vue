@@ -122,7 +122,7 @@
           {{item_}}
         </template>-->
       </el-table-column>
-      <el-table-column label="联系方式" align="center" prop="cphone" />
+      <el-table-column label="联系方式" align="center" prop="phone" />
       <el-table-column label="合同名称" align="center" prop="name" />
       <el-table-column label="合同类型" align="center" prop="type" >
         <template slot-scope="scope">
@@ -276,7 +276,7 @@ export default {
 
       cname:[],
 
-      cphone:[],
+      phone:[],
 
       fileType:["doc", "xls", "ppt", "txt", "pdf","png", "jpg", "jpeg"],
       // nowTime: this.getNowTime(),
@@ -319,7 +319,7 @@ export default {
         sealStatus: null,
         sealId: null,
         accessStu: null,
-        cphone: null,
+        phone: null,
         cname: null,
 
       },
@@ -389,7 +389,7 @@ export default {
       this.loading = true;
       listContract(this.queryParams).then(response => {
         this.contractList = response.rows;
-        console.log(response.rows.cphone);
+        // console.log(response.rows.cphone);
         for (const responseElement of response.rows) {
           console.log(responseElement)
 
