@@ -100,6 +100,11 @@ public class TLogisticsServiceImpl implements ITLogisticsService
         return tLogisticsMapper.insert2(logistics);
     }
 
+    @Override
+    public List<Map<String,Object>> selectCE() {
+        return tLogisticsMapper.selectCE();
+    }
+
     //impl
     /**
      * 修改配送状态
@@ -112,5 +117,7 @@ public class TLogisticsServiceImpl implements ITLogisticsService
     {
         return tLogisticsMapper.updateTLogistics(logistic);
     }
+
+
 
 }

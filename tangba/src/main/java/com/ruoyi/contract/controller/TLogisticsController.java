@@ -50,6 +50,18 @@ public class TLogisticsController extends BaseController
         return getDataTable(list);
     }
 
+    /**
+     * 查询客户和员工信息(客户姓名，员工姓名和客户手机号)
+     */
+    @PreAuthorize("@ss.hasPermi('logistic:logistics:list')")
+    @GetMapping("/selectCE")
+    public List<Map<String,Object>> selectCE()
+    {
+        List<Map<String,Object>> CE = tLogisticsService.selectCE();
+        System.out.println("MAP___________-----"+CE);
+        return CE;
+    }
+
     @GetMapping("/userId")
     public Long getUserId(){
 //        System.out.println("################"+SecurityUtils.getUserId());

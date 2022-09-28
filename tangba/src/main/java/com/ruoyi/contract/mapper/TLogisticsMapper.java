@@ -64,4 +64,7 @@ public interface TLogisticsMapper
     public int deleteTLogisticsByIds(Long[] ids);
 
     Map<String, Object> insert2(TLogistics logistics);
+
+    List<Map<String,Object>> selectCE();
+
 }

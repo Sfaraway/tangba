@@ -51,10 +51,11 @@ export function delLogistics(id) {
   })
 }
 // 配送状态修改
-export function changeStatus(id, status) {
+export function changeStatus(id, status,updateUserId) {
   const data = {
     id,
-    status
+    status,
+    updateUserId,
   }
   return request({
     url: '/logistic/logistics/changeStatus',
@@ -70,4 +71,13 @@ export function getUserId() {
 
   })
 }
+
+export function getCE() {
+  return request({
+    url: '/logistic/logistics/selectCE' ,
+    method: 'get',
+
+  })
+}
+
 

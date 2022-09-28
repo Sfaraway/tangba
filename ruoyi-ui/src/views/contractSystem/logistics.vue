@@ -1,17 +1,17 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="id" prop="id">
-        <el-input v-model="queryParams.id" placeholder="请输入id" clearable @keyup.enter.native="handleQuery" />
+      <el-form-item label="ID" prop="id">
+        <el-input v-model="queryParams.id" placeholder="请输入ID" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item label="快递单号" prop="orderNumber">
         <el-input v-model="queryParams.orderNumber" placeholder="请输入快递单号" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="员工Id" prop="empId">
-        <el-input v-model="queryParams.empId" placeholder="请输入员工Id" clearable @keyup.enter.native="handleQuery" />
+      <el-form-item label="员工ID" prop="empId">
+        <el-input v-model="queryParams.empId" placeholder="请输入员工ID" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="客户Id" prop="customerId">
-        <el-input v-model="queryParams.customerId" placeholder="请输入客户Id" clearable @keyup.enter.native="handleQuery" />
+      <el-form-item label="客户ID" prop="customerId">
+        <el-input v-model="queryParams.customerId" placeholder="请输入客户ID" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item label="合同名称" prop="name">
         <el-input v-model="queryParams.name" placeholder="请输入合同名称" clearable @keyup.enter.native="handleQuery" />
@@ -67,8 +67,11 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="id" align="center" prop="id" />
       <el-table-column label="快递单号" align="center" prop="orderNumber" />
-      <el-table-column label="员工Id" align="center" prop="empId" />
-      <el-table-column label="客户Id" align="center" prop="customerId" />
+      <el-table-column label="员工ID" align="center" prop="empId" />
+      <el-table-column label="员工姓名" align="center" prop="ename" />
+      <el-table-column label="客户ID" align="center" prop="customerId" />
+      <el-table-column label="客户姓名" align="center" prop="cname" />
+      <el-table-column label="客户电话" align="center" prop="phone"/>
       <el-table-column label="合同名称" align="center" prop="name" />
       <el-table-column label="物流公司" align="center" prop="company" />
       <el-table-column label="配送状态" align="center" prop="status">
@@ -88,8 +91,8 @@
           <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="添加人id" align="center" prop="addUserId" />
-      <el-table-column label="修改人id" align="center" prop="updateUserId" />
+      <el-table-column label="添加人ID" align="center" prop="addUserId" />
+      <el-table-column label="修改人ID" align="center" prop="updateUserId" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
@@ -105,17 +108,12 @@
 
     <!-- 添加或修改物流对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="快递单号" prop="orderNumber">
+      <el-form ref="form" :model="form" :rules="rules" label-width="180px">
+        <el-form-item label="快递单号" prop="orderNumber" >
           <el-input v-model="form.orderNumber" placeholder="请输入快递单号" />
         </el-form-item>
-<!--        <el-form-item label="员工Id" prop="empId">-->
-<!--          <el-input v-model="form.empId" placeholder="请输入员工Id" />-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="客户Id" prop="customerId">-->
-<!--          <el-input v-model="form.customerId" placeholder="请输入客户Id" />-->
-<!--        </el-form-item>-->
-        <el-form-item label="合同名称" prop="name">
+
+        <el-form-item label="合同名称" prop="name" label-width="180px">
 <!--          <el-input v-model="form.name" placeholder="请输入合同名称" />-->
 
           <el-select v-model="form.name" placeholder="请选择合同名称">
@@ -175,13 +173,15 @@
     getLogistics,
     delLogistics,
     addLogistics,
+    getCE,
     getUserId,
     updateLogistics,
     changeStatus,
     insertEmpCusId,
   } from "@/api/contractSystem/logistics";
-  import {listContract} from "@/api/contractSystem/tcontract";
+  import {listTcontract} from "@/api/contractSystem/tcontract/tcontract";
   import { listUser } from "@/api/system/user";
+  import {parseStrEmpty} from "@/utils/ruoyi";
 
   export default {
     name: "Logistics",
@@ -200,6 +200,8 @@
           label: '京东'
         }],
 
+        //客户和员工姓名，客户电话
+        CE:[],
 
         // 遮罩层
         loading: true,
@@ -292,30 +294,28 @@
             message: "修改时间不能为空",
             trigger: "blur"
           }],
-          addUserId: [{
-            required: true,
-            message: "添加人id不能为空",
-            trigger: "blur"
-          }],
-          updateUserId: [{
-            required: true,
-            message: "修改人id不能为空",
-            trigger: "blur"
-          }]
+
         }
       };
     },
     created() {
       this.getList();
       this.getContractList();
+      // this.getCEP();
       this.getUserInfo();
     },
     methods: {
       /** 查询物流列表 */
       getList() {
         this.loading = true;
+        this.getCEP();
         listLogistics(this.queryParams).then(response => {
           this.logisticsList = response.rows;
+          for (let i = 0; i < this.logisticsList.length; i++) {
+            this.logisticsList[i].ename = this.CE[i].ename;
+            this.logisticsList[i].phone = this.CE[i].phone;
+            this.logisticsList[i].cname = this.CE[i].cname;
+          }
           this.total = response.total;
           this.loading = false;
         });
@@ -340,10 +340,20 @@
         });
       },
 
+      /** 查询客户和员工列表 */
+      getCEP() {
+        this.loading = true;
+        getCE().then(response => {
+          this.CE = response;
+          this.loading = false;
+        });
+      },
+
+
       /** 查询合同列表 */
       getContractList() {
         this.loading = true;
-        listContract(this.queryParams).then(response => {
+        listTcontract(this.queryParams).then(response => {
           this.contractsList = response.rows;
           for (const customerElem of this.contractsList) {
             if (customerElem.type==1&&customerElem.status==="0"&&customerElem.contractStatus==2){
@@ -406,10 +416,11 @@
       changeStatus(row) {
          let text = row.status === "0" ? "启用" : "停用";
          let now = row.status;
-        this.$modal.confirm('确认要"' + text + '""' + row.name + '"状态吗？').then(function() {
-
-           return changeStatus(row.id, now);
+         let updateUserId = this.userId;
+         this.$modal.confirm('确认要"' + text + '""' + row.name + '"状态吗？').then(function() {
+           return changeStatus(row.id, now,updateUserId);
          }).then(() => {
+           this.getList();
            this.$modal.msgSuccess(text + "成功");          }).catch(function() {
            row.status = row.status === "0" ? "1" : "0";
          });

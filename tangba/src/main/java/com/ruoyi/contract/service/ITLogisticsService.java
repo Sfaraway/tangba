@@ -72,4 +72,6 @@ public interface ITLogisticsService
 
     public Map<String,Object> insert2(TLogistics logistics);
 
+    public List<Map<String,Object>> selectCE();
+
 }

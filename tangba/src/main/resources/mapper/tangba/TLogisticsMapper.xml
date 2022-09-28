@@ -54,9 +54,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select emp_id, customer_id from t_contract where t_contract.name = #{name} and contract_status=2 and type=1 and t_contract.status='0'
     </select>
 
-<!--    <select id="selectContract" resultType="map" parameterType="TLogistics">-->
-<!--        select name from t_contract where contract_status=2 and type=1 and t_contract.status=1-->
-<!--    </select>-->
+
+
+    <select id="selectCE" resultType="map">
+        select t_customer.cname,t_emp.ename,t_customer.phone
+        from  t_logistics  left join t_customer on customer_id=c_id
+                           left join t_emp  on emp_id = e_id
+    </select>
 
     <insert id="insertTLogistics" parameterType="TLogistics" useGeneratedKeys="true" keyProperty="id">
  		insert into t_logistics(
