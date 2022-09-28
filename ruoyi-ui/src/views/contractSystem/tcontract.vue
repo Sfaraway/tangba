@@ -11,7 +11,7 @@
       </el-form-item>
       <el-form-item label="客户号" prop="customerId">
         <el-input
-          v-model="queryParams.customerId"
+          v-model="queryParams.cname"
           placeholder="请输入客户的Id"
           clearable
           @keyup.enter.native="handleQuery"
@@ -117,7 +117,7 @@
       </el-table-column>
 <!--      v-bind="customerOptions"-->
 <!--      prop="label"-->
-      <el-table-column label="客户名" align="center" prop="label"  >
+      <el-table-column label="客户名" align="center" prop="cname"  >
 <!--        <template  v-for="item_ in customerOptions">
           {{item_}}
         </template>-->
@@ -330,7 +330,8 @@ export default {
         sealStatus: null,
         sealId: null,
         accessStu: null,
-        cphone: null
+        cphone: null,
+        cname: null,
 
       },
       // 表单参数

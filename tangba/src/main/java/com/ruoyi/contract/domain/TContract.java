@@ -23,6 +23,8 @@ public class TContract extends BaseEntity
     @Excel(name = "0不成功，1成功")
     private String seal;
 
+
+
     public String getSeal() {
         return seal;
     }
@@ -34,6 +36,16 @@ public class TContract extends BaseEntity
     /** 员工的Id */
     @Excel(name = "员工的Id")
     private Long empId;
+
+    public String getCname() {
+        return cname;
+    }
+
+    public void setCname(String cname) {
+        this.cname = cname;
+    }
+
+    private String cname;
 
     /** 客户的Id */
     @Excel(name = "客户的Id")
@@ -240,6 +252,7 @@ public class TContract extends BaseEntity
                 .append("sealId", getSealId())
                 .append("accessStu", getAccessStu())
                 .append("cphone", getCphone())
+                .append("canme",getCname())
             .toString();
     }
 }
