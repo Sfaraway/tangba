@@ -3,7 +3,8 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.contract.mapper.TContractMapper">
-    
+
+
     <resultMap type="TContract" id="TContractResult">
         <result property="id"    column="id"    />
         <result property="empId"    column="emp_id"    />
@@ -17,10 +18,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="addUserId"    column="add_user_id"    />
         <result property="updateUserId"    column="update_user_id"    />
         <result property="contractStatus"    column="contract_status"    />
-        <result property="accessStu"    column="access_stu"    />
-        <result property="sealId"    column="seal_id"    />
         <result property="sealStatus"    column="seal_status"    />
+        <result property="sealId"    column="seal_id"    />
+        <result property="accessStu"    column="access_stu"    />
+        <result property="phone"    column="phone"    />
+        <result property="cname"    column="cname"/>
+        <result property="ename"    column="ename"/>
     </resultMap>
+
+
 
     <sql id="selectTContractVo">
         select id, emp_id, customer_id, name, enclosure, type, status, add_time, update_time, add_user_id, update_user_id, contract_status, access_stu, seal_id, seal_status from t_contract
@@ -28,7 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectTContractList" parameterType="TContract" resultMap="TContractResult">
         <include refid="selectTContractVo"/>
-        <where>  
+        <where>
             <if test="empId != null "> and emp_id = #{empId}</if>
             <if test="customerId != null "> and customer_id = #{customerId}</if>
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
@@ -45,12 +51,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="sealStatus != null  and sealStatus != ''"> and seal_status = #{sealStatus}</if>
         </where>
     </select>
-    
+
     <select id="selectTContractById" parameterType="Long" resultMap="TContractResult">
         <include refid="selectTContractVo"/>
         where id = #{id}
     </select>
-        
+
     <insert id="insertTContract" parameterType="TContract" useGeneratedKeys="true" keyProperty="id">
         insert into t_contract
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -60,14 +66,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="enclosure != null">enclosure,</if>
             <if test="type != null">type,</if>
             <if test="status != null">status,</if>
-            <if test="addTime != null">add_time,</if>
             <if test="updateTime != null">update_time,</if>
             <if test="addUserId != null">add_user_id,</if>
             <if test="updateUserId != null">update_user_id,</if>
             <if test="contractStatus != null">contract_status,</if>
-            <if test="accessStu != null">access_stu,</if>
-            <if test="sealId != null">seal_id,</if>
             <if test="sealStatus != null">seal_status,</if>
+            <if test="sealId != null">seal_id,</if>
+            <if test="accessStu != null">access_stu,</if>
+
+            add_time
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="empId != null">#{empId},</if>
@@ -76,20 +83,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="enclosure != null">#{enclosure},</if>
             <if test="type != null">#{type},</if>
             <if test="status != null">#{status},</if>
-            <if test="addTime != null">#{addTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
             <if test="addUserId != null">#{addUserId},</if>
             <if test="updateUserId != null">#{updateUserId},</if>
             <if test="contractStatus != null">#{contractStatus},</if>
-            <if test="accessStu != null">#{accessStu},</if>
-            <if test="sealId != null">#{sealId},</if>
             <if test="sealStatus != null">#{sealStatus},</if>
+            <if test="sealId != null">#{sealId},</if>
+            <if test="accessStu != null">#{accessStu},</if>
+
+        	sysdate()
          </trim>
     </insert>
 
     <update id="updateTContract" parameterType="TContract">
         update t_contract
         <trim prefix="SET" suffixOverrides=",">
+
             <if test="empId != null">emp_id = #{empId},</if>
             <if test="customerId != null">customer_id = #{customerId},</if>
             <if test="name != null">name = #{name},</if>
@@ -101,12 +110,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="addUserId != null">add_user_id = #{addUserId},</if>
             <if test="updateUserId != null">update_user_id = #{updateUserId},</if>
             <if test="contractStatus != null">contract_status = #{contractStatus},</if>
-            <if test="accessStu != null">access_stu = #{accessStu},</if>
-            <if test="sealId != null">seal_id = #{sealId},</if>
             <if test="sealStatus != null">seal_status = #{sealStatus},</if>
+            <if test="sealId != null">seal_id = #{sealId},</if>
+            <if test="accessStu != null">access_stu = #{accessStu},</if>
+
         </trim>
         where id = #{id}
     </update>
+
 
     <delete id="deleteTContractById" parameterType="Long">
         delete from t_contract where id = #{id}

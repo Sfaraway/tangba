@@ -11,36 +11,80 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 合同对象 t_contract
  * 
  * @author ruoyi
- * @date 2022-09-28
+ * @date 2022-09-23
  */
 public class TContract extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 合同ID */
+    /**  */
     private Long id;
+    private String ename;
 
-    /** 员工ID */
-    @Excel(name = "员工ID")
+    public String getEname() {
+        return ename;
+    }
+
+    public void setEname(String ename) {
+        this.ename = ename;
+    }
+
+    /** 0不成功，1成功 */
+    @Excel(name = "0不成功，1成功")
+    private String seal;
+
+
+
+    public String getSeal() {
+        return seal;
+    }
+
+    public void setSeal(String seal) {
+        this.seal = seal;
+    }
+
+    /** 员工的Id */
+    @Excel(name = "员工的Id")
     private Long empId;
 
-    /** 客户ID */
-    @Excel(name = "客户ID")
+    public String getCname() {
+        return cname;
+    }
+
+    public void setCname(String cname) {
+        this.cname = cname;
+    }
+
+    private String cname;
+
+
+    private String phone;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    /** 客户的Id */
+    @Excel(name = "客户的Id")
     private Long customerId;
 
     /** 合同名称 */
     @Excel(name = "合同名称")
     private String name;
 
-    /** 附件 */
-    @Excel(name = "附件")
+    /** add_time	datetime	0	0	0	0	0	0	0		0	添加时间				0	0 */
+    @Excel(name = "add_time	datetime	0	0	0	0	0	0	0		0	添加时间				0	0")
     private String enclosure;
 
     /** 1:纸质合同 2：电子合同 */
     @Excel(name = "1:纸质合同 2：电子合同")
     private Long type;
 
-    /** 状态 0：启动 1关闭 */
+    /** 状态 1：启动 0关闭 */
     @Excel(name = "状态 0：启动 1关闭")
     private String status;
 
@@ -61,17 +105,45 @@ public class TContract extends BaseEntity
     @Excel(name = "合同状态 1：未审核 2：审核中 3：该掌中 4：配送中 5已完成")
     private Long contractStatus;
 
-    /** 0通过，1不通过 */
-    @Excel(name = "0通过，1不通过")
-    private String accessStu;
+    /** $column.columnComment */
+    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    private String sealStatus;
 
-    /** 印章ID */
-    @Excel(name = "印章ID")
+    public String getSealStatus() {
+        return sealStatus;
+    }
+
+    public void setSealStatus(String sealStatus) {
+        this.sealStatus = sealStatus;
+    }
+
+    public Long getSealId() {
+        return sealId;
+    }
+
+    public void setSealId(Long sealId) {
+        this.sealId = sealId;
+    }
+
+    public String getAccessStu() {
+        return accessStu;
+    }
+
+    public void setAccessStu(String accessStu) {
+        this.accessStu = accessStu;
+    }
+
+
+
+    /** 0成功，bu1成功 */
+    @Excel(name = "0成功，bu1成功")
     private Long sealId;
 
-    /** 盖章否 */
-    @Excel(name = "盖章否")
-    private String sealStatus;
+    /** $column.columnComment */
+    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    private String accessStu;
+
+
 
     public void setId(Long id) 
     {
@@ -127,12 +199,12 @@ public class TContract extends BaseEntity
     {
         return type;
     }
-    public void setStatus(String status) 
+    public void setStatus(String status)
     {
         this.status = status;
     }
 
-    public String getStatus() 
+    public String getStatus()
     {
         return status;
     }
@@ -140,6 +212,7 @@ public class TContract extends BaseEntity
     {
         this.addTime = addTime;
     }
+
 
     public Date getAddTime() 
     {
@@ -172,33 +245,6 @@ public class TContract extends BaseEntity
     {
         return contractStatus;
     }
-    public void setAccessStu(String accessStu) 
-    {
-        this.accessStu = accessStu;
-    }
-
-    public String getAccessStu() 
-    {
-        return accessStu;
-    }
-    public void setSealId(Long sealId) 
-    {
-        this.sealId = sealId;
-    }
-
-    public Long getSealId() 
-    {
-        return sealId;
-    }
-    public void setSealStatus(String sealStatus) 
-    {
-        this.sealStatus = sealStatus;
-    }
-
-    public String getSealStatus() 
-    {
-        return sealStatus;
-    }
 
     @Override
     public String toString() {
@@ -215,9 +261,11 @@ public class TContract extends BaseEntity
             .append("addUserId", getAddUserId())
             .append("updateUserId", getUpdateUserId())
             .append("contractStatus", getContractStatus())
-            .append("accessStu", getAccessStu())
-            .append("sealId", getSealId())
-            .append("sealStatus", getSealStatus())
+                .append("sealStatus", getSealStatus())
+                .append("sealId", getSealId())
+                .append("accessStu", getAccessStu())
+
+                .append("canme",getCname())
             .toString();
     }
 }

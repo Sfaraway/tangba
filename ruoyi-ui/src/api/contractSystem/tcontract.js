@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询合同列表
 export function listContract(query) {
   return request({
-    url: '/tcon/contract/list',
+    url: '/contractSystem/tcontract/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listContract(query) {
 // 查询合同详细
 export function getContract(id) {
   return request({
-    url: '/tcon/contract/' + id,
+    url: '/contractSystem/tcontract/' + id,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getContract(id) {
 // 新增合同
 export function addContract(data) {
   return request({
-    url: '/tcon/contract',
+    url: '/contractSystem/tcontract/',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addContract(data) {
 // 修改合同
 export function updateContract(data) {
   return request({
-    url: '/tcon/contract',
+    url: '/contractSystem/tcontract',
     method: 'put',
     data: data
   })
@@ -38,32 +38,33 @@ export function updateContract(data) {
 // 删除合同
 export function delContract(id) {
   return request({
-    url: '/tcon/contract/' + id,
+    url: '/contractSystem/tcontract/' + id,
     method: 'delete'
   })
 }
 
-export function changeContractStatus(id, status) {
+export function changeContractStatus(id, status, contractStatus) {
   const data = {
     id,
-    status
+    status,
+    contractStatus
   }
   return request({
-    url: '/tcon/contract/changeStatus',
+    url: '/contractSystem/tcontract/changeStatus',
     method: 'put',
     data: data
   })
 }
 
-export function changeContractStatusTwo(id, sealStatus ,contractStatus) {
+export function changeContractStatusTwo(id, accessStu ,contractStatus) {
   const data = {
     id,
-    sealStatus,
+    accessStu,
     contractStatus
 
   }
   return request({
-    url: '/tcon/contract/changeStatusTwo',
+    url: '/contractSystem/tcontract/changeAccessStatus',
     method: 'put',
     data: data
   })

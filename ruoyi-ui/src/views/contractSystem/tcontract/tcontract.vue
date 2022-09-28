@@ -1,83 +1,83 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="员工ID" prop="empId">
-        <el-input
-          v-model="queryParams.empId"
-          placeholder="请输入员工ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="客户ID" prop="customerId">
-        <el-input
-          v-model="queryParams.customerId"
-          placeholder="请输入客户ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="合同名称" prop="name">
-        <el-input
-          v-model="queryParams.name"
-          placeholder="请输入合同名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="添加时间" prop="addTime">
-        <el-date-picker clearable
-                        v-model="queryParams.addTime"
-                        type="date"
-                        value-format="yyyy-MM-dd"
-                        placeholder="请选择添加时间">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="修改时间" prop="updateTime">
-        <el-date-picker clearable
-                        v-model="queryParams.updateTime"
-                        type="date"
-                        value-format="yyyy-MM-dd"
-                        placeholder="请选择修改时间">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="添加人" prop="addUserId">
-        <el-input
-          v-model="queryParams.addUserId"
-          placeholder="请输入添加人"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="修改人" prop="updateUserId">
-        <el-input
-          v-model="queryParams.updateUserId"
-          placeholder="请输入修改人"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="0通过，1不通过" prop="accessStu">
-        <el-input
-          v-model="queryParams.accessStu"
-          placeholder="请输入0通过，1不通过"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="印章ID" prop="sealId">
-        <el-input
-          v-model="queryParams.sealId"
-          placeholder="请输入印章ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+<!--    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">-->
+<!--      <el-form-item label="员工ID" prop="empId">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.empId"-->
+<!--          placeholder="请输入员工ID"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="客户ID" prop="customerId">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.customerId"-->
+<!--          placeholder="请输入客户ID"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="合同名称" prop="name">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.name"-->
+<!--          placeholder="请输入合同名称"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="添加时间" prop="addTime">-->
+<!--        <el-date-picker clearable-->
+<!--                        v-model="queryParams.addTime"-->
+<!--                        type="date"-->
+<!--                        value-format="yyyy-MM-dd"-->
+<!--                        placeholder="请选择添加时间">-->
+<!--        </el-date-picker>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="修改时间" prop="updateTime">-->
+<!--        <el-date-picker clearable-->
+<!--                        v-model="queryParams.updateTime"-->
+<!--                        type="date"-->
+<!--                        value-format="yyyy-MM-dd"-->
+<!--                        placeholder="请选择修改时间">-->
+<!--        </el-date-picker>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="添加人" prop="addUserId">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.addUserId"-->
+<!--          placeholder="请输入添加人"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="修改人" prop="updateUserId">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.updateUserId"-->
+<!--          placeholder="请输入修改人"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="0通过，1不通过" prop="accessStu">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.accessStu"-->
+<!--          placeholder="请输入0通过，1不通过"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="印章ID" prop="sealId">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.sealId"-->
+<!--          placeholder="请输入印章ID"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item>-->
+<!--        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>-->
+<!--        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>-->
+<!--      </el-form-item>-->
+<!--    </el-form>-->
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
@@ -129,33 +129,50 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="合同ID" align="center" prop="id" />
       <!--      员工ID-->
-      <el-table-column label="员工ID" align="center" prop="empId" />
+      <el-table-column label="员工姓名" align="center" prop="ename" />
+      <el-table-column label="联系方式" align="center" prop="phone"/>
       <!--     客户ID -->
-      <el-table-column label="客户ID" align="center" prop="customerId" />
+      <el-table-column label="客户姓名" align="center" prop="cname" />
       <el-table-column label="合同名称" align="center" prop="name" />
       <el-table-column label="附件" align="center" prop="enclosure" />
       <!--      1:纸质合同 2：电子合同-->
-      <el-table-column label="合同类型" align="center" prop="type" />
+      <el-table-column label="合同类型" align="center" prop="type" >
+        <template slot-scope="scope">
+          <el-tag   v-if="scope.row.type==1">纸质合同</el-tag>
+          <el-tag   v-if="scope.row.type==2">电子合同</el-tag>
+        </template>
+      </el-table-column>
       <!--      0：启动 1关闭-->
-      <el-table-column label="状态" align="center" prop="status" />
-      <el-table-column label="添加时间" align="center" prop="addTime" width="180">
+      <el-table-column label="状态" align="center" prop="status" width="100">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.addTime, '{y}-{m}-{d}') }}</span>
+          <el-switch
+            v-model="scope.row.status"
+            active-value="0" inactive-value="1"
+            @change="handleStatusChange(scope.row)"
+          ></el-switch>
+
         </template>
       </el-table-column>
-      <el-table-column label="修改时间" align="center" prop="updateTime" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="添加人" align="center" prop="addUserId" />
-      <el-table-column label="修改人" align="center" prop="updateUserId" />
+<!--      <el-table-column label="添加时间" align="center" prop="addTime" width="180">-->
+<!--        <template slot-scope="scope">-->
+<!--          <span>{{ parseTime(scope.row.addTime, '{y}-{m}-{d}') }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="修改时间" align="center" prop="updateTime" width="180">-->
+<!--        <template slot-scope="scope">-->
+<!--          <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="添加人" align="center" prop="addUserId" />-->
+<!--      <el-table-column label="修改人" align="center" prop="updateUserId" />-->
       <!--       1：未审核 2：审核中 3：该掌中 4：配送中 5已完成-->
-      <el-table-column label="合同状态" align="center" prop="contractStatus" />
+      <el-table-column label="合同进度 " align="center" prop="contractStatus" >
+
+      </el-table-column>
       <!--      0通过，1不通过-->
-      <el-table-column label="" align="center" prop="accessStu" />
-      <el-table-column label="印章ID" align="center" prop="sealId" />
-      <el-table-column label="盖章否" align="center" prop="sealStatus" />
+<!--      <el-table-column label="" align="center" prop="accessStu" />-->
+<!--      <el-table-column label="印章ID" align="center" prop="sealId" />-->
+<!--      <el-table-column label="盖章否" align="center" prop="sealStatus" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -187,11 +204,20 @@
     <!-- 添加或修改合同对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="员工ID" prop="empId">
-          <el-input v-model="form.empId" placeholder="请输入员工ID" />
+        <el-form-item label="客户的Id" prop="customerId">
+          <!--          <el-input v-model="form.customerId" placeholder="请输入客户的Id" />-->
+          <el-select v-model="form.customerId" placeholder="请选择客户">
+            <el-option v-for="item in customerOptions"
+                       :key="item.value "
+                       :label="item.label"
+                       :value="item.value">
+
+            </el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="客户ID" prop="customerId">
-          <el-input v-model="form.customerId" placeholder="请输入客户ID" />
+
+        <el-form-item label="员工名" prop="empId">
+          <el-input v-model="form.empId" placeholder="请输入员工ID" />
         </el-form-item>
         <el-form-item label="合同名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入合同名称" />
@@ -199,26 +225,22 @@
         <el-form-item label="附件">
           <file-upload v-model="form.enclosure"/>
         </el-form-item>
-        <el-form-item label="添加时间" prop="addTime">
-          <el-date-picker clearable
-                          v-model="form.addTime"
-                          type="date"
-                          value-format="yyyy-MM-dd"
-                          placeholder="请选择添加时间">
-          </el-date-picker>
-        </el-form-item>
+<!--        <el-form-item label="添加时间" prop="addTime">-->
+<!--          <el-date-picker clearable-->
+<!--                          v-model="form.addTime"-->
+<!--                          type="date"-->
+<!--                          value-format="yyyy-MM-dd"-->
+<!--                          placeholder="请选择添加时间">-->
+<!--          </el-date-picker>-->
+<!--        </el-form-item>-->
         <el-form-item label="添加人" prop="addUserId">
-          <el-input v-model="form.addUserId" placeholder="请输入添加人" />
+          <el-input v-model="wtf" placeholder="请输入添加人" readonly="true"/>
         </el-form-item>
         <el-form-item label="修改人" prop="updateUserId">
-          <el-input v-model="form.updateUserId" placeholder="请输入修改人" />
+          <el-input v-model="wtf" placeholder="请输入修改人" readonly="true" />
         </el-form-item>
-        <el-form-item label="0通过，1不通过" prop="accessStu">
-          <el-input v-model="form.accessStu" placeholder="请输入0通过，1不通过" />
-        </el-form-item>
-        <el-form-item label="印章ID" prop="sealId">
-          <el-input v-model="form.sealId" placeholder="请输入印章ID" />
-        </el-form-item>
+
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -230,11 +252,35 @@
 
 <script>
 import { listTcontract, getTcontract, delTcontract, addTcontract, updateTcontract } from "@/api/contractSystem/tcontract/tcontract";
-
+import {changeContractStatus} from "@/api/contractSystem/tcontract";
+import { listCustomer } from "@/api/contractSystem/customer";
+import {getListMap} from "@/api/contractSystem/eleseal/contract"
+import {getUserId} from "@/api/contractSystem/common"
 export default {
   name: "Tcontract",
   data() {
     return {
+      wtf:null,
+      customerOptions:[],
+      //客户信息
+      customer:[],
+      // 合同类型
+      contractType: {
+        paper: 1,
+        electronic: 2,
+      },
+      // 合同进度
+      contractStatus : {
+        unfinished: 0,
+        noApproval: 1,
+        checking:   2,
+        sealing:    3,
+        finished:   4,
+        checked:    5,
+
+
+
+      },
       // 遮罩层
       loading: true,
       // 选中数组
@@ -257,6 +303,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        id: null,
         empId: null,
         customerId: null,
         name: null,
@@ -276,31 +323,107 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        addTime: [
-          { required: true, message: "添加时间不能为空", trigger: "blur" }
-        ],
-        addUserId: [
-          { required: true, message: "添加人不能为空", trigger: "blur" }
-        ],
-        updateUserId: [
-          { required: true, message: "修改人不能为空", trigger: "blur" }
-        ],
+        // addTime: [
+        //   { required: true, message: "添加时间不能为空", trigger: "blur" }
+        // ],
+        // addUserId: [
+        //   { required: true, message: "添加人不能为空", trigger: "blur" }
+        // ],
+        // updateUserId: [
+        //   { required: true, message: "修改人不能为空", trigger: "blur" }
+        // ],
       }
     };
   },
   created() {
-    this.getList();
+
+
+    this.getCustomer();
+    // this.getList();
+    this.getEleMapL();
+    this.getWTfid()
+
+
   },
   methods: {
+
+    getWTfid(){
+      this.loading = true;
+      getUserId().then(response => {
+        this.wtf = response;
+
+
+        this.loading = false;
+
+      })
+    },
+    getEleMapL(){
+
+      this.loading = true;
+      getListMap(this.queryParams).then(response => {
+        this.tcontractList = response.rows;
+        for (const responseElement of this.tcontractList) {
+          console.log(responseElement)
+        }
+        this.total = response.total;
+        this.loading = false;
+      }).then(()=>{
+        for (let i = 0; i < this.customerOptions.length; i++) {
+          this.tcontractList[i].label = this.customerOptions[i].label;
+          // console.log("dfkasfj："+this.tcontractList[0])
+
+
+        }
+      });
+    },
+    handleStatusChange(row) {
+      console.log(row.status);
+      let text = row.status === "0" ? "启用" : "停用";
+      let now = row.status;
+
+      this.$modal.confirm('确认要"' + text + '""' + row.name + '"状态吗？').then(function() {
+
+        return changeContractStatus(row.id, now,row.contractStatus);
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess(text + "成功");          }).catch(function() {
+        row.status = row.status === "0" ? "1" : "0";
+      });
+    },
+
+
+    getCustomer() {
+      this.loading = true;
+      listCustomer(this.queryParams).then(response => {
+        this.customer = response.rows;
+        for (const customerElem of this.customer) {
+          this.customerOptions.push({
+            value: customerElem.cId,
+            label: customerElem.cname,
+          })
+        }}).then(()=>{
+        console.log(this.customerOptions[0].label)
+      })},
     /** 查询合同列表 */
     getList() {
       this.loading = true;
       listTcontract(this.queryParams).then(response => {
         this.tcontractList = response.rows;
+        for (const responseElement of this.tcontractList) {
+          console.log(responseElement)
+        }
         this.total = response.total;
         this.loading = false;
+      }).then(()=>{
+        for (let i = 0; i < this.customerOptions.length; i++) {
+          this.tcontractList[i].label = this.customerOptions[i].label;
+          // console.log("dfkasfj："+this.tcontractList[0])
+
+
+        }
       });
     },
+
     // 取消按钮
     cancel() {
       this.open = false;

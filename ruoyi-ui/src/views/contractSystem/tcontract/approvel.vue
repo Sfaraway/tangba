@@ -65,14 +65,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="印章ID" prop="sealId">
-        <el-input
-          v-model="queryParams.sealId"
-          placeholder="请输入印章ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -129,49 +122,46 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="合同ID" align="center" prop="id" />
 <!--      员工ID-->
-      <el-table-column label="员工ID" align="center" prop="empId" />
+      <el-table-column label="员工名" align="center" prop="ename" />
 <!--     客户ID -->
-      <el-table-column label="客户ID" align="center" prop="customerId" />
+      <el-table-column label="客户名" align="center" prop="cname" />
+      <el-table-column label="电话号码" align="center" prop="phone" />
       <el-table-column label="合同名称" align="center" prop="name" />
       <el-table-column label="附件" align="center" prop="enclosure" />
 <!--      1:纸质合同 2：电子合同-->
-      <el-table-column label="合同类型" align="center" prop="type" />
+      <el-table-column label="合同类型" align="center" prop="type" >
+        <template slot-scope="scope">
+          <el-tag type="success"  v-if="scope.row.type==1">纸质合同</el-tag>
+          <el-tag type="success"   v-if="scope.row.type==2">电子合同</el-tag>
+
+        </template>
+      </el-table-column>
 <!--      0：启动 1关闭-->
-      <el-table-column label="状态" align="center" prop="status" />
-      <el-table-column label="添加时间" align="center" prop="addTime" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.addTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="修改时间" align="center" prop="updateTime" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
+      <
+
       <el-table-column label="添加人" align="center" prop="addUserId" />
       <el-table-column label="修改人" align="center" prop="updateUserId" />
 <!--       1：未审核 2：审核中 3：该掌中 4：配送中 5已完成-->
-      <el-table-column label="合同状态" align="center" prop="contractStatus" />
-<!--      0通过，1不通过-->
-      <el-table-column label="" align="center" prop="accessStu" />
-      <el-table-column label="印章ID" align="center" prop="sealId" />
-      <el-table-column label="盖章否" align="center" prop="sealStatus" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="合同进度" align="center" prop="contractStatus" >
+
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['contractSystem:tcontract:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['contractSystem:tcontract:remove']"
-          >删除</el-button>
+          <el-tag type="danger" v-if="scope.row.contractStatus==0">未启用</el-tag>
+          <el-tag type="warning"  effect="dark" v-if="scope.row.contractStatus==1">审批中</el-tag>
+          <el-tag type="info"    v-if="scope.row.contractStatus==2">盖章中</el-tag>
+          <el-tag   effect="dark"  v-if="scope.row.contractStatus==4">配送中</el-tag>
+          <el-tag   type="success" effect="dark"  v-if="scope.row.contractStatus==3">已完成</el-tag>
+        </template>
+      </el-table-column>
+<!--      0通过，1不通过-->
+
+      <el-table-column label="是否通过" align="center" prop="accessStu" >
+        <template slot-scope="scope">
+          <el-switch
+            v-model="scope.row.accessStu"
+            active-value="0" inactive-value="1"
+            @change="handleAccessChange(scope.row)"
+          ></el-switch>
+
         </template>
       </el-table-column>
     </el-table>
@@ -185,51 +175,13 @@
     />
 
     <!-- 添加或修改合同对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="员工ID" prop="empId">
-          <el-input v-model="form.empId" placeholder="请输入员工ID" />
-        </el-form-item>
-        <el-form-item label="客户ID" prop="customerId">
-          <el-input v-model="form.customerId" placeholder="请输入客户ID" />
-        </el-form-item>
-        <el-form-item label="合同名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入合同名称" />
-        </el-form-item>
-        <el-form-item label="附件">
-          <file-upload v-model="form.enclosure"/>
-        </el-form-item>
-        <el-form-item label="添加时间" prop="addTime">
-          <el-date-picker clearable
-            v-model="form.addTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择添加时间">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="添加人" prop="addUserId">
-          <el-input v-model="form.addUserId" placeholder="请输入添加人" />
-        </el-form-item>
-        <el-form-item label="修改人" prop="updateUserId">
-          <el-input v-model="form.updateUserId" placeholder="请输入修改人" />
-        </el-form-item>
-        <el-form-item label="0通过，1不通过" prop="accessStu">
-          <el-input v-model="form.accessStu" placeholder="请输入0通过，1不通过" />
-        </el-form-item>
-        <el-form-item label="印章ID" prop="sealId">
-          <el-input v-model="form.sealId" placeholder="请输入印章ID" />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
-      </div>
-    </el-dialog>
+
   </div>
 </template>
 
 <script>
 import { listTcontract, getTcontract, delTcontract, addTcontract, updateTcontract } from "@/api/contractSystem/tcontract/tcontract";
+import {changeContractStatusTwo} from "@/api/contractSystem/tcontract";
 
 export default {
   name: "Tcontract",
@@ -337,6 +289,8 @@ export default {
         accessStu: null,
         sealId: null,
         sealStatus: "0"
+
+
       };
       this.resetForm("form");
     },
@@ -349,6 +303,30 @@ export default {
     resetQuery() {
       this.resetForm("queryForm");
       this.handleQuery();
+    },
+    handleAccessChange(row) {
+      let text = row.accessStu === "0" ? "启用" : "停用";
+      let now = row.accessStu;
+      let nowone = row.contractStatus;
+      if(now ==="0" || nowone ==="1") {
+        row.contractStatus = 2
+      }
+      if (now ==="1"){
+        row.contractStatus = 1
+      }
+
+
+      this.$modal.confirm('确认要"' + text + '""' + row.name + '"状态吗？').then(function() {
+        console.log(row.sealStatus);
+
+
+        return changeContractStatusTwo(row.id, now, row.contractStatus);
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess(text + "成功");          }).catch(function() {
+
+        row.sealStatus = row.sealStatus === "0" ? "1" : "0";
+      });
     },
     // 多选框选中数据
     handleSelectionChange(selection) {

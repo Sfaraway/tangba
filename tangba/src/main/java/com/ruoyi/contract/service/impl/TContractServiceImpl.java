@@ -104,4 +104,13 @@ public class TContractServiceImpl implements ITContractService
     public List<Map<String, Object>> selectContractCustomerEmpAll(TContract tContract) {
         return tContractMapper.selectContractCustomerEmpAll(tContract);
     }
+    @Override
+    public int updateStatus(TContract tContract) {
+        return tContractMapper.updateTContract(tContract);
+    }
+
+    @Override
+    public int updateAccessStatus(TContract tContract) {
+        return tContractMapper.updateTContract(tContract);
+    }
 }

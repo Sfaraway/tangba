@@ -62,6 +62,8 @@ public interface ITContractService
     public int deleteTContractById(Long id);
 
     int updateSealStatus(TContract tContract);
+    int updateAccessStatus(TContract tContract);
+    int updateStatus(TContract tContract);
 
     List<Map<String, Object>> selectContractCustomerEmpAll(TContract tContract);
 }

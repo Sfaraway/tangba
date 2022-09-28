@@ -337,11 +337,7 @@ export default {
   },
   methods: {
 
-    getCname(){
-      for (const customerOptionsKey in this.customerOptions) {
-        this.cname.push(customerOptionsKey.label);
-      }
-    },
+
 
 
 
@@ -379,7 +375,7 @@ export default {
       }).then(()=>{
         for (let i = 0; i < this.customerOptions.length; i++) {
           this.contractList[i].label = this.customerOptions[i].label;
-
+          console.log(this.customerOptions["1"])
         }
 
       });
@@ -475,6 +471,8 @@ export default {
       }).then(() => {
         this.$modal.msgSuccess(text + "成功");          }).catch(function() {
           row.status = row.status === "0" ? "1" : "0";
+      }).then(function (){
+        this.getList();
       });
     },
     /** 提交按钮 */

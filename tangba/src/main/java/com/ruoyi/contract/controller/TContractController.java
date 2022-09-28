@@ -130,5 +130,40 @@ public class TContractController extends BaseController
         List<Map<String, Object>> maps = tContractService.selectContractCustomerEmpAll(tContract);
         return getDataTable(maps);
     }
+    @PreAuthorize("@ss.hasPermi('contractSystem:tcontract:edit')")
+    @Log(title = "印章", businessType = BusinessType.UPDATE)
+    @PutMapping("/changeStatus")
+    public AjaxResult changeContractStatus(@RequestBody TContract tContract)
+    {
+      /*  userService.checkUserAllowed(user);
+        userService.checkUserDataScope(user.getUserId());*/
+        /*
+        合同启用  1
+        * */
+
+        tContract.setUpdateBy(getUsername());
+        if (tContract.getStatus().equals("0")){
+        tContract.setContractStatus(1L);}
+        else {
+            tContract.setContractStatus(0L);
+        }
+        System.out.println(tContract.getContractStatus());
+        return toAjax(tContractService.updateStatus(tContract));
+    }
+    @PreAuthorize("@ss.hasPermi('contractSystem:tcontract:edit')")
+    @Log(title = "印章", businessType = BusinessType.UPDATE)
+    @PutMapping("/changeAccessStatus")
+    public AjaxResult changeAccessStatus(@RequestBody TContract tContract)
+    {
+      /*  userService.checkUserAllowed(user);
+        userService.checkUserDataScope(user.getUserId());*/
+        /*
+        审批通过  2
+        * */
+
+        tContract.setUpdateBy(getUsername());
+        System.out.println(tContract.getContractStatus());
+        return toAjax(tContractService.updateAccessStatus(tContract));
+    }
 }
 
