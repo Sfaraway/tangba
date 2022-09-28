@@ -134,8 +134,8 @@
       <el-table-column label="合同进度 " align="center" prop="contractStatus" >
           <template slot-scope="scope">
                <el-tag type="warning"  effect="dark" v-if="scope.row.contractStatus==0">未通过</el-tag>
-               <el-tag type="success"  effect="dark"  v-if="scope.row.contractStatus==1">已通过</el-tag>
-               <el-tag type="danger"  effect="dark"  v-if="scope.row.contractStatus==2">盖章中</el-tag>
+               <el-tag type="success"  effect="dark"  v-if="scope.row.contractStatus==2">已通过</el-tag>
+               <el-tag type="danger"  effect="dark"  v-if="scope.row.contractStatus==1">盖章中</el-tag>
                </template>
       </el-table-column>
 
@@ -405,16 +405,18 @@ export default {
     },
     // 合同状态修改
     handleStatusChange(row) {
-      console.log(row.sealStatus);
+      console.log(typeof row.sealStatus);
       let text = row.sealStatus === "0" ? "启用" : "停用";
       let now = row.sealStatus;
       if(now ="0") {
-        row.contractStatus = 1
-      }if (now ='1'){
         row.contractStatus = 2
+      };
+      if (now ='1'){
+        row.contractStatus = 1
       }
+      this.getList();
       this.$modal.confirm('确认要"' + text + '""' + row.name + '"状态吗？').then(function() {
-        console.log(row.contractStatus)
+        console.log(row.sealStatus)
         return changeContractStatusTwo(row.id, now, row.contractStatus);
       }).then(() => {
         this.$modal.msgSuccess(text + "成功");          }).catch(function() {
