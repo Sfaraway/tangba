@@ -235,6 +235,19 @@ export default {
   name: "Tcontract",
   data() {
     return {
+      // 合同类型
+      contractType: {
+        paper: 1,
+        electronic: 2,
+      },
+      // 合同进度
+      contractStatus : {
+        unfinished: 0,
+        noApproval: 1,
+        checking:   2,
+        sealing:    3,
+        finished:   4,
+      },
       // 遮罩层
       loading: true,
       // 选中数组

@@ -116,6 +116,8 @@ public class TSealController extends BaseController
       /*  userService.checkUserAllowed(user);
         userService.checkUserDataScope(user.getUserId());*/
         tSeal.setUpdateBy(getUsername());
+        System.out.println("------------------------------");
+        System.out.println(tSeal);
         return toAjax(tSealService.updateSealStatus(tSeal));
     }
 }

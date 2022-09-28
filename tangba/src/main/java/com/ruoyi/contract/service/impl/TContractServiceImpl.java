@@ -92,4 +92,9 @@ public class TContractServiceImpl implements ITContractService
     {
         return tContractMapper.deleteTContractById(id);
     }
+
+    @Override
+    public int updateSealStatus(TContract tContract) {
+        return tContractMapper.updateTContract(tContract);
+    }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+<!--    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="员工ID" prop="empId">
         <el-input
           v-model="queryParams.empId"
@@ -77,7 +77,7 @@
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
-    </el-form>
+    </el-form>-->
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
@@ -129,15 +129,27 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="合同ID" align="center" prop="id" />
       <!--      员工ID-->
-      <el-table-column label="员工ID" align="center" prop="empId" />
+      <el-table-column label="员工姓名" align="center" prop="empId" />
       <!--     客户ID -->
-      <el-table-column label="客户ID" align="center" prop="customerId" />
+      <el-table-column label="客户姓名" align="center" prop="customerId" />
+      <el-table-column label="客户电话" align="center" prop="customerId" />
       <el-table-column label="合同名称" align="center" prop="name" />
-      <el-table-column label="附件" align="center" prop="enclosure" />
+<!--      <el-table-column label="附件" align="center" prop="enclosure" />-->
+      <el-table-column label="合同进度" align="center" prop="contractStatus" />
       <!--      1:纸质合同 2：电子合同-->
       <el-table-column label="合同类型" align="center" prop="type" />
       <!--      0：启动 1关闭-->
-      <el-table-column label="状态" align="center" prop="status" />
+      <el-table-column label="盖章否" align="center" prop="sealStatus" >
+        <template slot-scope="scope">
+          <el-switch
+            v-model="scope.row.sealStatus"
+            active-value="0"
+            inactive-value="1"
+            @change="handleStatusChange(scope.row)"
+          ></el-switch>
+        </template>
+      </el-table-column>
+<!--      <el-table-column label="合同盖章" align="center" prop="status" />
       <el-table-column label="添加时间" align="center" prop="addTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.addTime, '{y}-{m}-{d}') }}</span>
@@ -149,13 +161,13 @@
         </template>
       </el-table-column>
       <el-table-column label="添加人" align="center" prop="addUserId" />
-      <el-table-column label="修改人" align="center" prop="updateUserId" />
+      <el-table-column label="修改人" align="center" prop="updateUserId" />-->
       <!--       1：未审核 2：审核中 3：该掌中 4：配送中 5已完成-->
-      <el-table-column label="合同状态" align="center" prop="contractStatus" />
+<!--      <el-table-column label="合同进度" align="center" prop="contractStatus" />-->
       <!--      0通过，1不通过-->
-      <el-table-column label="" align="center" prop="accessStu" />
+<!--      <el-table-column label="" align="center" prop="accessStu" />
       <el-table-column label="印章ID" align="center" prop="sealId" />
-      <el-table-column label="盖章否" align="center" prop="sealStatus" />
+      <el-table-column label="盖章否" align="center" prop="sealStatus" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -230,11 +242,25 @@
 
 <script>
 import { listTcontract, getTcontract, delTcontract, addTcontract, updateTcontract } from "@/api/contractSystem/tcontract/tcontract";
+import {changeSealStatus} from "@/api/contractSystem/eleseal/contract";
 
 export default {
   name: "Tcontract",
   data() {
     return {
+     // 合同类型
+      contractType: {
+        paper: 1,
+        electronic: 2,
+      },
+      contractStatus : {
+        unfinished: 0,
+        noApproval: 1,
+        checking:   2,
+        sealing:    3,
+        finished:   4,
+      },
+      //
       // 遮罩层
       loading: true,
       // 选中数组
@@ -294,6 +320,7 @@ export default {
   methods: {
     /** 查询合同列表 */
     getList() {
+      console.log(this.contractStatus.paper);
       this.loading = true;
       listTcontract(this.queryParams).then(response => {
         this.tcontractList = response.rows;
@@ -394,7 +421,21 @@ export default {
       this.download('contractSystem/tcontract/export', {
         ...this.queryParams
       }, `tcontract_${new Date().getTime()}.xlsx`)
-    }
+    },
+    // 印章状态修改
+    handleStatusChange(row) {
+      let text = row.sealStatus === "0" ? "启用" : "停用";
+      this.$modal.confirm('确认要"' + text + '""' + row.sealUrl + '"印章吗？').then(function() {
+        console.log(row);
+        return changeSealStatus(row.id, row.sealStatus);
+      }).then(() => {
+        this.$modal.msgSuccess(text + "成功");
+      }).catch(function() {
+        row.status = row.status === "0" ? "1" : "0";
+      });
+    },
+
+
   }
 };
 </script>

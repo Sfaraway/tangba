@@ -2,6 +2,8 @@ package com.ruoyi.contract.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.contract.domain.TSeal;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -100,5 +102,24 @@ public class TContractController extends BaseController
     public AjaxResult remove(@PathVariable Long[] ids)
     {
         return toAjax(tContractService.deleteTContractByIds(ids));
+    }
+
+    /**
+     * 印章状态修改
+     */
+    @PreAuthorize("@ss.hasPermi('contractSystem:tcontract:edit')")
+    @Log(title = "印章", businessType = BusinessType.UPDATE)
+    @PutMapping("/changeSealStatus")
+    public AjaxResult changeSealStatus(@RequestBody TContract tContract)
+    {
+      /*  userService.checkUserAllowed(user);
+        userService.checkUserDataScope(user.getUserId());*/
+        /*
+        盖章完成  2
+        * */
+        tContract.setContractStatus(2L);
+        tContract.setUpdateBy(getUsername());
+        System.out.println(tContract.getSealStatus());
+        return toAjax(tContractService.updateSealStatus(tContract));
     }
 }

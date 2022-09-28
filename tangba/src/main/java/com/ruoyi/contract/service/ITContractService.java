@@ -58,4 +58,6 @@ public interface ITContractService
      * @return 结果
      */
     public int deleteTContractById(Long id);
+
+    int updateSealStatus(TContract tContract);
 }
