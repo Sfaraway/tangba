@@ -107,13 +107,13 @@
     <el-table v-loading="loading" :data="contractList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <!-- <el-table-column label="id" align="center" prop="id" /> -->
-      <el-table-column label="员工名" align="center" prop="empId">
-         <template slot-scope="scope">
-                  <el-tag effect='plain' v-if="scope.row.empId==1">周子豪</el-tag>
-                  <el-tag effect='plain' v-if="scope.row.empId==2">吴彦祖</el-tag>
-                  <el-tag effect='plain' v-if="scope.row.empId==3">彭于晏</el-tag>
-                  <el-tag effect='plain' v-if="scope.row.empId==4">陈冠希</el-tag>
-         </template>
+      <el-table-column label="员工名" align="center" prop="ename">
+<!--         <template slot-scope="scope">-->
+<!--                  <el-tag effect='plain' v-if="scope.row.empId==1">周子豪</el-tag>-->
+<!--                  <el-tag effect='plain' v-if="scope.row.empId==2">吴彦祖</el-tag>-->
+<!--                  <el-tag effect='plain' v-if="scope.row.empId==3">彭于晏</el-tag>-->
+<!--                  <el-tag effect='plain' v-if="scope.row.empId==4">陈冠希</el-tag>-->
+<!--         </template>-->
       </el-table-column>
 <!--      v-bind="customerOptions"-->
 <!--      prop="label"-->
@@ -122,7 +122,7 @@
           {{item_}}
         </template>-->
       </el-table-column>
-      <el-table-column label="联系方式" align="center" prop="cphone" />
+      <el-table-column label="联系方式" align="center" prop="phone" />
       <el-table-column label="合同名称" align="center" prop="name" />
       <el-table-column label="合同类型" align="center" prop="type" >
         <template slot-scope="scope">
