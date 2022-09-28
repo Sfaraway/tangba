@@ -19,6 +19,16 @@ public class TContract extends BaseEntity
 
     /**  */
     private Long id;
+    private String ename;
+
+    public String getEname() {
+        return ename;
+    }
+
+    public void setEname(String ename) {
+        this.ename = ename;
+    }
+
     /** 0不成功，1成功 */
     @Excel(name = "0不成功，1成功")
     private String seal;
