@@ -47,6 +47,16 @@ public class TContract extends BaseEntity
 
     private String cname;
 
+    public String getCphone() {
+        return cphone;
+    }
+
+    public void setCphone(String cphone) {
+        this.cphone = cphone;
+    }
+
+    private String cphone;
+
     /** 客户的Id */
     @Excel(name = "客户的Id")
     private Long customerId;
@@ -112,13 +122,7 @@ public class TContract extends BaseEntity
         this.accessStu = accessStu;
     }
 
-    public Long getCphone() {
-        return cphone;
-    }
 
-    public void setCphone(Long cphone) {
-        this.cphone = cphone;
-    }
 
     /** 0成功，bu1成功 */
     @Excel(name = "0成功，bu1成功")
@@ -128,9 +132,7 @@ public class TContract extends BaseEntity
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private String accessStu;
 
-    /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
-    private Long cphone;
+
 
     public void setId(Long id) 
     {
@@ -251,7 +253,7 @@ public class TContract extends BaseEntity
                 .append("sealStatus", getSealStatus())
                 .append("sealId", getSealId())
                 .append("accessStu", getAccessStu())
-                .append("cphone", getCphone())
+
                 .append("canme",getCname())
             .toString();
     }

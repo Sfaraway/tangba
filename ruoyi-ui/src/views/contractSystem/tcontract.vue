@@ -145,18 +145,7 @@
 
 
 
-      <!-- <el-table-column label="附件" prop="enclosure" width="100" align="center">
-        <FileUpload :limit="1" :fileSize="1" @input="imageUploadChange" :fileType="fileType" :value="form.enclosure" ></FileUpload>
-      </el-table-column> -->
-      <!-- <el-table-column label="附件" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="primary"
-             @click="handleUpdate1(scope.row),dialogVisible= true"
-          >上传附件</el-button>
-        </template>
-      </el-table-column> -->
+
       <el-table-column label="状态" align="center" prop="status" width="100">
             <template slot-scope="scope">
               <el-switch
@@ -253,9 +242,7 @@
                  <el-option label="盖章中" value=2></el-option>
                  </el-select>
         </el-form-item>
-        <el-form-item label="电话号码" prop="cphone">
-          <el-input v-model="form.cphone" placeholder="请输入${comment}" />
-        </el-form-item>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -288,6 +275,8 @@ export default {
       customer:[],
 
       cname:[],
+
+      cphone:[],
 
       fileType:["doc", "xls", "ppt", "txt", "pdf","png", "jpg", "jpeg"],
       // nowTime: this.getNowTime(),
@@ -396,9 +385,15 @@ export default {
 
     /** 查询合同列表 */
     getList() {
+
       this.loading = true;
       listContract(this.queryParams).then(response => {
         this.contractList = response.rows;
+        console.log(response.rows.cphone);
+        for (const responseElement of response.rows) {
+          console.log(responseElement)
+
+        }
         this.total = response.total;
         this.loading = false;
       }).then(()=>{

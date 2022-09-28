@@ -27,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <sql id="selectTContractVo">
 --         select id, emp_id, customer_id, name, enclosure, type, status, add_time, update_time, add_user_id, update_user_id, contract_status, seal_id, seal_status, access_stu, cphone, cname from t_contract
-        select id, emp_id, customer_id,b.cname,b.phone, name, enclosure, type, a.status, a.add_time, a.update_time, a.add_user_id, a.update_user_id, contract_status, seal_id, seal_status, access_stu, cphone
+        select id, emp_id, customer_id,b.cname,b.phone, name, enclosure, type, a.status, a.add_time, a.update_time, a.add_user_id, a.update_user_id, contract_status, seal_id, seal_status, access_stu
         from t_contract a left join t_customer b on a.customer_id = b.c_id
     </sql>
 
@@ -47,8 +47,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="accessStu != null  and accessStu != ''"> and access_stu = #{accessStu}</if>
             <if test="sealId != null "> and seal_id = #{sealId}</if>
             <if test="sealStatus != null  and sealStatus != ''"> and seal_status = #{sealStatus}</if>
-            <if test="cphone != null "> and b.phone = #{cphone}</if>
-            <if test="cname != null "> and b.cname like concat('%', #{cname}, '%')</if>
+            <if test="cphone != null "> and b.phone = #{phone}</if>
+            <if test="cname != null "> and b.cname =  #{cname}, </if>
         </where>
 
 
@@ -76,7 +76,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="sealStatus != null">seal_status,</if>
             <if test="sealId != null">seal_id,</if>
             <if test="accessStu != null">access_stu,</if>
-            <if test="cphone != null">cphone,</if>
+
             add_time
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -93,7 +93,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="sealStatus != null">#{sealStatus},</if>
             <if test="sealId != null">#{sealId},</if>
             <if test="accessStu != null">#{accessStu},</if>
-            <if test="cphone != null">#{cphone},</if>
+
         	sysdate()
          </trim>
     </insert>
@@ -116,7 +116,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="sealStatus != null">seal_status = #{sealStatus},</if>
             <if test="sealId != null">seal_id = #{sealId},</if>
             <if test="accessStu != null">access_stu = #{accessStu},</if>
-            <if test="cphone != null">cphone = #{cphone},</if>
+
         </trim>
         where id = #{id}
     </update>

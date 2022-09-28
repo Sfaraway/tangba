@@ -117,7 +117,7 @@
       </el-table-column>
 <!--      v-bind="customerOptions"-->
 <!--      prop="label"-->
-      <el-table-column label="客户名" align="center" prop="label"  >
+      <el-table-column label="客户名" align="center" prop="cname"  >
 <!--        <template  v-for="item_ in customerOptions">
           {{item_}}
         </template>-->
@@ -244,7 +244,7 @@ export default {
         sealStatus: null,
         sealId: null,
         accessStu: null,
-        cphone: null
+
 
       },
       // 表单参数
@@ -270,7 +270,7 @@ export default {
     };
   },
   created() {
-    this.getCustomer();
+    // this.getCustomer();
     this.getList();
 
 
@@ -281,11 +281,11 @@ export default {
   },
   methods: {
 
-    getCname(){
-      for (const customerOptionsKey in this.customerOptions) {
-        this.cname.push(customerOptionsKey.label);
-      }
-    },
+    // getCname(){
+    //   for (const customerOptionsKey in this.customerOptions) {
+    //     this.cname.push(customerOptionsKey.label);
+    //   }
+    // },
 
 
 
@@ -314,33 +314,35 @@ export default {
         this.contractList = response.rows;
         this.total = response.total;
         this.loading = false;
-      }).then(()=>{
-        for (let i = 0; i < this.customerOptions.length; i++) {
-          this.contractList[i].label = this.customerOptions[i].label;
-
-        }
-
-      });
-    },
-
-    getCustomer() {
-      this.loading = true;
-      listCustomer(this.queryParams).then(response => {
-        this.customer = response.rows;
-        for (const customerElem of this.customer) {
-          this.customerOptions.push({
-            value: customerElem.cId,
-            label: customerElem.cname,
-          })
-        }}).then(()=>{
-        console.log(this.customerOptions[0].label)
       })
-
-
-
-
-      // console.log(this.customerOptions["0"].label);
+      //   .then(()=>{
+      //   for (let i = 0; i < this.customerOptions.length; i++) {
+      //     this.contractList[i].label = this.customerOptions[i].label;
+      //
+      //   }
+      //
+      // })
+      ;
     },
+
+    // getCustomer() {
+    //   this.loading = true;
+    //   listCustomer(this.queryParams).then(response => {
+    //     this.customer = response.rows;
+    //     for (const customerElem of this.customer) {
+    //       this.customerOptions.push({
+    //         value: customerElem.cId,
+    //         label: customerElem.cname,
+    //       })
+    //     }}).then(()=>{
+    //     console.log(this.customerOptions[0].label)
+    //   })
+    //
+    //
+    //
+    //
+    //   // console.log(this.customerOptions["0"].label);
+    // },
 
 
     // 取消按钮
