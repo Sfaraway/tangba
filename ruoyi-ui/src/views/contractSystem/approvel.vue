@@ -408,8 +408,14 @@ export default {
       console.log(row.sealStatus);
       let text = row.sealStatus === "0" ? "启用" : "停用";
       let now = row.sealStatus;
+      if(now ="0") {
+        row.contractStatus = 1
+      }if (now ='1'){
+        row.contractStatus = 2
+      }
       this.$modal.confirm('确认要"' + text + '""' + row.name + '"状态吗？').then(function() {
-        return changeContractStatusTwo(row.id, now);
+        console.log(row.contractStatus)
+        return changeContractStatusTwo(row.id, now, row.contractStatus);
       }).then(() => {
         this.$modal.msgSuccess(text + "成功");          }).catch(function() {
           row.sealStatus = row.sealStatus === "0" ? "1" : "0";

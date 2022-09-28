@@ -55,10 +55,12 @@ export function changeContractStatus(id, status) {
   })
 }
 
-export function changeContractStatusTwo(id, sealStatus ) {
+export function changeContractStatusTwo(id, sealStatus ,contractStatus) {
   const data = {
     id,
-    sealStatus
+    sealStatus,
+    contractStatus
+
   }
   return request({
     url: '/tcon/contract/changeStatusTwo',
