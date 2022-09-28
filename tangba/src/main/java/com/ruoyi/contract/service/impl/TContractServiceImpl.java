@@ -1,7 +1,6 @@
 package com.ruoyi.contract.service.impl;
 
 import java.util.List;
-
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,7 @@ import com.ruoyi.contract.service.ITContractService;
  * 合同Service业务层处理
  * 
  * @author ruoyi
- * @date 2022-09-23
+ * @date 2022-09-28
  */
 @Service
 public class TContractServiceImpl implements ITContractService 
@@ -44,9 +43,6 @@ public class TContractServiceImpl implements ITContractService
     {
         return tContractMapper.selectTContractList(tContract);
     }
-    
-
-
 
     /**
      * 新增合同
@@ -60,7 +56,6 @@ public class TContractServiceImpl implements ITContractService
         return tContractMapper.insertTContract(tContract);
     }
 
-    
     /**
      * 修改合同
      * 
@@ -71,19 +66,6 @@ public class TContractServiceImpl implements ITContractService
     public int updateTContract(TContract tContract)
     {
         tContract.setUpdateTime(DateUtils.getNowDate());
-        return tContractMapper.updateTContract(tContract);
-    }
-    
-
-    /**
-     * 修改合同状态
-     * 
-     * @param tContract 合同主键
-     * @return 结果
-     */
-    @Override
-    public int updateStatus(TContract tContract)
-    {
         return tContractMapper.updateTContract(tContract);
     }
 
@@ -110,12 +92,4 @@ public class TContractServiceImpl implements ITContractService
     {
         return tContractMapper.deleteTContractById(id);
     }
-
-    @Override
-    public int updateStatusTwo(TContract tContract)
-    {
-
-        return tContractMapper.updateTContract(tContract);
-    }
-	
 }

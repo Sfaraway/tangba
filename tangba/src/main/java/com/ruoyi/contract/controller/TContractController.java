@@ -4,7 +4,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,10 +25,10 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * 合同Controller
  * 
  * @author ruoyi
- * @date 2022-09-23
+ * @date 2022-09-28
  */
 @RestController
-@RequestMapping("/tcon/contract")
+@RequestMapping("/contractSystem/tcontract")
 public class TContractController extends BaseController
 {
     @Autowired
@@ -38,7 +37,7 @@ public class TContractController extends BaseController
     /**
      * 查询合同列表
      */
-    @PreAuthorize("@ss.hasPermi('tcon:contract:list')")
+    @PreAuthorize("@ss.hasPermi('contractSystem:tcontract:list')")
     @GetMapping("/list")
     public TableDataInfo list(TContract tContract)
     {
@@ -47,12 +46,10 @@ public class TContractController extends BaseController
         return getDataTable(list);
     }
 
-
-
     /**
      * 导出合同列表
      */
-    @PreAuthorize("@ss.hasPermi('tcon:contract:export')")
+    @PreAuthorize("@ss.hasPermi('contractSystem:tcontract:export')")
     @Log(title = "合同", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, TContract tContract)
@@ -61,46 +58,21 @@ public class TContractController extends BaseController
         ExcelUtil<TContract> util = new ExcelUtil<TContract>(TContract.class);
         util.exportExcel(response, list, "合同数据");
     }
-    
-
 
     /**
      * 获取合同详细信息
      */
-    @PreAuthorize("@ss.hasPermi('tcon:contract:query')")
+    @PreAuthorize("@ss.hasPermi('contractSystem:tcontract:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
         return AjaxResult.success(tContractService.selectTContractById(id));
     }
-    /**
-     * 状态修改
-     */
-    @PreAuthorize("@ss.hasPermi('tcon:contract:edit')")
-    @Log(title = "合同", businessType = BusinessType.UPDATE)
-    @PutMapping("/changeStatus")
-    public AjaxResult changeStatus(@RequestBody TContract tContract)
-    {
-        tContract.setUpdateBy(getUsername());
-        return toAjax(tContractService.updateStatus(tContract));
-    }
 
-    /**
-     * 审批状态修改
-     */
-    @PreAuthorize("@ss.hasPermi('tcon:contract:edit')")
-    @Log(title = "合同", businessType = BusinessType.UPDATE)
-    @PutMapping("/changeStatusTwo")
-    public AjaxResult changeStatusTwo(@RequestBody TContract tContract)
-    {
-
-        tContract.setUpdateBy(getUsername());
-        return toAjax(tContractService.updateStatusTwo(tContract));
-    }
     /**
      * 新增合同
      */
-    @PreAuthorize("@ss.hasPermi('tcon:contract:add')")
+    @PreAuthorize("@ss.hasPermi('contractSystem:tcontract:add')")
     @Log(title = "合同", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody TContract tContract)
@@ -111,7 +83,7 @@ public class TContractController extends BaseController
     /**
      * 修改合同
      */
-    @PreAuthorize("@ss.hasPermi('tcon:contract:edit')")
+    @PreAuthorize("@ss.hasPermi('contractSystem:tcontract:edit')")
     @Log(title = "合同", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody TContract tContract)
@@ -122,7 +94,7 @@ public class TContractController extends BaseController
     /**
      * 删除合同
      */
-    @PreAuthorize("@ss.hasPermi('tcon:contract:remove')")
+    @PreAuthorize("@ss.hasPermi('contractSystem:tcontract:remove')")
     @Log(title = "合同", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
@@ -130,4 +102,3 @@ public class TContractController extends BaseController
         return toAjax(tContractService.deleteTContractByIds(ids));
     }
 }
-

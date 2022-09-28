@@ -2,18 +2,15 @@ package com.ruoyi.contract.mapper;
 
 import java.util.List;
 import com.ruoyi.contract.domain.TContract;
-import org.springframework.stereotype.Repository;
 
 /**
  * 合同Mapper接口
  * 
  * @author ruoyi
- * @date 2022-09-23
+ * @date 2022-09-28
  */
-@Repository
-public interface TContractMapper
+public interface TContractMapper 
 {
-
     /**
      * 查询合同
      * 
@@ -38,7 +35,13 @@ public interface TContractMapper
      */
     public int insertTContract(TContract tContract);
 
-
+    /**
+     * 修改合同
+     * 
+     * @param tContract 合同
+     * @return 结果
+     */
+    public int updateTContract(TContract tContract);
 
     /**
      * 删除合同
@@ -55,9 +58,4 @@ public interface TContractMapper
      * @return 结果
      */
     public int deleteTContractByIds(Long[] ids);
-
-	public int updateTContract(TContract tContract);
-
-
-
 }

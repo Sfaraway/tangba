@@ -1,18 +1,16 @@
 package com.ruoyi.contract.service;
 
 import java.util.List;
-
 import com.ruoyi.contract.domain.TContract;
 
 /**
  * 合同Service接口
  * 
  * @author ruoyi
- * @date 2022-09-23
+ * @date 2022-09-28
  */
 public interface ITContractService 
 {
-
     /**
      * 查询合同
      * 
@@ -44,16 +42,7 @@ public interface ITContractService
      * @return 结果
      */
     public int updateTContract(TContract tContract);
- 
-    /**
-     * 修改合同状态
-     * 
-     * @param tContract 合同信息
-     * @return 结果
-     */
-    public int updateStatus(TContract tContract);
-    
-    
+
     /**
      * 批量删除合同
      * 
@@ -69,7 +58,4 @@ public interface ITContractService
      * @return 结果
      */
     public int deleteTContractById(Long id);
-
-
-    int updateStatusTwo(TContract tContract);
 }
