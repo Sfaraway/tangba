@@ -121,6 +121,8 @@
         <el-table-column label="员工名"  align="center" prop="ename" />
 <!--        <template  v-for="item_ in customerOptions">
           {{item_}}
+
+
         </template>-->
 <!--      </el-table-column>-->
       <el-table-column label="联系方式" align="center" prop="phone" />
