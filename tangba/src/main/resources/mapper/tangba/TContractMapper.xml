@@ -114,6 +114,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
+
     <delete id="deleteTContractById" parameterType="Long">
         delete from t_contract where id = #{id}
     </delete>

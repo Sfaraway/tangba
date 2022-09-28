@@ -405,22 +405,24 @@ export default {
     },
     // 合同状态修改
     handleStatusChange(row) {
-      console.log(typeof row.sealStatus);
       let text = row.sealStatus === "0" ? "启用" : "停用";
       let now = row.sealStatus;
-      if(now ="0") {
+      if(now ==="0") {
         row.contractStatus = 2
       };
-      if (now ='1'){
+      if (now ==='1'){
         row.contractStatus = 1
       }
-      this.getList();
+
       this.$modal.confirm('确认要"' + text + '""' + row.name + '"状态吗？').then(function() {
-        console.log(row.sealStatus)
+        console.log(row.sealStatus);
+
         return changeContractStatusTwo(row.id, now, row.contractStatus);
       }).then(() => {
+        this.getList();
         this.$modal.msgSuccess(text + "成功");          }).catch(function() {
-          row.sealStatus = row.sealStatus === "0" ? "1" : "0";
+
+        row.sealStatus = row.sealStatus === "0" ? "1" : "0";
       });
     },
     /** 提交按钮 */

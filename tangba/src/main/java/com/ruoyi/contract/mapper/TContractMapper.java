@@ -57,4 +57,7 @@ public interface TContractMapper
     public int deleteTContractByIds(Long[] ids);
 
 	public int updateTContract(TContract tContract);
+
+
+
 }

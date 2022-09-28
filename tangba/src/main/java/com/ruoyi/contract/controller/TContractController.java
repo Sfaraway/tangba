@@ -93,6 +93,7 @@ public class TContractController extends BaseController
     @PutMapping("/changeStatusTwo")
     public AjaxResult changeStatusTwo(@RequestBody TContract tContract)
     {
+
         tContract.setUpdateBy(getUsername());
         return toAjax(tContractService.updateStatusTwo(tContract));
     }
