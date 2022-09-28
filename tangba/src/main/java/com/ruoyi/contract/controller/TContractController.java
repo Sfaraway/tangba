@@ -1,6 +1,7 @@
 package com.ruoyi.contract.controller;
 
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.contract.domain.TSeal;
@@ -117,9 +118,17 @@ public class TContractController extends BaseController
         /*
         盖章完成  2
         * */
-        tContract.setContractStatus(2L);
         tContract.setUpdateBy(getUsername());
-        System.out.println(tContract.getSealStatus());
+        tContract.setContractStatus(3L);
         return toAjax(tContractService.updateSealStatus(tContract));
     }
+
+    //@PreAuthorize("@ss.hasPermi('contractSystem:tcontract:list')")
+    @GetMapping("/listMap")
+    public TableDataInfo selectContractCustomerEmpAll(TContract tContract)
+    {
+        List<Map<String, Object>> maps = tContractService.selectContractCustomerEmpAll(tContract);
+        return getDataTable(maps);
+    }
 }
+

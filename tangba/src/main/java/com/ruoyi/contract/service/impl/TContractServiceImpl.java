@@ -1,6 +1,8 @@
 package com.ruoyi.contract.service.impl;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -96,5 +98,10 @@ public class TContractServiceImpl implements ITContractService
     @Override
     public int updateSealStatus(TContract tContract) {
         return tContractMapper.updateTContract(tContract);
+    }
+
+    @Override
+    public List<Map<String, Object>> selectContractCustomerEmpAll(TContract tContract) {
+        return tContractMapper.selectContractCustomerEmpAll(tContract);
     }
 }

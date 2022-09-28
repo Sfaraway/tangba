@@ -1,6 +1,8 @@
 package com.ruoyi.contract.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.contract.domain.TContract;
 
 /**
@@ -60,4 +62,6 @@ public interface ITContractService
     public int deleteTContractById(Long id);
 
     int updateSealStatus(TContract tContract);
+
+    List<Map<String, Object>> selectContractCustomerEmpAll(TContract tContract);
 }

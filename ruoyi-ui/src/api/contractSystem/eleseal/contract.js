@@ -44,10 +44,12 @@ export function delTcontract(id) {
 }
 
 // 盖章状态修改
-export function changeSealStatus(id, sealStatus) {
+export function changeSealStatus(id, sealStatus, status, contractStatus) {
   const data = {
     id,
-    sealStatus
+    sealStatus,
+    status,
+    contractStatus
   }
   return request({
     url: '/contractSystem/tcontract/changeSealStatus',
@@ -55,3 +57,14 @@ export function changeSealStatus(id, sealStatus) {
     data: data
   })
 }
+
+// all
+export function getListMap(query) {
+  return request({
+    url: '/contractSystem/tcontract/listMap',
+    method: 'get',
+    params: query
+  })
+}
+
+

@@ -118,4 +118,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+
+    <resultMap type="map" id="contractResult">
+        <result property="id"    column="id"    />
+        <result property="empId"    column="emp_id"    />
+        <result property="customerId"    column="customer_id"    />
+        <result property="name"    column="name"    />
+        <result property="enclosure"    column="enclosure"    />
+        <result property="type"    column="type"    />
+        <result property="status"    column="status"    />
+        <result property="addTime"    column="add_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="addUserId"    column="add_user_id"    />
+        <result property="updateUserId"    column="update_user_id"    />
+        <result property="contractStatus"    column="contract_status"    />
+        <result property="accessStu"    column="access_stu"    />
+        <result property="sealId"    column="seal_id"    />
+        <result property="sealStatus"    column="seal_status"    />
+        <result property="cname"        column="cname"/>
+        <result property="phone"        column="phone"/>
+        <result property="ename" column="ename"/>
+    </resultMap>
+
+    <select id="selectContractCustomerEmpAll" parameterType="TContract" resultMap="contractResult">
+        select t_contract.id, t_contract.emp_id, t_contract.customer_id, t_contract.name, t_contract.enclosure, t_contract.type, t_contract.status, t_contract.add_time, t_contract.update_time, t_contract.add_user_id, t_contract.update_user_id, t_contract.contract_status, t_contract.access_stu, t_contract.seal_id, t_contract.seal_status,
+               t_customer.cname, t_customer.phone, t_emp.ename
+        from t_contract
+        join t_customer
+            on t_customer.c_id = t_contract.customer_id
+        join t_emp
+            on t_emp.e_id = t_contract.emp_id
+    </select>
+
 </mapper>

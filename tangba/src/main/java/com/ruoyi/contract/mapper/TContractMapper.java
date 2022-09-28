@@ -1,6 +1,8 @@
 package com.ruoyi.contract.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.contract.domain.TContract;
 import org.springframework.stereotype.Repository;
 
@@ -60,4 +62,6 @@ public interface TContractMapper
      * @return 结果
      */
     public int deleteTContractByIds(Long[] ids);
+
+    public List<Map<String, Object>> selectContractCustomerEmpAll(TContract contract);
 }
