@@ -177,12 +177,21 @@
             placeholder="请选择添加时间">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="添加人" prop="addUserId">
+<!--        <el-form-item label="添加人" prop="addUserId">
           <el-input v-model="form.addUserId" placeholder="请输入添加人" />
+&lt;!&ndash;          <el-select v-model="form.addUserId" multiple placeholder="请选择添加人">
+            <el-option
+              v-for="item in UserOptions"
+              :key="item.postId"
+              :label="item.postName"
+              :value="item.postId"
+              :disabled="item.status == 1"
+            ></el-option>
+          </el-select>&ndash;&gt;
         </el-form-item>
         <el-form-item label="修改人" prop="updateUserId">
           <el-input v-model="form.updateUserId" placeholder="请输入修改人" />
-        </el-form-item>
+        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -194,7 +203,7 @@
 
 <script>
 import {listSeal, getSeal, delSeal, addSeal, updateSeal, changeSealStatus} from "@/api/contractSystem/eleseal/seal";
-import { getEmp } from "@/api/contractSystem/emp"
+import { getEmp, listEmp } from "@/api/contractSystem/emp"
 import { getUserId } from "@/api/contractSystem/common";
 export default {
   name: "Seal",
@@ -265,6 +274,12 @@ export default {
 
   },
   methods: {
+    getEmpList() {
+      listEmp().then(response=>{
+
+      });
+    },
+
     //   addUserId
     //   updateUserId
     getList() {
@@ -361,19 +376,25 @@ export default {
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (this.form.id != null) {
-            updateSeal(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
-              this.open = false;
-              this.getList();
-            });
-          } else {
-            addSeal(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
-              this.open = false;
-              this.getList();
-            });
-          }
+          getUserId().then(res=>{
+            this.form.addUserId = res;
+            this.form.updateUserId = res;
+          }).then(()=>{
+            if (this.form.id != null) {
+              updateSeal(this.form).then(response => {
+                this.$modal.msgSuccess("修改成功");
+                this.open = false;
+                this.getList();
+              });
+            } else {
+              addSeal(this.form).then(response => {
+                this.$modal.msgSuccess("新增成功");
+                this.open = false;
+                this.getList();
+              });
+            }
+          })
+
         }
       });
     },
