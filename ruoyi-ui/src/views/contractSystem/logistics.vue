@@ -1,42 +1,45 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="ID" prop="id">
-        <el-input v-model="queryParams.id" placeholder="请输入ID" clearable @keyup.enter.native="handleQuery" />
-      </el-form-item>
+<!--      <el-form-item label="ID" prop="id">-->
+<!--        <el-input v-model="queryParams.id" placeholder="请输入ID" clearable @keyup.enter.native="handleQuery" />-->
+<!--      </el-form-item>-->
       <el-form-item label="快递单号" prop="orderNumber">
         <el-input v-model="queryParams.orderNumber" placeholder="请输入快递单号" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="员工ID" prop="empId">
-        <el-input v-model="queryParams.empId" placeholder="请输入员工ID" clearable @keyup.enter.native="handleQuery" />
-      </el-form-item>
-      <el-form-item label="客户ID" prop="customerId">
-        <el-input v-model="queryParams.customerId" placeholder="请输入客户ID" clearable @keyup.enter.native="handleQuery" />
-      </el-form-item>
+<!--      <el-form-item label="员工ID" prop="empId">-->
+<!--        <el-input v-model="queryParams.empId" placeholder="请输入员工ID" clearable @keyup.enter.native="handleQuery" />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="客户姓名" prop="cname">-->
+<!--        <el-input v-model="queryParams.cname" placeholder="请输入客户姓名" clearable @keyup.enter.native="handleQuery" />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="客户ID" prop="customerId">-->
+<!--        <el-input v-model="queryParams.customerId" placeholder="请输入客户ID" clearable @keyup.enter.native="handleQuery" />-->
+<!--      </el-form-item>-->
       <el-form-item label="合同名称" prop="name">
         <el-input v-model="queryParams.name" placeholder="请输入合同名称" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item label="物流公司" prop="company">
         <el-input v-model="queryParams.company" placeholder="请输入物流公司" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="配送状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择配送状态" clearable>
-          <el-option v-for="dict in dict.type.sys_job_status" :key="dict.value" :label="dict.label"
-            :value="dict.value" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="添加时间" prop="addTime">
-        <el-date-picker clearable v-model="queryParams.addTime" type="date" value-format="yyyy-MM-dd"
-          placeholder="请选择添加时间">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="添加人id" prop="addUserId">
-        <el-input v-model="queryParams.addUserId" placeholder="请输入添加人id" clearable @keyup.enter.native="handleQuery" />
-      </el-form-item>
-      <el-form-item label="修改人id" prop="updateUserId">
-        <el-input v-model="queryParams.updateUserId" placeholder="请输入修改人id" clearable
-          @keyup.enter.native="handleQuery" />
-      </el-form-item>
+<!--      <el-form-item label="配送状态" prop="status">-->
+<!--        <el-select v-model="queryParams.status" placeholder="请选择配送状态" clearable>-->
+<!--          <el-option v-for="dict in dict.type.sys_job_status" :key="dict.value" :label="dict.label"-->
+<!--            :value="dict.value" />-->
+<!--        </el-select>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="添加时间" prop="addTime">-->
+<!--        <el-date-picker clearable v-model="queryParams.addTime" type="date" value-format="yyyy-MM-dd"-->
+<!--          placeholder="请选择添加时间">-->
+<!--        </el-date-picker>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="添加人id" prop="addUserId">-->
+<!--        <el-input v-model="queryParams.addUserId" placeholder="请输入添加人id" clearable @keyup.enter.native="handleQuery" />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="修改人id" prop="updateUserId">-->
+<!--        <el-input v-model="queryParams.updateUserId" placeholder="请输入修改人id" clearable-->
+<!--          @keyup.enter.native="handleQuery" />-->
+<!--      </el-form-item>-->
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -66,33 +69,33 @@
     <el-table v-loading="loading" :data="logisticsList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="id" align="center" prop="id" />
-      <el-table-column label="快递单号" align="center" prop="orderNumber" />
-      <el-table-column label="员工ID" align="center" prop="empId" />
+<!--      <el-table-column label="员工ID" align="center" prop="empId" />-->
       <el-table-column label="员工姓名" align="center" prop="ename" />
-      <el-table-column label="客户ID" align="center" prop="customerId" />
+<!--      <el-table-column label="客户ID" align="center" prop="customerId" />-->
       <el-table-column label="客户姓名" align="center" prop="cname" />
       <el-table-column label="客户电话" align="center" prop="phone"/>
       <el-table-column label="合同名称" align="center" prop="name" />
       <el-table-column label="物流公司" align="center" prop="company" />
-      <el-table-column label="配送状态" align="center" prop="status">
+      <el-table-column label="快递单号" align="center" prop="orderNumber" />
+            <el-table-column label="配送状态" align="center" prop="status">
         <template slot-scope="scope">
            <el-switch v-model="scope.row.status" active-value="0" inactive-value="1"
            @change="changeStatus(scope.row)">
            </el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="添加时间" align="center" prop="addTime" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.addTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="修改时间" align="center" prop="updateTime" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="添加人ID" align="center" prop="addUserId" />
-      <el-table-column label="修改人ID" align="center" prop="updateUserId" />
+<!--      <el-table-column label="添加时间" align="center" prop="addTime" width="180">-->
+<!--        <template slot-scope="scope">-->
+<!--          <span>{{ parseTime(scope.row.addTime, '{y}-{m}-{d}') }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="修改时间" align="center" prop="updateTime" width="180">-->
+<!--        <template slot-scope="scope">-->
+<!--          <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="添加人ID" align="center" prop="addUserId" />-->
+<!--      <el-table-column label="修改人ID" align="center" prop="updateUserId" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
@@ -203,6 +206,7 @@
         //客户和员工姓名，客户电话
         CE:[],
 
+
         // 遮罩层
         loading: true,
         // 选中数组
@@ -237,6 +241,7 @@
         // 查询参数
         queryParams: {
           pageNum: 1,
+          // pageSize: 11,
           pageSize: 10,
           id: null,
           orderNumber: null,
@@ -247,7 +252,8 @@
           status: null,
           addTime: null,
           addUserId: null,
-          updateUserId: null
+          updateUserId: null,
+          // cname:null,
         },
         // 表单参数
         form: {},
@@ -412,19 +418,19 @@
         this.open = true;
         this.title = "添加物流";
       },
-      // 配送状态修改
-      changeStatus(row) {
-         let text = row.status === "0" ? "启用" : "停用";
-         let now = row.status;
-         let updateUserId = this.userId;
-         this.$modal.confirm('确认要"' + text + '""' + row.name + '"状态吗？').then(function() {
-           return changeStatus(row.id, now,updateUserId);
-         }).then(() => {
-           this.getList();
-           this.$modal.msgSuccess(text + "成功");          }).catch(function() {
-           row.status = row.status === "0" ? "1" : "0";
-         });
-       },
+      // // 配送状态修改
+      // changeStatus(row) {
+      //    let text = row.status === "0" ? "启用" : "停用";
+      //    let now = row.status;
+      //    let updateUserId = this.userId;
+      //    this.$modal.confirm('确认要"' + text + '""' + row.name + '"状态吗？').then(function() {
+      //      return changeStatus(row.id, now,updateUserId);
+      //    }).then(() => {
+      //      this.getList();
+      //      this.$modal.msgSuccess(text + "成功");          }).catch(function() {
+      //      row.status = row.status === "0" ? "1" : "0";
+      //    });
+      //  },
     /** 修改按钮操作 */
       handleUpdate(row) {
         this.reset();
