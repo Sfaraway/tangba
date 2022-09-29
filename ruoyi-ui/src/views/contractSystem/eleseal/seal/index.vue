@@ -283,9 +283,6 @@ export default {
         this.total = response.total;
         this.loading = false;
       })
-      getUserId().then(response=> {
-        console.log(typeof response)
-      })
     },
     // 取消按钮
     cancel() {

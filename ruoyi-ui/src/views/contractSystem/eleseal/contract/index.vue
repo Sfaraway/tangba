@@ -82,6 +82,7 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
+          disabled
           type="primary"
           plain
           icon="el-icon-plus"
@@ -142,24 +143,33 @@
         </template>
       </el-table-column>
 <!--      合同盖章-->
-      <el-table-column label="合同盖章" align="center" prop="contractStatus" >
+      <el-table-column label="合同盖章" align="center" prop="contractStatus">
         <template slot-scope="scope">
           <el-switch
+            v-if="scope.row.type===contractType.paper"
             :disabled="hiddenSwitch(scope.row.type)"
             v-model="scope.row.contractStatus"
             :active-value="3"
             :inactive-value="2"
             @change="handleContractSealStatusChange(scope.row)"
           ></el-switch>
+          <el-button
+            v-if="scope.row.type===contractType.electronic"
+            type="primary"
+            size="mini"
+            @click=""
+          >
+            附件
+          </el-button>
         </template>
       </el-table-column>
       <el-table-column label="合同类型" align="center" prop="type">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.type===contractType.paper">纸质合同</el-tag>
-          <el-tag v-if="scope.row.type===contractType.electronic">电子合同</el-tag>
+          <el-tag type="success" v-if="scope.row.type===contractType.paper">纸质合同</el-tag>
+          <el-tag type="primary" v-if="scope.row.type===contractType.electronic">电子合同</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+<!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -176,7 +186,7 @@
             v-hasPermi="['contractSystem:tcontract:remove']"
           >删除</el-button>
         </template>
-      </el-table-column>
+      </el-table-column>-->
     </el-table>
 
     <pagination
@@ -187,7 +197,7 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改合同对话框 -->
+<!--     添加或修改合同对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="员工ID" prop="empId">
@@ -431,8 +441,9 @@ export default {
     },
     // 合同盖章状态修改
     handleContractSealStatusChange(row) {
-      let text = row.contractStatus === this.contractStatus.sealing ? "盖章" : "撤回";
-      this.$modal.confirm('确认要给"' + text + '""' + row.name + '"印章吗？').then(function() {
+      let text = row.contractStatus === this.contractStatus.sealing ? "" : "撤回";
+      /*'确认要给' + row.name + text + '盖章吗？'*/
+      this.$modal.confirm().then(function() {
         return changeContractSealStatus(row.id, row.contractStatus);
       }).then(() => {
         this.getListMapLocal();
@@ -443,8 +454,7 @@ export default {
     },
     hiddenSwitch(type) {
       return type === this.contractType.electronic;
-    }
-
+    },
   }
 };
 </script>
