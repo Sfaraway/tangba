@@ -56,11 +56,11 @@ export function changeContractStatus(id, status, contractStatus) {
   })
 }
 
-export function changeContractStatusTwo(id, accessStu ,contractStatus) {
+export function changeContractStatusTwo(id, accessStu ) {
   const data = {
     id,
-    accessStu,
-    contractStatus
+    accessStu
+
 
   }
   return request({

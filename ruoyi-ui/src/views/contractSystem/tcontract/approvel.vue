@@ -29,9 +29,9 @@
       <el-table-column label="合同进度" align="center" prop="contractStatus" >
 
         <template slot-scope="scope">
-          <el-tag type="danger" v-if="scope.row.contractStatus==0">未启用</el-tag>
+          <el-tag type="info" v-if="scope.row.contractStatus==0">未启用</el-tag>
           <el-tag type="warning"  effect="dark" v-if="scope.row.contractStatus==1">审批中</el-tag>
-          <el-tag type="info"    v-if="scope.row.contractStatus==2">盖章中</el-tag>
+          <el-tag type="danger"  effect="light"  v-if="scope.row.contractStatus==2">盖章中</el-tag>
           <el-tag   effect="dark"  v-if="scope.row.contractStatus==4">配送中</el-tag>
           <el-tag   type="success" effect="dark"  v-if="scope.row.contractStatus==3">已完成</el-tag>
         </template>
@@ -72,6 +72,9 @@ export default {
   name: "Tcontract",
   data() {
     return {
+      staffOptions:[],
+      //客户信息
+      customer:[],
       // 合同类型
       contractType: {
         paper: 1,
@@ -125,21 +128,21 @@ export default {
       // 表单参数
       form: {},
       // 表单校验
-      rules: {
-        addTime: [
-          { required: true, message: "添加时间不能为空", trigger: "blur" }
-        ],
-        addUserId: [
-          { required: true, message: "添加人不能为空", trigger: "blur" }
-        ],
-        updateUserId: [
-          { required: true, message: "修改人不能为空", trigger: "blur" }
-        ],
-      }
+      // rules: {
+      //   // addTime: [
+      //   //   { required: true, message: "添加时间不能为空", trigger: "blur" }
+      //   // ],
+      //   // addUserId: [
+      //   //   { required: true, message: "添加人不能为空", trigger: "blur" }
+      //   // ],
+      //   // updateUserId: [
+      //   //   { required: true, message: "修改人不能为空", trigger: "blur" }
+      //   // ],
+      // }
     };
   },
   created() {
-    this.getList();
+    // this.getList();
     this.getEleMapL();
   },
   methods: {
@@ -213,24 +216,13 @@ export default {
     handleAccessChange(row) {
       let text = row.accessStu === "0" ? "启用" : "停用";
       let now = row.accessStu;
-      let nowone = row.contractStatus;
-      if(now ==="0" || nowone ==="1") {
-        row.contractStatus = 2
-      }
-      if (now ==="1"){
-        row.contractStatus = 1
-      }
-
 
       this.$modal.confirm('确认要"' + text + '""' + row.name + '"状态吗？').then(function() {
         console.log(row.sealStatus);
-
-
-        return changeContractStatusTwo(row.id, now, row.contractStatus);
+        return changeContractStatusTwo(row.id, now);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess(text + "成功");          }).catch(function() {
-
         row.sealStatus = row.sealStatus === "0" ? "1" : "0";
       });
     },

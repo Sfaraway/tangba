@@ -162,7 +162,13 @@ public class TContractController extends BaseController
         * */
 
         tContract.setUpdateBy(getUsername());
+        if (tContract.getAccessStu().equals("0")){
+            tContract.setContractStatus(2L);}
+        else {
+            tContract.setContractStatus(1L);
+        }
         System.out.println(tContract.getContractStatus());
+
         return toAjax(tContractService.updateAccessStatus(tContract));
     }
 }

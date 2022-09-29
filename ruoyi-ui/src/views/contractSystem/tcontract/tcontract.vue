@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-<!--    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">-->
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
 <!--      <el-form-item label="员工ID" prop="empId">-->
 <!--        <el-input-->
 <!--          v-model="queryParams.empId"-->
@@ -17,22 +17,22 @@
 <!--          @keyup.enter.native="handleQuery"-->
 <!--        />-->
 <!--      </el-form-item>-->
-<!--      <el-form-item label="合同名称" prop="name">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.name"-->
-<!--          placeholder="请输入合同名称"-->
-<!--          clearable-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="添加时间" prop="addTime">-->
-<!--        <el-date-picker clearable-->
-<!--                        v-model="queryParams.addTime"-->
-<!--                        type="date"-->
-<!--                        value-format="yyyy-MM-dd"-->
-<!--                        placeholder="请选择添加时间">-->
-<!--        </el-date-picker>-->
-<!--      </el-form-item>-->
+      <el-form-item label="合同名称" prop="name">
+        <el-input
+          v-model="queryParams.name"
+          placeholder="请输入合同名称"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="添加时间" prop="addTime">
+        <el-date-picker clearable
+                        v-model="queryParams.addTime"
+                        type="date"
+                        value-format="yyyy-MM-dd"
+                        placeholder="请选择添加时间">
+        </el-date-picker>
+      </el-form-item>
 <!--      <el-form-item label="修改时间" prop="updateTime">-->
 <!--        <el-date-picker clearable-->
 <!--                        v-model="queryParams.updateTime"-->
@@ -74,10 +74,10 @@
 <!--        />-->
 <!--      </el-form-item>-->
 <!--      <el-form-item>-->
-<!--        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>-->
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
 <!--        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>-->
 <!--      </el-form-item>-->
-<!--    </el-form>-->
+    </el-form>
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
@@ -134,7 +134,9 @@
       <!--     客户ID -->
       <el-table-column label="客户姓名" align="center" prop="cname" />
       <el-table-column label="合同名称" align="center" prop="name" />
-      <el-table-column label="附件" align="center" prop="enclosure" />
+      <el-table-column label="附件" prop="enclosure" width="100" align="center">
+        <file-upload v-model="form.enclosure"/>
+      </el-table-column>
       <!--      1:纸质合同 2：电子合同-->
       <el-table-column label="合同类型" align="center" prop="type" >
         <template slot-scope="scope">
@@ -167,7 +169,13 @@
 <!--      <el-table-column label="修改人" align="center" prop="updateUserId" />-->
       <!--       1：未审核 2：审核中 3：该掌中 4：配送中 5已完成-->
       <el-table-column label="合同进度 " align="center" prop="contractStatus" >
-
+        <template slot-scope="scope">
+          <el-tag type="info" v-if="scope.row.contractStatus==0">未启用</el-tag>
+          <el-tag type="warning"  effect="dark" v-if="scope.row.contractStatus==1">审批中</el-tag>
+          <el-tag type="danger"    v-if="scope.row.contractStatus==2">盖章中</el-tag>
+          <el-tag   effect="dark"  v-if="scope.row.contractStatus==4">配送中</el-tag>
+          <el-tag   type="success" effect="dark"  v-if="scope.row.contractStatus==3">已完成</el-tag>
+        </template>
       </el-table-column>
       <!--      0通过，1不通过-->
 <!--      <el-table-column label="" align="center" prop="accessStu" />-->
@@ -204,7 +212,7 @@
     <!-- 添加或修改合同对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="客户的Id" prop="customerId">
+        <el-form-item label="客户名" prop="customerId">
           <!--          <el-input v-model="form.customerId" placeholder="请输入客户的Id" />-->
           <el-select v-model="form.customerId" placeholder="请选择客户">
             <el-option v-for="item in customerOptions"
@@ -217,7 +225,14 @@
         </el-form-item>
 
         <el-form-item label="员工名" prop="empId">
-          <el-input v-model="form.empId" placeholder="请输入员工ID" />
+          <el-select v-model="form.empId" placeholder="请选择员工">
+            <el-option v-for="item in staffOptions"
+                       :key="item.value "
+                       :label="item.label"
+                       :value="item.value">
+
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="合同名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入合同名称" />
@@ -233,12 +248,12 @@
 <!--                          placeholder="请选择添加时间">-->
 <!--          </el-date-picker>-->
 <!--        </el-form-item>-->
-        <el-form-item label="添加人" prop="addUserId">
-          <el-input v-model="wtf" placeholder="请输入添加人" readonly="true"/>
-        </el-form-item>
-        <el-form-item label="修改人" prop="updateUserId">
-          <el-input v-model="wtf" placeholder="请输入修改人" readonly="true" />
-        </el-form-item>
+<!--        <el-form-item label="添加人" prop="addUserId">-->
+<!--          <el-input v-model="form.addUserId=wtf"    readonly />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="修改人" prop="updateUserId">-->
+<!--          <el-input v-model="form.updateUserId=wtf"   readonly />-->
+<!--        </el-form-item>-->
 
 
       </el-form>
@@ -256,12 +271,18 @@ import {changeContractStatus} from "@/api/contractSystem/tcontract";
 import { listCustomer } from "@/api/contractSystem/customer";
 import {getListMap} from "@/api/contractSystem/eleseal/contract"
 import {getUserId} from "@/api/contractSystem/common"
+import {listEmp} from "@/api/contractSystem/emp";
+
 export default {
   name: "Tcontract",
   data() {
     return {
-      wtf:null,
+      wtf:this.wtf,
+      staffOptions:[],
+      //员工信息
+      staff:[],
       customerOptions:[],
+      // fileType:["doc", "xls", "ppt", "txt", "pdf","png", "jpg", "jpeg"],
       //客户信息
       customer:[],
       // 合同类型
@@ -269,6 +290,7 @@ export default {
         paper: 1,
         electronic: 2,
       },
+
       // 合同进度
       contractStatus : {
         unfinished: 0,
@@ -337,10 +359,11 @@ export default {
   },
   created() {
 
-
+    this.getStaff();
     this.getCustomer();
     // this.getList();
     this.getEleMapL();
+
     this.getWTfid()
 
 
@@ -356,6 +379,7 @@ export default {
         this.loading = false;
 
       })
+
     },
     getEleMapL(){
 
@@ -391,7 +415,7 @@ export default {
       });
     },
 
-
+//客户信息
     getCustomer() {
       this.loading = true;
       listCustomer(this.queryParams).then(response => {
@@ -403,6 +427,19 @@ export default {
           })
         }}).then(()=>{
         console.log(this.customerOptions[0].label)
+      })},
+//员工信息
+    getStaff() {
+      this.loading = true;
+      listEmp(this.queryParams).then(response => {
+        this.staff = response.rows;
+        for (const staffElem of this.staff) {
+          this.staffOptions.push({
+            value: staffElem.eId,
+            label: staffElem.ename,
+          })
+        }}).then(()=>{
+        console.log(this.staffOptions[0].label)
       })},
     /** 查询合同列表 */
     getList() {
@@ -490,13 +527,16 @@ export default {
             updateTcontract(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
-              this.getList();
+              console.log(this.form.addUserId)
+              // this.getList();
+              this.getEleMapL();
             });
           } else {
             addTcontract(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
-              this.getList();
+              // this.getList();
+              this.getEleMapL();
             });
           }
         }
