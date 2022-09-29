@@ -12,7 +12,7 @@
       <el-table-column label="客户名" align="center" prop="cname" />
       <el-table-column label="电话号码" align="center" prop="phone" />
       <el-table-column label="合同名称" align="center" prop="name" />
-      <el-table-column label="附件" align="center" prop="enclosure" />
+<!--      <el-table-column label="附件" align="center" prop="enclosure" />-->
 <!--      1:纸质合同 2：电子合同-->
       <el-table-column label="合同类型" align="center" prop="type" >
         <template slot-scope="scope">

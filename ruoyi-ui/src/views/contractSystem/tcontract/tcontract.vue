@@ -136,9 +136,9 @@
       <el-table-column label="客户姓名" align="center" prop="cname" />
       <el-table-column label="职位" align="center" prop="job" />
       <el-table-column label="合同名称" align="center" prop="name" />
-      <el-table-column label="附件" prop="enclosure" width="100" align="center">
-        <file-upload v-model="form.enclosure"/>
-      </el-table-column>
+<!--      <el-table-column label="附件" prop="enclosure" width="100" align="center">-->
+<!--        <file-upload v-model="form.enclosure"/>-->
+<!--      </el-table-column>-->
       <!--      1:纸质合同 2：电子合同-->
       <el-table-column label="合同类型" align="center" prop="type" >
         <template slot-scope="scope">
