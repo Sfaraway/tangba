@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      title: '若依管理系统',
+      title: '汤粑电子合同管理系统',
       logo: logoImg
     }
   }

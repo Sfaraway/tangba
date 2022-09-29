@@ -33,6 +33,7 @@ public class TLogistics extends BaseEntity
     @Excel(name = "客户Id")
     private Long customerId;
 
+
     /** 合同名称 */
     @Excel(name = "合同名称")
     private String name;
