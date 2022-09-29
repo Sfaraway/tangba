@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      title: '汤粑电子合同管理系统',
+      title: '电子合同标准化系统',
       logo: logoImg
     }
   }
