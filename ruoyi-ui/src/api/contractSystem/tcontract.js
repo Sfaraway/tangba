@@ -69,3 +69,11 @@ export function changeContractStatusTwo(id, accessStu ) {
     data: data
   })
 }
+
+export function getListMapF(query) {
+  return request({
+    url: '/contractSystem/tcontract/getstaffposition',
+    method: 'get',
+    params: query
+  })
+}

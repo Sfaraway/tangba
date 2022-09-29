@@ -17,7 +17,7 @@ import com.ruoyi.contract.service.ITContractService;
  * @date 2022-09-28
  */
 @Service
-public class TContractServiceImpl implements ITContractService 
+public class TContractServiceImpl implements ITContractService
 {
     @Autowired
     private TContractMapper tContractMapper;
@@ -107,6 +107,11 @@ public class TContractServiceImpl implements ITContractService
     @Override
     public int updateStatus(TContract tContract) {
         return tContractMapper.updateTContract(tContract);
+    }
+
+    @Override
+    public List<Map<String, Object>> selectStaffPosition(TContract tContract) {
+        return tContractMapper.selectStaffPosition(tContract);
     }
 
     @Override
