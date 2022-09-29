@@ -1,122 +1,7 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="员工ID" prop="empId">
-        <el-input
-          v-model="queryParams.empId"
-          placeholder="请输入员工ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="客户ID" prop="customerId">
-        <el-input
-          v-model="queryParams.customerId"
-          placeholder="请输入客户ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="合同名称" prop="name">
-        <el-input
-          v-model="queryParams.name"
-          placeholder="请输入合同名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="添加时间" prop="addTime">
-        <el-date-picker clearable
-          v-model="queryParams.addTime"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="请选择添加时间">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="修改时间" prop="updateTime">
-        <el-date-picker clearable
-          v-model="queryParams.updateTime"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="请选择修改时间">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="添加人" prop="addUserId">
-        <el-input
-          v-model="queryParams.addUserId"
-          placeholder="请输入添加人"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="修改人" prop="updateUserId">
-        <el-input
-          v-model="queryParams.updateUserId"
-          placeholder="请输入修改人"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="0通过，1不通过" prop="accessStu">
-        <el-input
-          v-model="queryParams.accessStu"
-          placeholder="请输入0通过，1不通过"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
 
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
 
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['contractSystem:tcontract:add']"
-        >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['contractSystem:tcontract:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['contractSystem:tcontract:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['contractSystem:tcontract:export']"
-        >导出</el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
 
     <el-table v-loading="loading" :data="tcontractList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
@@ -139,8 +24,7 @@
 <!--      0：启动 1关闭-->
       <
 
-      <el-table-column label="添加人" align="center" prop="addUserId" />
-      <el-table-column label="修改人" align="center" prop="updateUserId" />
+
 <!--       1：未审核 2：审核中 3：该掌中 4：配送中 5已完成-->
       <el-table-column label="合同进度" align="center" prop="contractStatus" >
 
@@ -182,6 +66,7 @@
 <script>
 import { listTcontract, getTcontract, delTcontract, addTcontract, updateTcontract } from "@/api/contractSystem/tcontract/tcontract";
 import {changeContractStatusTwo} from "@/api/contractSystem/tcontract";
+import {getListMap} from "@/api/contractSystem/eleseal/contract"
 
 export default {
   name: "Tcontract",
@@ -255,8 +140,29 @@ export default {
   },
   created() {
     this.getList();
+    this.getEleMapL();
   },
   methods: {
+
+    getEleMapL(){
+
+      this.loading = true;
+      getListMap(this.queryParams).then(response => {
+        this.tcontractList = response.rows;
+        for (const responseElement of this.tcontractList) {
+          console.log(responseElement)
+        }
+        this.total = response.total;
+        this.loading = false;
+      }).then(()=>{
+        for (let i = 0; i < this.customerOptions.length; i++) {
+          this.tcontractList[i].label = this.customerOptions[i].label;
+          // console.log("dfkasfj："+this.tcontractList[0])
+
+
+        }
+      });
+    },
     /** 查询合同列表 */
     getList() {
       this.loading = true;
