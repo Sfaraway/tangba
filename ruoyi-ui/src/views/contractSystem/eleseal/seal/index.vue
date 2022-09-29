@@ -17,7 +17,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="添加时间" prop="addTime">
+<!--      <el-form-item label="添加时间" prop="addTime">
         <el-date-picker clearable
           v-model="queryParams.addTime"
           type="date"
@@ -32,7 +32,7 @@
           value-format="yyyy-MM-dd"
           placeholder="请选择修改时间">
         </el-date-picker>
-      </el-form-item>
+      </el-form-item>-->
 <!--      <el-form-item label="添加人" prop="addUserId">
         <el-input
           v-model="queryParams.addUserId"
@@ -105,22 +105,23 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="印章ID" align="center" prop="id" />
       <el-table-column label="公司名称" align="center" prop="name" />
-      <el-table-column label="seal" align="center" prop="sealUrl" width="100">
+      <el-table-column label="印章" align="center" prop="sealUrl" width="250">
         <template slot-scope="scope">
-          <image-preview :src="scope.row.sealUrl" :width="50" :height="50"/>
+          <image-preview :src="scope.row.sealUrl" :width="100" :height="50"/>
         </template>
       </el-table-column>
+<!--    印章启用状态  -->
       <el-table-column label="状态" align="center" prop="status">
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.status"
             active-value="0"
             inactive-value="1"
-            @change="handleStatusChange(scope.row)"
+            @change="handleSealStatusChange(scope.row)"
           ></el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="添加时间" align="center" prop="addTime" width="180">
+<!--      <el-table-column label="添加时间" align="center" prop="addTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.addTime, '{y}-{m}-{d}') }}</span>
         </template>
@@ -129,7 +130,7 @@
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>
         </template>
-      </el-table-column>
+      </el-table-column>-->
 <!--      <el-table-column label="添加人" align="center" prop="addUserName" />
       <el-table-column label="修改人" align="center" prop="updateUserName" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -169,14 +170,14 @@
         <el-form-item label="seal">
           <image-upload v-model="form.sealUrl"/>
         </el-form-item>
-        <el-form-item label="添加时间" prop="addTime">
+<!--        <el-form-item label="添加时间" prop="addTime">
           <el-date-picker clearable
             v-model="form.addTime"
             type="date"
             value-format="yyyy-MM-dd"
             placeholder="请选择添加时间">
           </el-date-picker>
-        </el-form-item>
+        </el-form-item>-->
 <!--        <el-form-item label="添加人" prop="addUserId">
           <el-input v-model="form.addUserId" placeholder="请输入添加人" />
 &lt;!&ndash;          <el-select v-model="form.addUserId" multiple placeholder="请选择添加人">
@@ -269,17 +270,10 @@ export default {
     };
   },
   created() {
-  /*  this.getFirst();*/
     this.getList();
 
   },
   methods: {
-    getEmpList() {
-      listEmp().then(response=>{
-
-      });
-    },
-
     //   addUserId
     //   updateUserId
     getList() {
@@ -293,34 +287,6 @@ export default {
         console.log(typeof response)
       })
     },
-    /** 查询印章列表 */
-    /*getList() {
-      this.loading = true;
-      listSeal(this.queryParams).then(response => {
-        this.sealList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      })
-    },*/
-  /*  getList() {
-      this.loading = true;
-      let temp = [];
-      listSeal(this.queryParams).then(response => {
-        temp = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      }).then(()=>{
-        for (let i = 0; i < temp.length;  i++) {
-          getEmp(temp[i].addUserId).then(res=> {
-            temp[i].addUserName = res.data.ename;
-          });
-        }
-      }).then(()=>{
-        this.sealList = temp;
-        console.log( this.sealList)
-      });
-
-    },*/
     // 取消按钮
     cancel() {
       this.open = false;
@@ -379,6 +345,7 @@ export default {
           getUserId().then(res=>{
             this.form.addUserId = res;
             this.form.updateUserId = res;
+            this.form.addTime = Date.now();
           }).then(()=>{
             if (this.form.id != null) {
               updateSeal(this.form).then(response => {
@@ -394,7 +361,6 @@ export default {
               });
             }
           })
-
         }
       });
     },
@@ -414,10 +380,11 @@ export default {
         ...this.queryParams
       }, `seal_${new Date().getTime()}.xlsx`)
     },
-    // 印章状态修改
-    handleStatusChange(row) {
+    // 印章启用状态修改
+    handleSealStatusChange(row) {
       let text = row.status === "0" ? "启用" : "停用";
-      this.$modal.confirm('确认要"' + text + '""' + row.sealUrl + '"印章吗？').then(function() {
+      this.$modal.confirm('确认要"' + text + '"该印章吗？').then(function() {
+        console.log(row.status);
         return changeSealStatus(row.id, row.status);
       }).then(() => {
         this.$modal.msgSuccess(text + "成功");

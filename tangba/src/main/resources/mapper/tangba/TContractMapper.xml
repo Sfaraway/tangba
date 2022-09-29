@@ -160,6 +160,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             on t_customer.c_id = t_contract.customer_id
         join t_emp
             on t_emp.e_id = t_contract.emp_id
+        where t_contract.status = '0' and (t_contract.contract_status = '2' or t_contract.contract_status = '3')
     </select>
 
 </mapper>

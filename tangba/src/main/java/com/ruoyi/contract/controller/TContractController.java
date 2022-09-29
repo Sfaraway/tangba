@@ -110,8 +110,8 @@ public class TContractController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('contractSystem:tcontract:edit')")
     @Log(title = "印章", businessType = BusinessType.UPDATE)
-    @PutMapping("/changeSealStatus")
-    public AjaxResult changeSealStatus(@RequestBody TContract tContract)
+    @PutMapping("/changeContractSealStatus")
+    public AjaxResult changeContractSealStatus(@RequestBody TContract tContract)
     {
       /*  userService.checkUserAllowed(user);
         userService.checkUserDataScope(user.getUserId());*/
@@ -119,11 +119,10 @@ public class TContractController extends BaseController
         盖章完成  2
         * */
         tContract.setUpdateBy(getUsername());
-        tContract.setContractStatus(3L);
         return toAjax(tContractService.updateSealStatus(tContract));
     }
 
-    //@PreAuthorize("@ss.hasPermi('contractSystem:tcontract:list')")
+    @PreAuthorize("@ss.hasPermi('contractSystem:tcontract:list')")
     @GetMapping("/listMap")
     public TableDataInfo selectContractCustomerEmpAll(TContract tContract)
     {

@@ -43,16 +43,14 @@ export function delTcontract(id) {
   })
 }
 
-// 盖章状态修改
-export function changeSealStatus(id, sealStatus, status, contractStatus) {
+// 合同盖章状态修改
+export function changeContractSealStatus(id, contractStatus) {
   const data = {
     id,
-    sealStatus,
-    status,
     contractStatus
   }
   return request({
-    url: '/contractSystem/tcontract/changeSealStatus',
+    url: '/contractSystem/tcontract/changeContractSealStatus',
     method: 'put',
     data: data
   })

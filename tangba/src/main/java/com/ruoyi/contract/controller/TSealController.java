@@ -110,14 +110,12 @@ public class TSealController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('eleseal:seal:edit')")
     @Log(title = "印章", businessType = BusinessType.UPDATE)
-    @PutMapping("/changeStatus")
-    public AjaxResult changeStatus(@RequestBody TSeal tSeal)
+    @PutMapping("/changeSealStatus")
+    public AjaxResult changeSealStatus(@RequestBody TSeal tSeal)
     {
       /*  userService.checkUserAllowed(user);
         userService.checkUserDataScope(user.getUserId());*/
         tSeal.setUpdateBy(getUsername());
-        System.out.println("------------------------------");
-        System.out.println(tSeal);
         return toAjax(tSealService.updateSealStatus(tSeal));
     }
 }

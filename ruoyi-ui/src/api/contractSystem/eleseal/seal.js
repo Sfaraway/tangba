@@ -51,7 +51,7 @@ export function changeSealStatus(id, status) {
     status
   }
   return request({
-    url: '/eleseal/seal/changeStatus',
+    url: '/eleseal/seal/changeSealStatus',
     method: 'put',
     data: data
   })

@@ -137,52 +137,28 @@
 <!--      <el-table-column label="附件" align="center" prop="enclosure" />-->
       <el-table-column label="合同进度" align="center" prop="contractStatus">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.contractStatus===contractStatus.unfinished">未审核</el-tag>
-          <el-tag v-if="scope.row.contractStatus===contractStatus.noApproval">审核中</el-tag>
-          <el-tag v-if="scope.row.contractStatus===contractStatus.checking">审核完成</el-tag>
-          <el-tag v-if="scope.row.contractStatus===contractStatus.sealing" >盖章中</el-tag>
-          <el-tag v-if="scope.row.contractStatus===contractStatus.finished">已完成</el-tag>
+          <el-tag v-if="scope.row.contractStatus===contractStatus.checking" >盖章中</el-tag>
+          <el-tag v-if="scope.row.contractStatus===contractStatus.sealing">已完成</el-tag>
         </template>
       </el-table-column>
-      <!--      1:纸质合同 2：电子合同-->
+<!--      合同盖章-->
+      <el-table-column label="合同盖章" align="center" prop="contractStatus" >
+        <template slot-scope="scope">
+          <el-switch
+            :disabled="hiddenSwitch(scope.row.type)"
+            v-model="scope.row.contractStatus"
+            :active-value="3"
+            :inactive-value="2"
+            @change="handleContractSealStatusChange(scope.row)"
+          ></el-switch>
+        </template>
+      </el-table-column>
       <el-table-column label="合同类型" align="center" prop="type">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.type===contractType.paper">纸质合同</el-tag>
           <el-tag v-if="scope.row.type===contractType.electronic">电子合同</el-tag>
         </template>
       </el-table-column>
-      <!--      0：启动 1关闭-->
-      <el-table-column label="盖章" align="center" prop="sealStatus" >
-        <template slot-scope="scope">
-<!--          -->
-          <el-switch
-            :disabled="hiddenSwitch(scope.row.type)"
-            v-model="scope.row.sealStatus"
-            active-value="0"
-            inactive-value="1"
-            @change="handleSealStatusChange(scope.row)"
-          ></el-switch>
-        </template>
-      </el-table-column>
-<!--      <el-table-column label="合同盖章" align="center" prop="status" />
-      <el-table-column label="添加时间" align="center" prop="addTime" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.addTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="修改时间" align="center" prop="updateTime" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="添加人" align="center" prop="addUserId" />
-      <el-table-column label="修改人" align="center" prop="updateUserId" />-->
-      <!--       1：未审核 2：审核中 3：该掌中 4：配送中 5已完成-->
-<!--      <el-table-column label="合同进度" align="center" prop="contractStatus" />-->
-      <!--      0通过，1不通过-->
-<!--      <el-table-column label="" align="center" prop="accessStu" />
-      <el-table-column label="印章ID" align="center" prop="sealId" />
-      <el-table-column label="盖章否" align="center" prop="sealStatus" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -257,7 +233,7 @@
 
 <script>
 import { listTcontract, getTcontract, delTcontract, addTcontract, updateTcontract, get } from "@/api/contractSystem/tcontract/tcontract";
-import {changeSealStatus, getListMap} from "@/api/contractSystem/eleseal/contract";
+import { changeContractSealStatus, getListMap} from "@/api/contractSystem/eleseal/contract";
 
 export default {
   name: "Tcontract",
@@ -453,17 +429,16 @@ export default {
         ...this.queryParams
       }, `tcontract_${new Date().getTime()}.xlsx`)
     },
-    // 印章状态修改
-    handleSealStatusChange(row) {
-      let text = row.sealStatus === "0" ? "盖章" : "撤回";
-      this.$modal.confirm('确认要"' + text + '""' + row.sealUrl + '"印章吗？').then(function() {
-        console.log(row);
-        return changeSealStatus(row.id, row.sealStatus, row.status, row.contractStatus);
+    // 合同盖章状态修改
+    handleContractSealStatusChange(row) {
+      let text = row.contractStatus === this.contractStatus.sealing ? "盖章" : "撤回";
+      this.$modal.confirm('确认要给"' + text + '""' + row.name + '"印章吗？').then(function() {
+        return changeContractSealStatus(row.id, row.contractStatus);
       }).then(() => {
         this.getListMapLocal();
         this.$modal.msgSuccess(text + "盖章成功");
       }).catch(function() {
-        row.sealStatus = row.sealStatus === "0" ? "1" : "0";
+        row.contractStatus = row.contractStatus === this.contractStatus.sealing ? this.contractStatus.checking: this.contractStatus.sealing;
       });
     },
     hiddenSwitch(type) {
