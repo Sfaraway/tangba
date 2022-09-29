@@ -418,19 +418,19 @@
         this.open = true;
         this.title = "添加物流";
       },
-      // // 配送状态修改
-      // changeStatus(row) {
-      //    let text = row.status === "0" ? "启用" : "停用";
-      //    let now = row.status;
-      //    let updateUserId = this.userId;
-      //    this.$modal.confirm('确认要"' + text + '""' + row.name + '"状态吗？').then(function() {
-      //      return changeStatus(row.id, now,updateUserId);
-      //    }).then(() => {
-      //      this.getList();
-      //      this.$modal.msgSuccess(text + "成功");          }).catch(function() {
-      //      row.status = row.status === "0" ? "1" : "0";
-      //    });
-      //  },
+      // 配送状态修改
+      changeStatus(row) {
+         let text = row.status === "0" ? "启用" : "停用";
+         let now = row.status;
+         let updateUserId = this.userId;
+         this.$modal.confirm('确认要"' + text + '""' + row.name + '"状态吗？').then(function() {
+           return changeStatus(row.id, now,updateUserId);
+         }).then(() => {
+           this.getList();
+           this.$modal.msgSuccess(text + "成功");          }).catch(function() {
+           row.status = row.status === "0" ? "1" : "0";
+         });
+       },
     /** 修改按钮操作 */
       handleUpdate(row) {
         this.reset();

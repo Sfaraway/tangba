@@ -42,3 +42,11 @@ export function delTcontract(id) {
     method: 'delete'
   })
 }
+
+export function getListMapF(query) {
+  return request({
+    url: '/contractSystem/tcontract/getstaffposition',
+    method: 'get',
+    params: query
+  })
+}

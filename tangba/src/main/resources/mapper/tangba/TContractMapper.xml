@@ -149,7 +149,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="sealStatus"    column="seal_status"    />
         <result property="cname"        column="cname"/>
         <result property="phone"        column="phone"/>
-        <result property="ename" column="ename"/>
+        <result property="ename"        column="ename"/>
+        <result property="job"  column="job"/>
     </resultMap>
 
     <select id="selectContractCustomerEmpAll" parameterType="TContract" resultMap="contractResult">
@@ -161,6 +162,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         join t_emp
             on t_emp.e_id = t_contract.emp_id
         where t_contract.status = '0' and (t_contract.contract_status = '2' or t_contract.contract_status = '3')
+    </select>
+    <select id="selectStaffPosition" parameterType="TContract" resultMap="contractResult">
+        select t_contract.id, t_contract.emp_id, t_contract.customer_id, t_contract.name, t_contract.enclosure, t_contract.type, t_contract.status, t_contract.add_time, t_contract.update_time, t_contract.add_user_id, t_contract.update_user_id, t_contract.contract_status, t_contract.access_stu, t_contract.seal_id, t_contract.seal_status,
+               t_customer.cname, t_customer.phone, t_emp.ename, t_emp.job
+        from t_contract
+                 join t_customer
+                      on t_customer.c_id = t_contract.customer_id
+                 join t_emp
+                      on t_emp.e_id = t_contract.emp_id
+
     </select>
 
 </mapper>

@@ -41,6 +41,7 @@
       <el-table-column label="是否通过" align="center" prop="accessStu" >
         <template slot-scope="scope">
           <el-switch
+            :disabled="hiddenSwitch(scope.row.job)"
             v-model="scope.row.accessStu"
             active-value="0" inactive-value="1"
             @change="handleAccessChange(scope.row)"
@@ -64,9 +65,9 @@
 </template>
 
 <script>
-import { listTcontract, getTcontract, delTcontract, addTcontract, updateTcontract } from "@/api/contractSystem/tcontract/tcontract";
+import { listTcontract, getTcontract, delTcontract, addTcontract, updateTcontract,getListMapF } from "@/api/contractSystem/tcontract/tcontract";
 import {changeContractStatusTwo} from "@/api/contractSystem/tcontract";
-import {getListMap} from "@/api/contractSystem/eleseal/contract"
+
 
 export default {
   name: "Tcontract",
@@ -150,20 +151,13 @@ export default {
     getEleMapL(){
 
       this.loading = true;
-      getListMap(this.queryParams).then(response => {
+      getListMapF(this.queryParams).then(response => {
         this.tcontractList = response.rows;
         for (const responseElement of this.tcontractList) {
           console.log(responseElement)
         }
         this.total = response.total;
         this.loading = false;
-      }).then(()=>{
-        for (let i = 0; i < this.customerOptions.length; i++) {
-          this.tcontractList[i].label = this.customerOptions[i].label;
-          // console.log("dfkasfj："+this.tcontractList[0])
-
-
-        }
       });
     },
     /** 查询合同列表 */
@@ -283,7 +277,23 @@ export default {
       this.download('contractSystem/tcontract/export', {
         ...this.queryParams
       }, `tcontract_${new Date().getTime()}.xlsx`)
+    },
+    hiddenSwitch(job) {
+      let b;
+      if (job == "员工" ){
+        b = true;
+      }
+      else{
+        b =false;
+      }
+      return b;
+
+
+
+
+
     }
+
   }
 };
 </script>

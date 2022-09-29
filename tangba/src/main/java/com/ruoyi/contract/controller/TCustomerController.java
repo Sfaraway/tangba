@@ -107,7 +107,7 @@ public class TCustomerController extends BaseController
      * 状态修改
      */
     @PreAuthorize("@ss.hasPermi('tangba:customer:edit')")
-    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
+    @Log(title = "客户管理", businessType = BusinessType.UPDATE)
     @PutMapping("/changeStatus")
     public AjaxResult changeStatus(@RequestBody TCustomer tCustomer)
     {

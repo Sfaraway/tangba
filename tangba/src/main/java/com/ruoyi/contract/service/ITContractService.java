@@ -64,6 +64,7 @@ public interface ITContractService
     int updateSealStatus(TContract tContract);
     int updateAccessStatus(TContract tContract);
     int updateStatus(TContract tContract);
+    List<Map<String, Object>> selectStaffPosition(TContract tContract);
 
     List<Map<String, Object>> selectContractCustomerEmpAll(TContract tContract);
 }

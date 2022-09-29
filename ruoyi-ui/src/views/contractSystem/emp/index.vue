@@ -114,6 +114,7 @@
               active-value="0"
               inactive-value="1"
               @change="handleStatusChange(scope.row)"
+              v-hasPermi="['tangba:emp:edit']"
             ></el-switch>
           </template>
       </el-table-column>
@@ -173,7 +174,9 @@
               v-for="item in deptOptions"
               :key="item.deptId"
               :label="item.dname"
-              :value="item.deptId"></el-option>
+              :value="item.deptId"
+              v-hasPermi="['tangba:dept:list']"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="职务" prop="jobId">
@@ -182,6 +185,7 @@
             <!--            <el-option label="经理" value= 2></el-option>-->
             <!--            <el-option label="员工" value= 3></el-option>-->
             <el-option
+              v-hasPermi="['tangba:job:list']"
               v-for="item in this.jobOptions"
               :key="item.jobId"
               :label="item.job"
@@ -195,6 +199,7 @@
               :key="dict.value"
 :label="dict.value"
             >{{dict.label}}</el-radio>
+
           </el-radio-group>
         </el-form-item>
         <el-form-item v-if="form.a == 1" label="添加时间" prop="addTime">

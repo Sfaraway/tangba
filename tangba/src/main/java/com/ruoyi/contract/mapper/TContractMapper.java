@@ -64,4 +64,6 @@ public interface TContractMapper
     public int deleteTContractByIds(Long[] ids);
 
     public List<Map<String, Object>> selectContractCustomerEmpAll(TContract contract);
+
+    public List<Map<String, Object>> selectStaffPosition(TContract contract);
 }

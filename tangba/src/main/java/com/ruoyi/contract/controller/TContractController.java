@@ -170,5 +170,19 @@ public class TContractController extends BaseController
 
         return toAjax(tContractService.updateAccessStatus(tContract));
     }
+
+
+    /**
+     * 查询合同列表
+     */
+    @PreAuthorize("@ss.hasPermi('contractSystem:tcontract:list')")
+    @GetMapping("/getstaffposition")
+    public TableDataInfo position(TContract tContract)
+    {
+        startPage();
+        List<Map<String, Object>> list = tContractService.selectStaffPosition(tContract);
+        System.out.println(list);
+        return getDataTable(list);
+    }
 }
 

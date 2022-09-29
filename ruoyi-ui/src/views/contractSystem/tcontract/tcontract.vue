@@ -128,11 +128,13 @@
     <el-table v-loading="loading" :data="tcontractList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="合同ID" align="center" prop="id" />
+
       <!--      员工ID-->
       <el-table-column label="员工姓名" align="center" prop="ename" />
       <el-table-column label="联系方式" align="center" prop="phone"/>
       <!--     客户ID -->
       <el-table-column label="客户姓名" align="center" prop="cname" />
+      <el-table-column label="职位" align="center" prop="job" />
       <el-table-column label="合同名称" align="center" prop="name" />
       <el-table-column label="附件" prop="enclosure" width="100" align="center">
         <file-upload v-model="form.enclosure"/>
@@ -148,6 +150,7 @@
       <el-table-column label="状态" align="center" prop="status" width="100">
         <template slot-scope="scope">
           <el-switch
+            :disabled="hiddenSwitch(scope.row.job)"
             v-model="scope.row.status"
             active-value="0" inactive-value="1"
             @change="handleStatusChange(scope.row)"
@@ -182,8 +185,10 @@
 <!--      <el-table-column label="印章ID" align="center" prop="sealId" />-->
 <!--      <el-table-column label="盖章否" align="center" prop="sealStatus" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+
         <template slot-scope="scope">
           <el-button
+            :disabled="hiddenSwitch(scope.row.job)"
             size="mini"
             type="text"
             icon="el-icon-edit"
@@ -191,6 +196,7 @@
             v-hasPermi="['contractSystem:tcontract:edit']"
           >修改</el-button>
           <el-button
+            :disabled="hiddenSwitch(scope.row.job)"
             size="mini"
             type="text"
             icon="el-icon-delete"
@@ -237,6 +243,12 @@
         <el-form-item label="合同名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入合同名称" />
         </el-form-item>
+        <el-form-item label="1:纸质合同 2：电子合同" prop="type">
+          <el-select v-model="form.type" placeholder="请选择">
+            <el-option label="纸质合同" value=1> </el-option>
+            <el-option label="电子合同" value=2></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="附件">
           <file-upload v-model="form.enclosure"/>
         </el-form-item>
@@ -248,12 +260,17 @@
 <!--                          placeholder="请选择添加时间">-->
 <!--          </el-date-picker>-->
 <!--        </el-form-item>-->
-<!--        <el-form-item label="添加人" prop="addUserId">-->
-<!--          <el-input v-model="form.addUserId=wtf"    readonly />-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="修改人" prop="updateUserId">-->
-<!--          <el-input v-model="form.updateUserId=wtf"   readonly />-->
-<!--        </el-form-item>-->
+        <el-form-item label="添加人" prop="addUserId">
+          <el-input v-model="form.addUserId=wtf"    readonly />
+        </el-form-item>
+        <el-form-item label="修改人" prop="updateUserId">
+          <el-input v-model="form.updateUserId=wtf"   readonly />
+        </el-form-item>
+
+
+
+
+
 
 
       </el-form>
@@ -266,17 +283,19 @@
 </template>
 
 <script>
-import { listTcontract, getTcontract, delTcontract, addTcontract, updateTcontract } from "@/api/contractSystem/tcontract/tcontract";
+import { listTcontract, getTcontract, delTcontract, addTcontract, updateTcontract,getListMapF } from "@/api/contractSystem/tcontract/tcontract";
 import {changeContractStatus} from "@/api/contractSystem/tcontract";
 import { listCustomer } from "@/api/contractSystem/customer";
-import {getListMap} from "@/api/contractSystem/eleseal/contract"
+
 import {getUserId} from "@/api/contractSystem/common"
 import {listEmp} from "@/api/contractSystem/emp";
+
 
 export default {
   name: "Tcontract",
   data() {
     return {
+
       wtf:this.wtf,
       staffOptions:[],
       //员工信息
@@ -289,6 +308,12 @@ export default {
       contractType: {
         paper: 1,
         electronic: 2,
+      },
+
+      position: {
+        staff: 1,
+        manager: 2,
+        inspecter: 3,
       },
 
       // 合同进度
@@ -345,15 +370,7 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        // addTime: [
-        //   { required: true, message: "添加时间不能为空", trigger: "blur" }
-        // ],
-        // addUserId: [
-        //   { required: true, message: "添加人不能为空", trigger: "blur" }
-        // ],
-        // updateUserId: [
-        //   { required: true, message: "修改人不能为空", trigger: "blur" }
-        // ],
+
       }
     };
   },
@@ -370,6 +387,9 @@ export default {
   },
   methods: {
 
+
+
+
     getWTfid(){
       this.loading = true;
       getUserId().then(response => {
@@ -384,7 +404,7 @@ export default {
     getEleMapL(){
 
       this.loading = true;
-      getListMap(this.queryParams).then(response => {
+      getListMapF(this.queryParams).then(response => {
         this.tcontractList = response.rows;
         for (const responseElement of this.tcontractList) {
           console.log(responseElement)
@@ -409,10 +429,10 @@ export default {
 
         return changeContractStatus(row.id, now,row.contractStatus);
       }).then(() => {
-        this.getList();
+        this.getEleMapL();
         this.$modal.msgSuccess(text + "成功");          }).catch(function() {
         row.status = row.status === "0" ? "1" : "0";
-      });
+      })
     },
 
 //客户信息
@@ -454,7 +474,7 @@ export default {
       }).then(()=>{
         for (let i = 0; i < this.customerOptions.length; i++) {
           this.tcontractList[i].label = this.customerOptions[i].label;
-          // console.log("dfkasfj："+this.tcontractList[0])
+
 
 
         }
@@ -512,11 +532,14 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
+
       const id = row.id || this.ids
       getTcontract(id).then(response => {
         this.form = response.data;
         this.open = true;
         this.title = "修改合同";
+      }).catch(function() {
+        row.job = row.job === this.position.staff ? this.position.manager: this.position.staff;
       });
     },
     /** 提交按钮 */
@@ -548,7 +571,7 @@ export default {
       this.$modal.confirm('是否确认删除合同编号为"' + ids + '"的数据项？').then(function() {
         return delTcontract(ids);
       }).then(() => {
-        this.getList();
+        this.getEleMapL();
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
     },
@@ -557,7 +580,23 @@ export default {
       this.download('contractSystem/tcontract/export', {
         ...this.queryParams
       }, `tcontract_${new Date().getTime()}.xlsx`)
-    }
+    },
+    hiddenSwitch(job) {
+      let b;
+      if (job == "员工"){
+        b = true;
+      }
+      else{
+        b =false;
+      }
+      return b;
+
+
+
+
+
   }
-};
+
+},}
+
 </script>
