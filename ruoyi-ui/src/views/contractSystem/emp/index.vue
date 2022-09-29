@@ -94,7 +94,7 @@
       <el-table-column label="ID" align="center" prop="eId" />
       <el-table-column label="账号" align="center" prop="eAcount" />
       <el-table-column label="姓名" align="center" prop="ename" />
-      <el-table-column label="电话" align="center" prop="tel" />
+      <el-table-column label="电话" width="120" align="center" prop="tel" />
       <el-table-column v-if="form.a == 1" label="职务ID" align="center" prop="jobId" />
       <el-table-column v-if="form.a == 1" label="部门ID" align="center" prop="deptId" />
 
